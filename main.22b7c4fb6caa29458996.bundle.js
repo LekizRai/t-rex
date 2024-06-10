@@ -1,0 +1,1 @@
+(()=>{"use strict";new class{constructor(){console.log("Game created")}}})();
