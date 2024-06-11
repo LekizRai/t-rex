@@ -1,13 +1,16 @@
+import { View } from './view/View'
+
 class Game {
+    public canvaView: View
+
     constructor() {
-        console.log('Game created')
+        this.canvaView = new View()
+        this.canvaView.draw()
     }
+
+    public update(): void {}
+
+    public run(): void {}
 }
-
-class TRex {}
-
-class Ground {}
-
-class Sky {}
 
 new Game()
