@@ -5,12 +5,26 @@ class Game {
 
     constructor() {
         this.canvaView = new View()
-        this.canvaView.draw()
     }
 
-    public update(): void {}
+    public update(): void {
+        this.canvaView.update()
+    }
 
-    public run(): void {}
+    private render(): void {
+        this.canvaView.render()
+    }
+
+    private loop(): void {
+        this.update()
+        this.render()
+        requestAnimationFrame(() => this.loop())
+    }
+
+    public run(): void {
+        requestAnimationFrame(() => this.loop())
+    }
 }
 
-new Game()
+var game = new Game()
+game.run()
