@@ -1,3 +1,4 @@
+import { TexInfo } from '../types/general'
 import { m4, createShader, createProgram } from './utils'
 
 export class Drawer {
@@ -11,21 +12,22 @@ export class Drawer {
     public positionLocation: number
     public texcoordLocation: number
 
-    public resolutionUniformLocation: WebGLUniformLocation | null
-    public colorUniformLocation: WebGLUniformLocation | null
-    public textureLocation: WebGLUniformLocation | null
-    public matrixLocation: WebGLUniformLocation | null
-    public textureMatrixLocation: WebGLUniformLocation | null
+    public resolutionUniformLocation: WebGLUniformLocation
+    public colorUniformLocation: WebGLUniformLocation
+    public textureLocation: WebGLUniformLocation
+    public matrixLocation: WebGLUniformLocation
+    public textureMatrixLocation: WebGLUniformLocation
 
-    public positionBuffer: WebGLBuffer | null
-    public texcoordBuffer: WebGLBuffer | null
+    public positionBuffer: WebGLBuffer
+    public texcoordBuffer: WebGLBuffer
 
-    constructor(canvas: any) {
+    constructor(canvas: HTMLCanvasElement) {
         // Initialize webGL object for rendering
-        this.gl = canvas.getContext('webgl')
+        console.log(canvas)
+        this.gl = canvas.getContext('webgl') as WebGLRenderingContext
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA)
         this.gl.enable(this.gl.BLEND)
-        this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height)
+        this.gl.viewport(100, 0, this.gl.canvas.width, this.gl.canvas.height)
         this.gl.clearColor(1.0, 1.0, 1.0, 1.0)
         this.gl.clear(this.gl.COLOR_BUFFER_BIT)
 
@@ -64,13 +66,13 @@ void main() {
         this.texcoordLocation = this.gl.getAttribLocation(this.program, 'a_texcoord')
 
         // Lookup uniforms
-        this.matrixLocation = this.gl.getUniformLocation(this.program, 'u_matrix')
-        this.textureMatrixLocation = this.gl.getUniformLocation(this.program, 'u_textureMatrix')
-        this.textureLocation = this.gl.getUniformLocation(this.program, 'u_texture')
+        this.matrixLocation = this.gl.getUniformLocation(this.program, 'u_matrix') as WebGLUniformLocation
+        this.textureMatrixLocation = this.gl.getUniformLocation(this.program, 'u_textureMatrix') as WebGLUniformLocation
+        this.textureLocation = this.gl.getUniformLocation(this.program, 'u_texture') as WebGLUniformLocation
 
         // Create position and texture coordination buffers
-        this.positionBuffer = this.gl.createBuffer()
-        this.texcoordBuffer = this.gl.createBuffer()
+        this.positionBuffer = this.gl.createBuffer() as WebGLBuffer
+        this.texcoordBuffer = this.gl.createBuffer() as WebGLBuffer
     }
 
     public loadImageAndCreateTextureInfo(url: string) {
@@ -124,7 +126,7 @@ void main() {
     }
 
     draw(
-        tex: any,
+        tex: TexInfo,
         srcX: number,
         srcY: number,
         srcWidth: number,
@@ -159,17 +161,6 @@ void main() {
         }
 
         if (something.gl) {
-            // gl.canvas.width = canvas.width
-            // gl.canvas.height = canvas.height
-
-            // var dstX = drawInfo.x
-            // var dstY = drawInfo.y
-            // var dstWidth = 100
-            // var dstHeight = 100
-            // var srcX = 0
-            // var srcY = 0
-            // var srcWidth = 100
-            // var srcHeight = 100
             something.drawImage(
                 drawInfo.textureInfo.texture,
                 drawInfo.textureInfo.width,
@@ -184,26 +175,24 @@ void main() {
                 dstHeight
             )
         }
-        var something = this
     }
 
     clear() {
-        // this.gl.clearColor(1.0, 1.0, 1.0, 1.0)
         this.gl.clear(this.gl.COLOR_BUFFER_BIT)
     }
 
     drawImage(
-        tex: WebGLTexture | null,
-        texWidth: any,
-        texHeight: any,
-        srcX: any,
-        srcY: any,
-        srcWidth: any,
-        srcHeight: any,
-        dstX: any,
-        dstY: any,
-        dstWidth: any,
-        dstHeight: any
+        tex: WebGLTexture,
+        texWidth: number,
+        texHeight: number,
+        srcX: number,
+        srcY: number,
+        srcWidth: number,
+        srcHeight: number,
+        dstX: number,
+        dstY: number,
+        dstWidth: number,
+        dstHeight: number
     ) {
         if (this.gl) {
             this.gl.bindTexture(this.gl.TEXTURE_2D, tex)
@@ -245,7 +234,7 @@ void main() {
         }
     }
 
-    drawPolygons(positions: any, color: any) {
+    drawPolygons(positions: number[], color: number) {
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer)
         this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(positions), this.gl.STATIC_DRAW)
         this.gl.viewport(0, 0, window.innerWidth, window.innerHeight)

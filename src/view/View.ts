@@ -1,76 +1,109 @@
-import { Ground } from '../sprites/Ground'
-import { TRex } from '../sprites/TRex'
+import { BackGround } from '../objects/BackGround'
+import { Obstacle } from '../objects/Obstacle'
+import { Cactus } from '../objects/Cactus'
+import { TRex } from '../objects/TRex'
+import {PointBoard} from '../objects/PointBoard'
 import { Drawer } from '../utils/Drawer'
 
 export class View {
     public canvas: HTMLCanvasElement
     public drawer: Drawer
 
-    public groundList: Ground[]
-    public TRex: TRex
+    private background: BackGround
+    private trex: TRex
+    private obstacleList: Obstacle[]
+    private pointBoard: PointBoard
+
+    private lastTime: number
+    private period: number
 
     constructor() {
         this.canvas = <HTMLCanvasElement>document.createElement('canvas')
-        this.canvas.width = window.innerWidth
+        this.canvas.width = window.innerWidth 
         this.canvas.height = window.innerHeight
 
         this.drawer = new Drawer(this.canvas)
 
-        this.groundList = []
-        this.groundList.push(new Ground(0, 400))
+        // Initialize background
+        this.background = new BackGround()
 
-        var previousCoor = this.groundList[0].getDisplayLocation()
-        var previousWidth = Math.ceil(this.groundList[0].getDisplayWidth())
-        this.groundList.push(new Ground(previousCoor.x + previousWidth, 400))
+        // Initialize obtacle
+        this.obstacleList = []
+        this.obstacleList.push(new Cactus(1000, 365))
 
-        previousCoor = this.groundList[1].getDisplayLocation()
-        previousWidth = Math.ceil(this.groundList[1].getDisplayWidth())
-        this.groundList.push(new Ground(previousCoor.x + previousWidth, 400))
+        // Initialize TRex
+        this.trex = new TRex(50, 370)
 
-        this.TRex = new TRex(50, 370)
+        // Initialize point board
+        this.pointBoard = new PointBoard(500, 300)
+
+        // Intialize time
+        this.lastTime = window.performance.now()
+        this.period = 1500
     }
 
     public update(): void {
-        // Update ground scene
-        this.groundList.forEach((ground) => {
-            ground.update()
-        })
-        var previousCoor = this.groundList[0].getDisplayLocation()
-        var previousWidth = Math.ceil(this.groundList[0].getDisplayWidth())
-        if (previousCoor.x + previousWidth < 0) {
-            this.groundList.shift()
-            previousCoor = this.groundList[1].getDisplayLocation()
-            previousWidth = Math.ceil(this.groundList[1].getDisplayWidth())
-            this.groundList.push(new Ground(previousCoor.x + previousWidth, 400))
-        }
-
         // Update background scene
-
-        // Update TRex
-        this.TRex.update()
+        this.background.update()
 
         // Update obtacles
+        this.obstacleList.forEach((obstacle) => {
+            obstacle.update()
+        })
+        var currentTime = window.performance.now()
+        if (this.obstacleList.length > 0) {
+            if (
+                this.obstacleList[0].getDisplayLocation().x +
+                    this.obstacleList[0].getDisplayWidth() <
+                0
+            ) {
+                this.obstacleList.shift()
+            }
+        }
+        if (currentTime - this.lastTime > this.period) {
+            this.obstacleList.push(new Cactus(1000, 365))
+            this.lastTime = currentTime
+        }
+
+        // Update TRex
+        this.trex.update()
 
         // Update points
+        this.pointBoard.update() 
+    }
+
+    public checkCollision(): boolean {
+        for (var obstacle of this.obstacleList) {
+            if (obstacle.isCollided(this.trex)) {
+                return true
+            }
+        }
+        return false
     }
 
     public render(): void {
         // Clear the screen
         this.drawer.clear()
 
-        // Draw the ground scene
-        this.groundList.forEach((ground) => {
-            ground.draw(this.drawer)
-        })
-
         // Draw background scene
-
-        // Draw TRex
-        this.TRex.draw(this.drawer)
+        this.background.draw(this.drawer)
 
         // Draw obtacles
+        this.obstacleList.forEach((obstacle) => {
+            obstacle.draw(this.drawer)
+        })
+
+        // Draw TRex
+        this.trex.draw(this.drawer)
+
+        // Draw point board
+        this.pointBoard.draw(this.drawer)
 
         // Stick scene on web page
         document.body.appendChild(this.canvas)
+    }
+
+    getTRex(): TRex {
+        return this.trex
     }
 }

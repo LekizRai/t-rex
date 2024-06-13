@@ -5,6 +5,12 @@ export type SpriteClip = {
     scale: number
 }
 
+export type TexInfo = {
+    width: number,
+    height: number,
+    texture: WebGLTexture
+}
+
 export type Coor2D = {
     x: number,
     y: number

@@ -202,7 +202,7 @@ export var m4 = {
     },
 }
 
-export function createShader(gl: any, type: any, source: any) {
+export function createShader(gl: any, type: number, source: string) {
     var shader = gl.createShader(type)
     gl.shaderSource(shader, source)
     gl.compileShader(shader)
@@ -225,4 +225,11 @@ export function createProgram(gl: any, vertexShader: any, fragmentShader: any) {
     }
     console.log(gl.getProgramInfoLog(program))
     gl.deleteProgram(program)
+}
+
+
+
+export function randomInt(low: number, high: number) {
+    var gap: number = high - low + 1
+    return Math.floor(Math.random() * gap + low)
 }
