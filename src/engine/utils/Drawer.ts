@@ -1,7 +1,7 @@
-import { TexInfo } from '../types/general'
-import { m4, createShader, createProgram } from './utils'
+import { SpriteClip, TexInfo, Coor2D, Coor3D } from '../types/general'
+import utils from './utils'
 
-export class Drawer {
+class Drawer {
     public gl: WebGLRenderingContext
 
     public program: WebGLProgram
@@ -23,11 +23,11 @@ export class Drawer {
 
     constructor(canvas: HTMLCanvasElement) {
         // Initialize webGL object for rendering
-        console.log(canvas)
+        // console.log(canvas)
         this.gl = canvas.getContext('webgl') as WebGLRenderingContext
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA)
         this.gl.enable(this.gl.BLEND)
-        this.gl.viewport(100, 0, this.gl.canvas.width, this.gl.canvas.height)
+        this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height)
         this.gl.clearColor(1.0, 1.0, 1.0, 1.0)
         this.gl.clear(this.gl.COLOR_BUFFER_BIT)
 
@@ -57,18 +57,31 @@ void main() {
 }
 `
         // Create vertex and fragment shaders as well as program for WebGL
-        var vertexShader = createShader(this.gl, this.gl.VERTEX_SHADER, this.vertexSource)
-        var fragmentShader = createShader(this.gl, this.gl.FRAGMENT_SHADER, this.fragmentSource)
-        this.program = createProgram(this.gl, vertexShader, fragmentShader)
+        let vertexShader = utils.createShader(this.gl, this.gl.VERTEX_SHADER, this.vertexSource)
+        let fragmentShader = utils.createShader(
+            this.gl,
+            this.gl.FRAGMENT_SHADER,
+            this.fragmentSource
+        )
+        this.program = utils.createProgram(this.gl, vertexShader, fragmentShader)
 
         // Look up where the vertex data needs to go
         this.positionLocation = this.gl.getAttribLocation(this.program, 'a_position')
         this.texcoordLocation = this.gl.getAttribLocation(this.program, 'a_texcoord')
 
         // Lookup uniforms
-        this.matrixLocation = this.gl.getUniformLocation(this.program, 'u_matrix') as WebGLUniformLocation
-        this.textureMatrixLocation = this.gl.getUniformLocation(this.program, 'u_textureMatrix') as WebGLUniformLocation
-        this.textureLocation = this.gl.getUniformLocation(this.program, 'u_texture') as WebGLUniformLocation
+        this.matrixLocation = this.gl.getUniformLocation(
+            this.program,
+            'u_matrix'
+        ) as WebGLUniformLocation
+        this.textureMatrixLocation = this.gl.getUniformLocation(
+            this.program,
+            'u_textureMatrix'
+        ) as WebGLUniformLocation
+        this.textureLocation = this.gl.getUniformLocation(
+            this.program,
+            'u_texture'
+        ) as WebGLUniformLocation
 
         // Create position and texture coordination buffers
         this.positionBuffer = this.gl.createBuffer() as WebGLBuffer
@@ -77,7 +90,7 @@ void main() {
 
     public loadImageAndCreateTextureInfo(url: string) {
         // Initialize texture
-        var tex = this.gl.createTexture()
+        let tex = this.gl.createTexture()
         this.gl.bindTexture(this.gl.TEXTURE_2D, tex)
 
         this.gl.texImage2D(
@@ -97,14 +110,14 @@ void main() {
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE)
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR)
 
-        var textureInfo = {
+        let textureInfo = {
             width: 1,
             height: 1,
             texture: tex,
         }
 
         // Create new Image object
-        var img = new Image()
+        let img = new Image()
         img.addEventListener('load', (e) => {
             textureInfo.width = img.width
             textureInfo.height = img.height
@@ -136,23 +149,27 @@ void main() {
         dstWidth: number,
         dstHeight: number
     ) {
+        // resizeCanvasToDisplaySize(this.gl.canvas)
+        this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height)
+        // this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height)
+        // console.log('WebGL: ', this.gl.canvas.height)
         // Tell WebGL how to convert from clip space to pixels
         // Put a unit quad in the buffer
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer)
-        var positions = [0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1]
+        let positions = [0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1]
         this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(positions), this.gl.STATIC_DRAW)
 
         // Put texcoords in the buffer
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.texcoordBuffer)
-        var texcoords = [0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1]
+        let texcoords = [0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1]
         this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(texcoords), this.gl.STATIC_DRAW)
 
         // creates a texture info { width: w, height: h, texture: tex }
         // The texture will start with 1x1 pixels and be updated
         // when the image has loaded
-        var something = this
-        var textureInfos = tex
-        var drawInfo = {
+        let something = this
+        let textureInfos = tex
+        let drawInfo = {
             x: 110,
             y: 110,
             dx: 1,
@@ -178,6 +195,7 @@ void main() {
     }
 
     clear() {
+        // this.gl.clearColor(0.0, 1.0, 1.0, 1.0)
         this.gl.clear(this.gl.COLOR_BUFFER_BIT)
     }
 
@@ -209,20 +227,20 @@ void main() {
             this.gl.vertexAttribPointer(this.texcoordLocation, 2, this.gl.FLOAT, false, 0, 0)
 
             // this matrix will convert from pixels to clip space
-            var matrix = m4.orthographic(0, this.gl.canvas.width, this.gl.canvas.height, 0, -1, 1)
+            let matrix = utils.m4.orthographic(0, this.gl.canvas.width, this.gl.canvas.height, 0, -1, 1)
 
             // this matrix will translate our quad to dstX, dstY
-            matrix = m4.translate(matrix, dstX, dstY, 0)
+            matrix = utils.m4.translate(matrix, dstX, dstY, 0)
 
             // this matrix will scale our 1 unit quad
             // from 1 unit to texWidth, texHeight units
-            matrix = m4.scale(matrix, dstWidth, dstHeight, 1)
+            matrix = utils.m4.scale(matrix, dstWidth, dstHeight, 1)
 
             // Set the matrix.
             this.gl.uniformMatrix4fv(this.matrixLocation, false, matrix)
 
-            var texMatrix = m4.translation(srcX / texWidth, srcY / texHeight, 0)
-            texMatrix = m4.scale(texMatrix, srcWidth / texWidth, srcHeight / texHeight, 1)
+            let texMatrix = utils.m4.translation(srcX / texWidth, srcY / texHeight, 0)
+            texMatrix = utils.m4.scale(texMatrix, srcWidth / texWidth, srcHeight / texHeight, 1)
 
             this.gl.uniformMatrix4fv(this.textureMatrixLocation, false, texMatrix)
 
@@ -247,3 +265,5 @@ void main() {
         this.gl.drawArrays(this.gl.TRIANGLES, 0, 3)
     }
 }
+
+export default Drawer

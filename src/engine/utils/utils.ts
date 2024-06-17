@@ -1,23 +1,23 @@
-export var m3 = {
+const m3 = {
     multiply: function (a: number[], b: number[]): number[] {
-        var a00 = a[0 * 3 + 0]
-        var a01 = a[0 * 3 + 1]
-        var a02 = a[0 * 3 + 2]
-        var a10 = a[1 * 3 + 0]
-        var a11 = a[1 * 3 + 1]
-        var a12 = a[1 * 3 + 2]
-        var a20 = a[2 * 3 + 0]
-        var a21 = a[2 * 3 + 1]
-        var a22 = a[2 * 3 + 2]
-        var b00 = b[0 * 3 + 0]
-        var b01 = b[0 * 3 + 1]
-        var b02 = b[0 * 3 + 2]
-        var b10 = b[1 * 3 + 0]
-        var b11 = b[1 * 3 + 1]
-        var b12 = b[1 * 3 + 2]
-        var b20 = b[2 * 3 + 0]
-        var b21 = b[2 * 3 + 1]
-        var b22 = b[2 * 3 + 2]
+        let a00 = a[0 * 3 + 0]
+        let a01 = a[0 * 3 + 1]
+        let a02 = a[0 * 3 + 2]
+        let a10 = a[1 * 3 + 0]
+        let a11 = a[1 * 3 + 1]
+        let a12 = a[1 * 3 + 2]
+        let a20 = a[2 * 3 + 0]
+        let a21 = a[2 * 3 + 1]
+        let a22 = a[2 * 3 + 2]
+        let b00 = b[0 * 3 + 0]
+        let b01 = b[0 * 3 + 1]
+        let b02 = b[0 * 3 + 2]
+        let b10 = b[1 * 3 + 0]
+        let b11 = b[1 * 3 + 1]
+        let b12 = b[1 * 3 + 2]
+        let b20 = b[2 * 3 + 0]
+        let b21 = b[2 * 3 + 1]
+        let b22 = b[2 * 3 + 2]
 
         return [
             b00 * a00 + b01 * a10 + b02 * a20,
@@ -37,8 +37,8 @@ export var m3 = {
     },
 
     rotation: function (angleInRadians: number): number[] {
-        var c = Math.cos(angleInRadians)
-        var s = Math.sin(angleInRadians)
+        let c = Math.cos(angleInRadians)
+        let s = Math.sin(angleInRadians)
         return [c, -s, 0, s, c, 0, 0, 0, 1]
     },
 
@@ -63,28 +63,28 @@ export var m3 = {
     },
 }
 
-export var m4 = {
+const m4 = {
     translation: function (tx: any, ty: any, tz: any) {
         return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, tx, ty, tz, 1]
     },
 
     xRotation: function (angleInRadians: number) {
-        var c = Math.cos(angleInRadians)
-        var s = Math.sin(angleInRadians)
+        let c = Math.cos(angleInRadians)
+        let s = Math.sin(angleInRadians)
 
         return [1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1]
     },
 
     yRotation: function (angleInRadians: number) {
-        var c = Math.cos(angleInRadians)
-        var s = Math.sin(angleInRadians)
+        let c = Math.cos(angleInRadians)
+        let s = Math.sin(angleInRadians)
 
         return [c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1]
     },
 
     zRotation: function (angleInRadians: number) {
-        var c = Math.cos(angleInRadians)
-        var s = Math.sin(angleInRadians)
+        let c = Math.cos(angleInRadians)
+        let s = Math.sin(angleInRadians)
 
         return [c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
     },
@@ -114,38 +114,38 @@ export var m4 = {
     },
 
     multiply: function (a: any[], b: any[]) {
-        var b00 = b[0 * 4 + 0]
-        var b01 = b[0 * 4 + 1]
-        var b02 = b[0 * 4 + 2]
-        var b03 = b[0 * 4 + 3]
-        var b10 = b[1 * 4 + 0]
-        var b11 = b[1 * 4 + 1]
-        var b12 = b[1 * 4 + 2]
-        var b13 = b[1 * 4 + 3]
-        var b20 = b[2 * 4 + 0]
-        var b21 = b[2 * 4 + 1]
-        var b22 = b[2 * 4 + 2]
-        var b23 = b[2 * 4 + 3]
-        var b30 = b[3 * 4 + 0]
-        var b31 = b[3 * 4 + 1]
-        var b32 = b[3 * 4 + 2]
-        var b33 = b[3 * 4 + 3]
-        var a00 = a[0 * 4 + 0]
-        var a01 = a[0 * 4 + 1]
-        var a02 = a[0 * 4 + 2]
-        var a03 = a[0 * 4 + 3]
-        var a10 = a[1 * 4 + 0]
-        var a11 = a[1 * 4 + 1]
-        var a12 = a[1 * 4 + 2]
-        var a13 = a[1 * 4 + 3]
-        var a20 = a[2 * 4 + 0]
-        var a21 = a[2 * 4 + 1]
-        var a22 = a[2 * 4 + 2]
-        var a23 = a[2 * 4 + 3]
-        var a30 = a[3 * 4 + 0]
-        var a31 = a[3 * 4 + 1]
-        var a32 = a[3 * 4 + 2]
-        var a33 = a[3 * 4 + 3]
+        let b00 = b[0 * 4 + 0]
+        let b01 = b[0 * 4 + 1]
+        let b02 = b[0 * 4 + 2]
+        let b03 = b[0 * 4 + 3]
+        let b10 = b[1 * 4 + 0]
+        let b11 = b[1 * 4 + 1]
+        let b12 = b[1 * 4 + 2]
+        let b13 = b[1 * 4 + 3]
+        let b20 = b[2 * 4 + 0]
+        let b21 = b[2 * 4 + 1]
+        let b22 = b[2 * 4 + 2]
+        let b23 = b[2 * 4 + 3]
+        let b30 = b[3 * 4 + 0]
+        let b31 = b[3 * 4 + 1]
+        let b32 = b[3 * 4 + 2]
+        let b33 = b[3 * 4 + 3]
+        let a00 = a[0 * 4 + 0]
+        let a01 = a[0 * 4 + 1]
+        let a02 = a[0 * 4 + 2]
+        let a03 = a[0 * 4 + 3]
+        let a10 = a[1 * 4 + 0]
+        let a11 = a[1 * 4 + 1]
+        let a12 = a[1 * 4 + 2]
+        let a13 = a[1 * 4 + 3]
+        let a20 = a[2 * 4 + 0]
+        let a21 = a[2 * 4 + 1]
+        let a22 = a[2 * 4 + 2]
+        let a23 = a[2 * 4 + 3]
+        let a30 = a[3 * 4 + 0]
+        let a31 = a[3 * 4 + 1]
+        let a32 = a[3 * 4 + 2]
+        let a33 = a[3 * 4 + 3]
 
         return [
             b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30,
@@ -202,11 +202,11 @@ export var m4 = {
     },
 }
 
-export function createShader(gl: any, type: number, source: string) {
-    var shader = gl.createShader(type)
+function createShader(gl: any, type: number, source: string) {
+    let shader = gl.createShader(type)
     gl.shaderSource(shader, source)
     gl.compileShader(shader)
-    var success = gl.getShaderParameter(shader, gl.COMPILE_STATUS)
+    let success = gl.getShaderParameter(shader, gl.COMPILE_STATUS)
     if (success) {
         return shader
     }
@@ -214,12 +214,12 @@ export function createShader(gl: any, type: number, source: string) {
     gl.deleteShader(shader)
 }
 
-export function createProgram(gl: any, vertexShader: any, fragmentShader: any) {
-    var program = gl.createProgram()
+function createProgram(gl: any, vertexShader: WebGLShader, fragmentShader: WebGLShader) {
+    let program = gl.createProgram()
     gl.attachShader(program, vertexShader)
     gl.attachShader(program, fragmentShader)
     gl.linkProgram(program)
-    var success = gl.getProgramParameter(program, gl.LINK_STATUS)
+    let success = gl.getProgramParameter(program, gl.LINK_STATUS)
     if (success) {
         return program
     }
@@ -227,9 +227,19 @@ export function createProgram(gl: any, vertexShader: any, fragmentShader: any) {
     gl.deleteProgram(program)
 }
 
-
-
-export function randomInt(low: number, high: number) {
-    var gap: number = high - low + 1
+function randomInt(low: number, high: number) {
+    let gap: number = high - low + 1
     return Math.floor(Math.random() * gap + low)
 }
+
+function calcShift(velocity: number, acceleration: number, time: number): number {
+    time = time / 1000
+    return Math.floor(0.5 * acceleration * time * time + velocity * time)
+}
+
+function calcVelocity(velocity: number, acceleration: number, time: number): number {
+    time = time / 1000
+    return Math.floor(velocity + acceleration * time)
+}
+
+export default { m3, m4, createShader, createProgram, randomInt, calcShift, calcVelocity }
