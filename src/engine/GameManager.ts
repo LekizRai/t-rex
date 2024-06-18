@@ -1,9 +1,11 @@
 import SceneManager from './controllers/SceneManager'
 import InputHandler from './controllers/InputHandler'
+import PhysicsManager from './controllers/PhysicsManager'
 
 abstract class GameManager {
     protected scene: SceneManager
     protected inputHandler: InputHandler
+    protected physicsManager: PhysicsManager
     private lastTime: number
 
     constructor() {
@@ -12,6 +14,7 @@ abstract class GameManager {
 
     private update(): void {
         let currentTime: number = window.performance.now()
+        this.physicsManager.update(currentTime - this.lastTime)
         this.scene.update(currentTime - this.lastTime)
         this.lastTime = currentTime
         this.scene.synchronize()
@@ -26,7 +29,7 @@ abstract class GameManager {
         this.render()
         requestAnimationFrame(() => this.run())
     }
-
+       
     public abstract setup(): void
 }
 

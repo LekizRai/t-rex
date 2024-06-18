@@ -21,7 +21,7 @@ class Ground extends Figure {
     public handleInput(e: Event): void {}
 
     public update(timeInterval: number): void {
-        let shift = Math.floor((timeInterval / 1000) * this.velocityX)
+        let shift = Math.floor((timeInterval / 1000) * config.GROUND_VELOCITY_X)
         this.canvasLocation.x -= shift
         if (this.canvasLocation.x + this.getDisplayWidth() < 0) {
             let newLocation = Object.assign(

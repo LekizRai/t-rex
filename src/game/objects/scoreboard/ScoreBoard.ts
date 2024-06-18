@@ -3,98 +3,48 @@ import sprite from '../../../engine/utils/sprites'
 import Drawer from '../../../engine/utils/Drawer'
 import config from '../../../engine/utils/configs'
 import Figure from '../../../engine/base-classes/Figure'
+import CurrentScore from './CurrentScore'
+import HighScore from './HighScore'
+import HI from './HI'
+import GameObject from '../../../engine/base-classes/GameObject'
 // import Text from '../../../engine/base-classes/Text'
 
-class ScoreBoard extends Figure {
-    private highPoint: number
-    private currentPoint: number
+class ScoreBoard extends GameObject {
+    private highPoint: HighScore
+    private currentPoint: CurrentScore
+    private HI: HI
 
     constructor(canvasLocation: Coor2D) {
-        super(sprite.HI_SPRITE.clip, canvasLocation, 0, 0)
-
-        this.highPoint = 0
-        this.currentPoint = 0
-
-        this.changingTimeLeft = config.SCOREBOARD_SCORE_CHANGING_INTERVAL
+        super()
+        this.highPoint = new HighScore()
+        this.currentPoint = new CurrentScore()
+        this.HI = new HI()
     }
 
     public handleInput(e: Event): void {}
 
     update(timeInterval: number): void {
-        if (this.changingTimeLeft - timeInterval < 0) {
-            this.currentPoint += 1
-            this.changingTimeLeft = config.SCOREBOARD_SCORE_CHANGING_INTERVAL
-        } else {
-            this.changingTimeLeft -= timeInterval
-        }
+        this.highPoint.update(timeInterval)
+        this.currentPoint.update(timeInterval)
+        this.HI.update(timeInterval)
+        this.updateHighScore()
     }
 
     draw(drawer: Drawer): void {
-        if (!this.tex) {
-            this.tex = drawer.loadImageAndCreateTextureInfo(
-                './assets/images/trex-sprites.png'
-            ) as TexInfo
-        }
-
-        let position: number
-        let gap: number
-
-        drawer.draw(
-            this.tex,
-            this.sprite.coor.x,
-            this.sprite.coor.y,
-            this.sprite.width,
-            this.sprite.height,
-            this.canvasLocation.x,
-            this.canvasLocation.y,
-            this.sprite.width * this.sprite.scale,
-            this.sprite.height * this.sprite.scale
-        )
-
-        position = 0
-        gap = 30
-        this.numberToSpriteList(this.highPoint).forEach((digitSprite) => {
-            drawer.draw(
-                this.tex,
-                digitSprite.coor.x,
-                digitSprite.coor.y,
-                digitSprite.width,
-                digitSprite.height,
-                this.canvasLocation.x + position * 11 + gap,
-                this.canvasLocation.y,
-                digitSprite.width * digitSprite.scale,
-                digitSprite.height * digitSprite.scale
-            )
-            position += 1
-        })
-
-        position = 0
-        gap = 120
-        this.numberToSpriteList(this.currentPoint).forEach((digitSprite) => {
-            drawer.draw(
-                this.tex,
-                digitSprite.coor.x,
-                digitSprite.coor.y,
-                digitSprite.width,
-                digitSprite.height,
-                this.canvasLocation.x + position * 11 + gap,
-                this.canvasLocation.y,
-                digitSprite.width * digitSprite.scale,
-                digitSprite.height * digitSprite.scale
-            )
-            position += 1
-        })
+        this.highPoint.draw(drawer)
+        this.currentPoint.draw(drawer)
+        this.HI.draw(drawer)
     }
 
-    numberToSpriteList(val: number): SpriteClip[] {
-        let spriteList: SpriteClip[] = []
-        let digit: number
-        for (let i: number = 4; i > -1; i--) {
-            digit = Math.floor(val / 10 ** i)
-            val = val % 10 ** i
-            spriteList.push(sprite.NUMBER_SPRITES[digit].clip)
+    public reload(): void {
+        this.highPoint.reload()
+        this.currentPoint.reload()
+    }
+
+    public updateHighScore(): void {
+        if (Number(this.highPoint.getContent()) < Number(this.currentPoint.getContent())) {
+            window.localStorage.setItem('high_score', this.currentPoint.getContent())
         }
-        return spriteList
     }
 }
 

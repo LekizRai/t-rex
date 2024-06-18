@@ -96,58 +96,58 @@ const sprite = {
         adjust: { x: 0, y: 0 } as Coor2D,
     },
 
-    NUMBER_SPRITES: [
-        {
+    NUMBER_SPRITES: {
+        '0': {
             // 0
             clip: { coor: { x: 952, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
             adjust: { x: 0, y: 0 } as Coor2D,
         },
-        {
+        '1': {
             // 1
             clip: { coor: { x: 974, y: 0 }, width: 20, height: 26, scale: 0.5 } as SpriteClip,
             adjust: { x: 0, y: 0 } as Coor2D,
         },
-        {
+        '2': {
             // 2
             clip: { coor: { x: 992, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
             adjust: { x: 0, y: 0 } as Coor2D,
         },
-        {
+        '3': {
             // 3
             clip: { coor: { x: 1012, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
             adjust: { x: 0, y: 0 } as Coor2D,
         },
-        {
+        '4': {
             // 4
             clip: { coor: { x: 1032, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
             adjust: { x: 0, y: 0 } as Coor2D,
         },
-        {
+        '5': {
             // 5
             clip: { coor: { x: 1052, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
             adjust: { x: 0, y: 0 } as Coor2D,
         },
-        {
+        '6': {
             // 6
             clip: { coor: { x: 1072, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
             adjust: { x: 0, y: 0 } as Coor2D,
         },
-        {
+        '7': {
             // 7
             clip: { coor: { x: 1092, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
             adjust: { x: 0, y: 0 } as Coor2D,
         },
-        {
+        '8': {
             // 8
             clip: { coor: { x: 1112, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
             adjust: { x: 0, y: 0 } as Coor2D,
         },
-        {
+        '9': {
             // 9
             clip: { coor: { x: 1132, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
             adjust: { x: 0, y: 0 } as Coor2D,
         },
-    ],
+    },
 
     HI_SPRITE: {
         clip: { coor: { x: 1152, y: 0 }, width: 42, height: 26, scale: 0.5 } as SpriteClip,
@@ -155,7 +155,7 @@ const sprite = {
     },
 
     GAMEOVER_SPRITE: {
-        clip: { coor: { x: 952, y: 28 }, width: 386, height: 24, scale: 0.5 } as SpriteClip,
+        clip: { coor: { x: 952, y: 28 }, width: 384, height: 24, scale: 0.75 } as SpriteClip,
         adjust: { x: 0, y: 0 } as Coor2D,
     },
 

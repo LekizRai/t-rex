@@ -11,7 +11,7 @@ class InputHandler {
         document.addEventListener(name, (e) => {
             e.preventDefault()
             this.scene.handleInput(e)
-        })
+        }, false)
     }
 }
 

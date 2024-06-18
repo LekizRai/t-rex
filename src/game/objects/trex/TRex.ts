@@ -1,29 +1,35 @@
-import { Coor2D, Coor3D, SpriteClip, TexInfo } from '../../../engine/types/general'
-import Drawer from '../../../engine/utils/Drawer'
+import { Coor2D, SpriteClip } from '../../../engine/types/general'
 import sprite from '../../../engine/utils/sprites'
 import config from '../../../engine/utils/configs'
 import GameObjectState from '../../../engine/base-classes/GameObjectState'
 import TRexState from './TRexState'
-import Figure from '../../../engine/base-classes/Figure'
+import Animation from '../../../engine/base-classes/Animation'
+import Collider from '../../../engine/components/Collider'
+import RigidBody from '../../../engine/components/RigidBody'
+import PhysicsManager from '../../../engine/controllers/PhysicsManager'
 
-class TRex extends Figure {
+const trexRunningSpriteList = [sprite.TREX_SPRITES[0].clip, sprite.TREX_SPRITES[1].clip]
+
+class TRex extends Animation {
     private state: GameObjectState
+    private physicsManager: PhysicsManager
 
-    constructor(canvasLocation: Coor2D) {
-        super(
-            sprite.TREX_SPRITES[0].clip,
-            canvasLocation,
-            config.TREX_VELOCITY_X,
-            config.TREX_VELOCITY_Y
+    constructor(physicsManager: PhysicsManager, canvasLocation: Coor2D) {
+        super(trexRunningSpriteList, canvasLocation, config.TREX_VELOCITY_X, config.TREX_VELOCITY_Y)
+
+        this.physicsManager = physicsManager
+
+        this.setColliderList(
+            [new Collider({x: 0, y: 0}, this.getDisplayWidth(), this.getDisplayHeight())]
         )
-        this.locationAdjust = sprite.TREX_SPRITES[0].adjust
-        this.changingTimeLeft = config.TREX_CHANGING_INTERVAL
+        this.setRigidBody(new RigidBody(config.TREX_VELOCITY_X, config.TREX_VELOCITY_Y, 0))
+        this.rigidBody.setAccelerationEffect(false)
+        this.physicsManager.addRigidBodyList(this.rigidBody)
 
         this.state = new TRexState.TRexRunningState()
     }
 
     handleInput(e: Event): void {
-        console.log(12)
         this.state.handleInput(this, e)
     }
 
@@ -35,48 +41,40 @@ class TRex extends Figure {
         this.canvasLocation = location
     }
 
-    getChangingTimeLeft(): number {
-        return this.changingTimeLeft
-    }
-
-    setChangingTimeLeft(timeInterval: number): void {
-        this.changingTimeLeft = timeInterval
-    }
-
     setState(state: GameObjectState): void {
         this.state = state
     }
 
     getVelocityX(): number {
-        return this.velocityX
+        return this.rigidBody.getVelocityX()
     }
 
     setVelocityX(velocityX: number): void {
-        this.velocityX = velocityX
+        this.rigidBody.setVelocityX(velocityX)
     }
 
     getVelocityY(): number {
-        return this.velocityY
+        return this.rigidBody.getVelocityY()
     }
 
     setVelocityY(velocityY: number): void {
-        this.velocityY = velocityY
+        this.rigidBody.setVelocityY(velocityY)
+    }
+
+    getShiftX(): number {
+        return this.rigidBody.getShiftX()
+    }
+
+    getShiftY(): number {
+        return this.rigidBody.getShiftY()
     }
 
     getSprite(): SpriteClip {
-        return this.sprite
+        return this.getCurrentSprite()
     }
 
-    setSprite(sprite: SpriteClip): void {
-        this.sprite = sprite
-    }
-
-    getLocationAdjust(): Coor2D {
-        return this.locationAdjust
-    }
-
-    setLocationAdjust(locationAdjust: Coor2D): void {
-        this.locationAdjust = locationAdjust
+    setAccelerationEffect(status: boolean): void {
+        this.rigidBody.setAccelerationEffect(status)
     }
 }
 

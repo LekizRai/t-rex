@@ -5,25 +5,35 @@ import config from '../../../engine/utils/configs'
 import Figure from '../../../engine/base-classes/Figure'
 import TRex from '../trex/TRex'
 import SceneManager from '../../../engine/controllers/SceneManager'
+import Collider from '../../../engine/components/Collider'
+import RigidBody from '../../../engine/components/RigidBody'
 
 class Cactus extends Figure {
     private scene: SceneManager
     constructor(scene: SceneManager, canvasLocation: Coor2D) {
         let index: number = utils.randomInt(0, 6)
+        let adjust = sprite.CACTUS_SPRITES[index].adjust
+        canvasLocation = Object.assign({}, canvasLocation)
+        canvasLocation.x += adjust.x
+        canvasLocation.y += adjust.y
         super(
             sprite.CACTUS_SPRITES[index].clip,
             canvasLocation,
             config.CACTUS_VELOCITY_X,
             config.CACTUS_VELOCITY_Y
         )
+        this.setColliderList(
+            [new Collider({x: 0, y: 0}, this.getDisplayWidth(), this.getDisplayHeight())]
+        )
+        this.setRigidBody(new RigidBody(config.CACTUS_VELOCITY_X, config.CACTUS_VELOCITY_Y, 0))
+        
         this.scene = scene
-        this.locationAdjust = sprite.CACTUS_SPRITES[index].adjust
     }
 
     public handleInput(e: Event): void {}
 
     public update(timeInterval: number): void {
-        let shift = Math.floor((timeInterval / 1000) * this.velocityX)
+        let shift = Math.floor((timeInterval / 1000) * config.CACTUS_VELOCITY_X)
         this.canvasLocation.x -= shift
         if (this.canvasLocation.x + this.getDisplayWidth() < 0) {
             this.scene.removeObject(this)

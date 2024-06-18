@@ -232,14 +232,4 @@ function randomInt(low: number, high: number) {
     return Math.floor(Math.random() * gap + low)
 }
 
-function calcShift(velocity: number, acceleration: number, time: number): number {
-    time = time / 1000
-    return Math.floor(0.5 * acceleration * time * time + velocity * time)
-}
-
-function calcVelocity(velocity: number, acceleration: number, time: number): number {
-    time = time / 1000
-    return Math.floor(velocity + acceleration * time)
-}
-
-export default { m3, m4, createShader, createProgram, randomInt, calcShift, calcVelocity }
+export default { m3, m4, createShader, createProgram, randomInt }
