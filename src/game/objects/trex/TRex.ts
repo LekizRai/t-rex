@@ -1,4 +1,4 @@
-import { Coor2D, SpriteClip } from '../../../engine/types/general'
+import { SpriteClip } from '../../../engine/types/general'
 import sprite from '../../../engine/utils/sprites'
 import config from '../../../engine/utils/configs'
 import GameObjectState from '../../../engine/base-classes/GameObjectState'
@@ -7,6 +7,7 @@ import Animation from '../../../engine/base-classes/Animation'
 import Collider from '../../../engine/components/Collider'
 import RigidBody from '../../../engine/components/RigidBody'
 import PhysicsManager from '../../../engine/controllers/PhysicsManager'
+import Vector2D from '../../../engine/utils/Vector2D'
 
 const trexRunningSpriteList = [sprite.TREX_SPRITES[0].clip, sprite.TREX_SPRITES[1].clip]
 
@@ -14,13 +15,13 @@ class TRex extends Animation {
     private state: GameObjectState
     private physicsManager: PhysicsManager
 
-    constructor(physicsManager: PhysicsManager, canvasLocation: Coor2D) {
-        super(trexRunningSpriteList, canvasLocation, config.TREX_VELOCITY_X, config.TREX_VELOCITY_Y)
+    constructor(physicsManager: PhysicsManager, location: Vector2D) {
+        super(location, config.TREX_CHANGING_INTERVAL, trexRunningSpriteList)
 
         this.physicsManager = physicsManager
 
         this.setColliderList(
-            [new Collider({x: 0, y: 0}, this.getDisplayWidth(), this.getDisplayHeight())]
+            [new Collider(new Vector2D(0, 0), this.getWidth(), this.getHeight())]
         )
         this.setRigidBody(new RigidBody(config.TREX_VELOCITY_X, config.TREX_VELOCITY_Y, 0))
         this.rigidBody.setAccelerationEffect(false)
@@ -37,8 +38,8 @@ class TRex extends Animation {
         this.state.update(this, timeInterval)
     }
 
-    setDisplayLocation(location: Coor2D): void {
-        this.canvasLocation = location
+    setDisplayLocation(location: Vector2D): void {
+        this.location = location
     }
 
     setState(state: GameObjectState): void {

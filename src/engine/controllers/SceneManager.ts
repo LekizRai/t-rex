@@ -1,13 +1,6 @@
 import Drawer from '../utils/Drawer'
 import GameObject from '../base-classes/GameObject'
 
-let gameState: string[] = ['play', 'pause', 'gameover']
-
-// Control:
-// 1. Emerging and destroying objects
-// 2. Update and render objects
-// 3. In update having collision checking ???
-
 abstract class SceneManager {
     private canvas: HTMLCanvasElement
     private drawer: Drawer

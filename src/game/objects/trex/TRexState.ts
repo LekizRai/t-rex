@@ -1,10 +1,10 @@
 import config from '../../../engine/utils/configs'
 import key from '../../../engine/utils/keys'
 import sprite from '../../../engine/utils/sprites'
-import utils from '../../../engine/utils/utils'
 import GameObject from '../../../engine/base-classes/GameObject'
 import GameObjectState from '../../../engine/base-classes/GameObjectState'
 import TRex from './TRex'
+import Vector2D from '../../../engine/utils/Vector2D'
 
 const trexRunningSpriteList = [sprite.TREX_SPRITES[0].clip, sprite.TREX_SPRITES[1].clip]
 const trexDuckingSpriteList = [sprite.TREX_SPRITES[2].clip, sprite.TREX_SPRITES[3].clip]
@@ -19,9 +19,7 @@ class TRexRunningState extends GameObjectState {
         if (e instanceof KeyboardEvent && e.type == 'keydown') {
             if (e.keyCode == key.ARROW_DOWN) {
                 obj.setSpriteList(trexDuckingSpriteList)
-                let location = Object.assign({}, config.TREX_CANVAS_LOCATION)
-                location.x += sprite.TREX_SPRITES[2].adjust.x
-                location.y += sprite.TREX_SPRITES[2].adjust.y
+                let location: Vector2D = config.TREX_CANVAS_LOCATION.add(sprite.TREX_SPRITES[2].adjust)
                 obj.setDisplayLocation(location)
                 obj.setState(new TRexDuckingState())
             } else if (e.keyCode == key.SPACE || e.keyCode == key.ARROW_UP) {
@@ -50,9 +48,7 @@ class TRexDuckingState extends GameObjectState {
             if (e.keyCode == key.ARROW_DOWN) {
                 if (e.type == 'keyup') {
                     obj.setSpriteList(trexRunningSpriteList)
-                    let location = Object.assign({}, config.TREX_CANVAS_LOCATION)
-                    location.x += sprite.TREX_SPRITES[0].adjust.x
-                    location.y += sprite.TREX_SPRITES[0].adjust.y
+                    let location: Vector2D = config.TREX_CANVAS_LOCATION.add(sprite.TREX_SPRITES[0].adjust)
                     obj.setDisplayLocation(location)
                     obj.setState(new TRexRunningState())
                 }
@@ -76,16 +72,16 @@ class TRexJumpingState extends GameObjectState {
 
         let shiftY = obj.getShiftY()
 
-        let location = Object.assign({}, obj.getDisplayLocation())
-        if (location.y - shiftY > 370 || location.y < 0) {
-            location.y = 370
+        let location = obj.getLocation().copy()
+        if (location.getY() - shiftY > 370 || location.getY() < 0) {
+            location.setY(370)
             obj.setSpriteList(trexRunningSpriteList)
             obj.setDisplayLocation(location)
             obj.setVelocityY(0)
             obj.setAccelerationEffect(false)
             obj.setState(new TRexRunningState())
         } else {
-            location.y -= shiftY
+            location.setY(location.getY() - shiftY)
             obj.setDisplayLocation(location)
         }
     }

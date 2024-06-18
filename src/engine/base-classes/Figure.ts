@@ -1,22 +1,25 @@
-import { SpriteClip, Coor2D, TexInfo } from '../types/general'
+import { SpriteClip, TexInfo } from '../types/general'
 import Drawer from '../utils/Drawer'
+import Vector2D from '../utils/Vector2D'
 import GameObject from './GameObject'
 
-abstract class Figure extends GameObject {
+abstract class Image extends GameObject {
     protected sprite: SpriteClip
     protected tex: TexInfo
 
-    constructor(sprite: SpriteClip, canvasLocation: Coor2D, velocityX: number, velocityY: number) {
-        super()
-        this.sprite = Object.assign({}, sprite)
-        this.canvasLocation = Object.assign({}, canvasLocation)
+    constructor(location: Vector2D, sprite: SpriteClip) {
+        super(location)
+        this.sprite = sprite
     }
 
     public draw(drawer: Drawer): void {
         if (!this.tex) {
-            this.tex = drawer.loadImageAndCreateTextureInfo(
+            const tex = drawer.loadImageAndCreateTextureInfo(
                 './assets/images/trex-sprites.png'
-            ) as TexInfo
+            )
+            if (tex) {
+                this.tex = tex
+            }
         }
         drawer.draw(
             this.tex,
@@ -24,20 +27,24 @@ abstract class Figure extends GameObject {
             this.sprite.coor.y,
             this.sprite.width,
             this.sprite.height,
-            this.canvasLocation.x,
-            this.canvasLocation.y,
+            this.location.getX(),
+            this.location.getY(),
             this.sprite.width * this.sprite.scale,
             this.sprite.height * this.sprite.scale
         )
     }
 
-    public getDisplayWidth(): number {
+    public setSprite(sprite: SpriteClip): void {
+        this.sprite = sprite
+    }
+
+    public getWidth(): number {
         return this.sprite.width * this.sprite.scale
     }
 
-    public getDisplayHeight(): number {
+    public getHeight(): number {
         return this.sprite.height * this.sprite.scale
     }
 }
 
-export default Figure
+export default Image

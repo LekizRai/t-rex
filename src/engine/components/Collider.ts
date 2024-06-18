@@ -1,18 +1,17 @@
-import GameObject from '../base-classes/GameObject'
-import { Coor2D } from '../types/general'
+import Vector2D from '../utils/Vector2D'
 
 class Collider {
-    private origin: Coor2D
+    private origin: Vector2D
     private width: number
     private height: number
 
-    constructor(origin: Coor2D, width: number, height: number) {
-        this.origin = Object.assign({}, origin)
+    constructor(origin: Vector2D, width: number, height: number) {
+        this.origin = origin
         this.width = width
         this.height = height
     }
 
-    public getOrigin(): Coor2D {
+    public getOrigin(): Vector2D {
         return this.origin
     }
 
@@ -24,7 +23,7 @@ class Collider {
         return this.height
     }
 
-    public setOrigin(origin: Coor2D): void {
+    public setOrigin(origin: Vector2D): void {
         this.origin = origin
     }
 

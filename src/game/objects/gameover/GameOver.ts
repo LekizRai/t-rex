@@ -1,11 +1,11 @@
 import Text from '../../../engine/base-classes/Text'
+import Vector2D from '../../../engine/utils/Vector2D'
 import config from '../../../engine/utils/configs'
 import sprite from '../../../engine/utils/sprites'
 
 class GameOver extends Text {
     constructor() {
-        super(0, 0)
-        this.canvasLocation = { x: 550, y: 250 }
+        super(new Vector2D(550, 250))
         this.setContent('GAMEOVER')
     }
 

@@ -1,23 +1,20 @@
-import { Coor2D, SpriteClip, TexInfo } from '../../../engine/types/general'
-import sprite from '../../../engine/utils/sprites'
 import Drawer from '../../../engine/utils/Drawer'
 import config from '../../../engine/utils/configs'
-import Figure from '../../../engine/base-classes/Figure'
 import CurrentScore from './CurrentScore'
 import HighScore from './HighScore'
 import HI from './HI'
 import GameObject from '../../../engine/base-classes/GameObject'
-// import Text from '../../../engine/base-classes/Text'
+import Vector2D from '../../../engine/utils/Vector2D'
 
 class ScoreBoard extends GameObject {
     private highPoint: HighScore
     private currentPoint: CurrentScore
     private HI: HI
 
-    constructor(canvasLocation: Coor2D) {
-        super()
+    constructor(location: Vector2D) {
+        super(location)
         this.highPoint = new HighScore()
-        this.currentPoint = new CurrentScore()
+        this.currentPoint = new CurrentScore(config.SCOREBOARD_SCORE_CHANGING_INTERVAL)
         this.HI = new HI()
     }
 

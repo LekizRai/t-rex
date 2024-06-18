@@ -1,12 +1,11 @@
 import Text from '../../../engine/base-classes/Text'
-import config from '../../../engine/utils/configs'
+import Vector2D from '../../../engine/utils/Vector2D'
 import sprite from '../../../engine/utils/sprites'
 
 class HighScore extends Text {
     constructor() {
-        super(0, 0)
-        this.canvasLocation = { x: 985, y: 260 }
-        this.setContent("00000")
+        super(new Vector2D(985, 260))
+        this.setContent('00000')
     }
 
     public handleInput(e: Event): void {}
@@ -15,12 +14,10 @@ class HighScore extends Text {
 
     public reload(): void {
         const newContent = window.localStorage.getItem('high_score')
-        console.log(newContent)
         if (newContent) {
             this.setContent(newContent)
-        }
-        else {
-            this.setContent("00000")
+        } else {
+            this.setContent('00000')
         }
     }
 

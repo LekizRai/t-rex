@@ -1,15 +1,15 @@
 import Text from '../../../engine/base-classes/Text'
+import Vector2D from '../../../engine/utils/Vector2D'
 import config from '../../../engine/utils/configs'
 import sprite from '../../../engine/utils/sprites'
 
 class CurrentScore extends Text {
     private changingInterval: number
 
-    constructor() {
-        super(0, 0)
-        this.canvasLocation = {x: 1080, y: 260}
+    constructor(changingInterval: number) {
+        super(new Vector2D(1080, 260))
         this.setContent('00000')
-        this.changingInterval = config.SCOREBOARD_SCORE_CHANGING_INTERVAL
+        this.changingInterval = changingInterval
     }
 
     public handleInput(e: Event): void {}
@@ -18,7 +18,6 @@ class CurrentScore extends Text {
         if (this.changingInterval - timeInterval < 0) {
             this.changingInterval = config.SCOREBOARD_SCORE_CHANGING_INTERVAL
             let score: number = Number(this.getContent())
-            // console.log(String(score))
             score += 1
             let newContent: string = ''
             let digit: number
@@ -28,14 +27,13 @@ class CurrentScore extends Text {
                 newContent = newContent + String(digit)
             }
             this.setContent(newContent)
-        }
-        else {
+        } else {
             this.changingInterval -= timeInterval
         }
     }
 
     public reload(): void {
-        this.setContent("00000")
+        this.setContent('00000')
     }
 
     protected contentToSpriteList(): void {

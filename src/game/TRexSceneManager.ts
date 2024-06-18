@@ -1,6 +1,6 @@
 import PhysicsManager from '../engine/controllers/PhysicsManager'
 import SceneManager from '../engine/controllers/SceneManager'
-import { Coor2D } from '../engine/types/general'
+import Vector2D from '../engine/utils/Vector2D'
 import config from '../engine/utils/configs'
 import Cactus from './objects/cactus/Cactus'
 import CactusManager from './objects/cactus/CactusManager'
@@ -50,11 +50,11 @@ class TRexSceneManager extends SceneManager {
             })
         } else if (this.sceneState == state.GAMEOVER) {
             if (e instanceof MouseEvent) {
-                let location: Coor2D = this.replayButton.getDisplayLocation()
-                if (e.x >= location.x && e.y >= location.y) {
+                let location: Vector2D = this.replayButton.getLocation()
+                if (e.x >= location.getX() && e.y >= location.getY()) {
                     if (
-                        e.x <= location.x + this.replayButton.getDisplayWidth() &&
-                        e.y <= location.y + this.replayButton.getDisplayHeight()
+                        e.x <= location.getX() + this.replayButton.getWidth() &&
+                        e.y <= location.getY() + this.replayButton.getHeight()
                     ) {
                         if (e.type == 'mousedown') {
                             if (this.mouseStatus == 'down') {
@@ -66,12 +66,10 @@ class TRexSceneManager extends SceneManager {
                                 this.reload()
                             }
                         }
-                    }
-                    else {
+                    } else {
                         this.mouseStatus = 'down'
                     }
-                }
-                else {
+                } else {
                     this.mouseStatus = 'down'
                 }
             }
@@ -124,12 +122,12 @@ class TRexSceneManager extends SceneManager {
         this.addObject(new Cactus(this, config.CACTUS_CANVAS_LOCATION))
         this.addObject(new Cloud(this, config.CLOUD_CANVAS_LOCATION))
 
-        let location = config.GROUND_CANVAS_LOCATION
+        let location = config.GROUND_CANVAS_LOCATION.copy()
         let ground: Ground
         for (let i = 0; i < 3; i++) {
             ground = new Ground(this, location)
             this.addObject(ground)
-            location = { x: location.x + ground.getDisplayWidth(), y: location.y }
+            location = new Vector2D(location.getX() + ground.getWidth(), location.getY())
         }
 
         this.scoreBoard.reload()
@@ -145,7 +143,7 @@ class TRexSceneManager extends SceneManager {
         this.cloudGeneratingInterval = config.CLOUD_GENERATING_INTERVAL
 
         this.gameOver = new GameOver()
-        this.replayButton = new ReplayButton({ x: 0, y: 0 })
+        this.replayButton = new ReplayButton(new Vector2D(680, 300))
         this.scoreBoard = new ScoreBoard(config.SCOREBOARD_CANVAS_LOCATION)
 
         this.addObject(new Cactus(this, config.CACTUS_CANVAS_LOCATION))
@@ -156,7 +154,7 @@ class TRexSceneManager extends SceneManager {
         for (let i = 0; i < 3; i++) {
             ground = new Ground(this, location)
             this.addObject(ground)
-            location = { x: location.x + ground.getDisplayWidth(), y: location.y }
+            location = new Vector2D(location.getX() + ground.getWidth(), location.getY())
         }
 
         this.addObject(this.scoreBoard)

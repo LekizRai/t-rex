@@ -1,4 +1,4 @@
-import { SpriteClip, TexInfo, Coor2D, Coor3D } from '../types/general'
+import { TexInfo } from '../types/general'
 import utils from './utils'
 
 class Drawer {
@@ -63,7 +63,11 @@ void main() {
             this.gl.FRAGMENT_SHADER,
             this.fragmentSource
         )
-        this.program = utils.createProgram(this.gl, vertexShader, fragmentShader)
+
+        if (vertexShader && fragmentShader) {
+            const program = utils.createProgram(this.gl, vertexShader, fragmentShader)
+            if (program) this.program = program
+        }
 
         // Look up where the vertex data needs to go
         this.positionLocation = this.gl.getAttribLocation(this.program, 'a_position')
@@ -88,57 +92,59 @@ void main() {
         this.texcoordBuffer = this.gl.createBuffer() as WebGLBuffer
     }
 
-    public loadImageAndCreateTextureInfo(url: string) {
+    public loadImageAndCreateTextureInfo(url: string): TexInfo | undefined {
         // Initialize texture
-        let tex = this.gl.createTexture()
-        this.gl.bindTexture(this.gl.TEXTURE_2D, tex)
+        const tex = this.gl.createTexture()
+        if (tex) {
+            this.gl.bindTexture(this.gl.TEXTURE_2D, tex)
 
-        this.gl.texImage2D(
-            this.gl.TEXTURE_2D,
-            0,
-            this.gl.RGBA,
-            1,
-            1,
-            0,
-            this.gl.RGBA,
-            this.gl.UNSIGNED_BYTE,
-            new Uint8Array([255, 255, 255, 255])
-        )
+            this.gl.texImage2D(
+                this.gl.TEXTURE_2D,
+                0,
+                this.gl.RGBA,
+                1,
+                1,
+                0,
+                this.gl.RGBA,
+                this.gl.UNSIGNED_BYTE,
+                new Uint8Array([255, 255, 255, 255])
+            )
 
-        // Do something for image loading
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE)
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE)
-        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR)
+            // Do something for image loading
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE)
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE)
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR)
 
-        let textureInfo = {
-            width: 1,
-            height: 1,
-            texture: tex,
-        }
-
-        // Create new Image object
-        let img = new Image()
-        img.addEventListener('load', (e) => {
-            textureInfo.width = img.width
-            textureInfo.height = img.height
-
-            if (this.gl) {
-                this.gl.bindTexture(this.gl.TEXTURE_2D, textureInfo.texture)
-                this.gl.texImage2D(
-                    this.gl.TEXTURE_2D,
-                    0,
-                    this.gl.RGBA,
-                    this.gl.RGBA,
-                    this.gl.UNSIGNED_BYTE,
-                    img
-                )
+            let textureInfo = {
+                width: 1,
+                height: 1,
+                texture: tex,
             }
-        })
-        img.src = url
-        return textureInfo
+
+            // Create new Image object
+            let img = new Image()
+            img.addEventListener('load', (e) => {
+                textureInfo.width = img.width
+                textureInfo.height = img.height
+
+                if (this.gl) {
+                    this.gl.bindTexture(this.gl.TEXTURE_2D, textureInfo.texture)
+                    this.gl.texImage2D(
+                        this.gl.TEXTURE_2D,
+                        0,
+                        this.gl.RGBA,
+                        this.gl.RGBA,
+                        this.gl.UNSIGNED_BYTE,
+                        img
+                    )
+                }
+            })
+            img.src = url
+            return textureInfo
+        }
     }
 
-    draw(
+    public draw(
         tex: TexInfo,
         srcX: number,
         srcY: number,
@@ -148,7 +154,7 @@ void main() {
         dstY: number,
         dstWidth: number,
         dstHeight: number
-    ) {
+    ): void {
         // resizeCanvasToDisplaySize(this.gl.canvas)
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height)
         // this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height)
@@ -194,12 +200,11 @@ void main() {
         }
     }
 
-    clear() {
-        // this.gl.clearColor(0.0, 1.0, 1.0, 1.0)
+    public clear(): void {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT)
     }
 
-    drawImage(
+    private drawImage(
         tex: WebGLTexture,
         texWidth: number,
         texHeight: number,
@@ -211,7 +216,7 @@ void main() {
         dstY: number,
         dstWidth: number,
         dstHeight: number
-    ) {
+    ): void {
         if (this.gl) {
             this.gl.bindTexture(this.gl.TEXTURE_2D, tex)
 
@@ -227,7 +232,14 @@ void main() {
             this.gl.vertexAttribPointer(this.texcoordLocation, 2, this.gl.FLOAT, false, 0, 0)
 
             // this matrix will convert from pixels to clip space
-            let matrix = utils.m4.orthographic(0, this.gl.canvas.width, this.gl.canvas.height, 0, -1, 1)
+            let matrix = utils.m4.orthographic(
+                0,
+                this.gl.canvas.width,
+                this.gl.canvas.height,
+                0,
+                -1,
+                1
+            )
 
             // this matrix will translate our quad to dstX, dstY
             matrix = utils.m4.translate(matrix, dstX, dstY, 0)
@@ -252,7 +264,7 @@ void main() {
         }
     }
 
-    drawPolygons(positions: number[], color: number) {
+    public drawPolygons(positions: number[], color: number): void {
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer)
         this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(positions), this.gl.STATIC_DRAW)
         this.gl.viewport(0, 0, window.innerWidth, window.innerHeight)

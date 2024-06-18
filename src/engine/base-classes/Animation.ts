@@ -1,5 +1,6 @@
-import { Coor2D, SpriteClip, TexInfo } from '../types/general'
+import { SpriteClip, TexInfo } from '../types/general'
 import Drawer from '../utils/Drawer'
+import Vector2D from '../utils/Vector2D'
 import config from '../utils/configs'
 import GameObject from './GameObject'
 
@@ -10,41 +11,47 @@ abstract class Animation extends GameObject {
     private remainingInterval: number
     protected tex: TexInfo
 
-    constructor(spriteList: SpriteClip[], canvasLocation: Coor2D, velocityX: number, velocityY: number) {
-        super()
+    constructor(location: Vector2D, changingInterval: number, spriteList: SpriteClip[]) {
+        super(location)
         this.spriteList = spriteList
-        this.canvasLocation = Object.assign({}, canvasLocation)
-        this.changingInterval = config.TREX_CHANGING_INTERVAL
+        this.changingInterval = changingInterval
         this.remainingInterval = this.changingInterval
         this.index = 0
     }
 
     public animate(timeInterval: number) {
-        if (this.remainingInterval < 0) {
-            this.remainingInterval = this.changingInterval
-            this.index = (this.index + 1) % this.spriteList.length
-        } else {
-            this.remainingInterval -= timeInterval
+        if (this.spriteList.length > 0) {
+            if (this.remainingInterval < 0) {
+                this.remainingInterval = this.changingInterval
+                this.index = (this.index + 1) % this.spriteList.length
+            } else {
+                this.remainingInterval -= timeInterval
+            }
         }
     }
 
     public draw(drawer: Drawer): void {
         if (!this.tex) {
-            this.tex = drawer.loadImageAndCreateTextureInfo(
+            const tex = drawer.loadImageAndCreateTextureInfo(
                 './assets/images/trex-sprites.png'
-            ) as TexInfo
+            )
+            if (tex) {
+                this.tex = tex
+            }
         }
-        drawer.draw(
-            this.tex,
-            this.spriteList[this.index].coor.x,
-            this.spriteList[this.index].coor.y,
-            this.spriteList[this.index].width,
-            this.spriteList[this.index].height,
-            this.canvasLocation.x,
-            this.canvasLocation.y,
-            this.spriteList[this.index].width * this.spriteList[this.index].scale,
-            this.spriteList[this.index].height * this.spriteList[this.index].scale
-        )
+        if (this.spriteList.length > 0) {
+            drawer.draw(
+                this.tex,
+                this.spriteList[this.index].coor.x,
+                this.spriteList[this.index].coor.y,
+                this.spriteList[this.index].width,
+                this.spriteList[this.index].height,
+                this.location.getX(),
+                this.location.getY(),
+                this.spriteList[this.index].width * this.spriteList[this.index].scale,
+                this.spriteList[this.index].height * this.spriteList[this.index].scale
+            )
+        }
     }
 
     public setSpriteList(spriteList: SpriteClip[]): void {
@@ -56,11 +63,11 @@ abstract class Animation extends GameObject {
         return this.spriteList[this.index]
     }
 
-    public getDisplayWidth(): number {
+    public getWidth(): number {
         return this.spriteList[this.index].width * this.spriteList[this.index].scale
     }
 
-    public getDisplayHeight(): number {
+    public getHeight(): number {
         return this.spriteList[this.index].height * this.spriteList[this.index].scale
     }
 }

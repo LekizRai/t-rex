@@ -1,16 +1,16 @@
-import { SpriteClip, Coor2D, TexInfo } from '../types/general'
+import { SpriteClip, TexInfo } from '../types/general'
 import Drawer from '../utils/Drawer'
-import sprite from '../utils/sprites'
+import Vector2D from '../utils/Vector2D'
 import GameObject from './GameObject'
 
 abstract class Text extends GameObject {
     protected spriteList: SpriteClip[]
     protected content: string
-    protected tex: TexInfo
     protected letterGap: number
+    protected tex: TexInfo
 
-    constructor(velocityX: number, velocityY: number) {
-        super()
+    constructor(location: Vector2D) {
+        super(location)
         this.spriteList = []
         this.content = ''
         this.letterGap = 1
@@ -23,7 +23,7 @@ abstract class Text extends GameObject {
             ) as TexInfo
         }
 
-        let position = 0
+        let shift = 0
         this.spriteList.forEach((spr) => {
             drawer.draw(
                 this.tex,
@@ -31,12 +31,12 @@ abstract class Text extends GameObject {
                 spr.coor.y,
                 spr.width,
                 spr.height,
-                this.canvasLocation.x + position,
-                this.canvasLocation.y,
+                this.location.getX() + shift,
+                this.location.getY(),
                 spr.width * spr.scale,
                 spr.height * spr.scale
             )
-            position += spr.width * spr.scale + this.letterGap
+            shift += spr.width * spr.scale + this.letterGap
         })
     }
 

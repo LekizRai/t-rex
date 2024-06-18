@@ -1,20 +1,21 @@
 import Collider from '../components/Collider'
 import RigidBody from '../components/RigidBody'
-import { Coor2D } from '../types/general'
 import Drawer from '../utils/Drawer'
+import Vector2D from '../utils/Vector2D'
 
 abstract class GameObject {
-    protected canvasLocation: Coor2D
-    // protected locationAdjust: Coor2D
+    protected location: Vector2D
     protected colliderList: Collider[]
     protected rigidBody: RigidBody
 
-    constructor() {
+    constructor(location: Vector2D) {
+        this.location = location
         this.colliderList = []
+        this.rigidBody = new RigidBody(0, 0, 0)
     }
 
-    public getDisplayLocation(): Coor2D {
-        return this.canvasLocation
+    public getLocation(): Vector2D {
+        return this.location
     }
 
     public setColliderList(colliderList: Collider[]): void {
@@ -28,28 +29,23 @@ abstract class GameObject {
     public isCollied(obj: GameObject): boolean {
         for (let i: number = 0; i < this.colliderList.length; i++) {
             for (let j: number = 0; j < obj.colliderList.length; j++) {
-                let l1, r1, l2, r2: Coor2D
-                l1 = Object.assign({}, this.colliderList[i].getOrigin())
-                l1.x += this.canvasLocation.x
-                l1.y += this.canvasLocation.y
-                r1 = {
-                    x: l1.x + this.colliderList[i].getWidth(),
-                    y: l1.y + this.colliderList[i].getHeight(),
-                }
-                l2 = Object.assign({}, obj.colliderList[j].getOrigin())
-                l2.x += obj.canvasLocation.x
-                l2.y += obj.canvasLocation.y
-                r2 = {
-                    x: l2.x + obj.colliderList[j].getWidth(),
-                    y: l2.y + obj.colliderList[j].getHeight(),
-                }
-                if (l1.x === r1.x || l1.y === r1.y || l2.x === r2.x || l2.y === r2.y) {
+                let l1: Vector2D
+                let r1: Vector2D
+                let l2: Vector2D
+                let r2: Vector2D
+                l1 = this.colliderList[i].getOrigin()
+                l1 = l1.add(this.location)
+                r1 = new Vector2D(l1.getX() + this.colliderList[i].getWidth(), l1.getY() + this.colliderList[i].getHeight())
+                l2 = obj.colliderList[j].getOrigin()
+                l2 = l2.add(obj.location)
+                r2 = new Vector2D(l2.getX() + obj.colliderList[j].getWidth(), l2.getY() + obj.colliderList[j].getHeight())
+                if (l1.getX() === r1.getX() || l1.getY() === r1.getY() || l2.getX() === r2.getX() || l2.getY() === r2.getY()) {
                     continue
                 }
-                if (r1.x - l2.x < 0 || r2.x - l1.x < 0) {
+                if (r1.getX() - l2.getX() < 0 || r2.getX() - l1.getX() < 0) {
                     continue
                 }
-                if (r1.y - l2.y < 0 || r2.y - l1.y < 0) {
+                if (r1.getY() - l2.getY() < 0 || r2.getY() - l1.getY() < 0) {
                     continue
                 }
                 return true
