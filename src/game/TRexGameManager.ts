@@ -12,16 +12,14 @@ class TRexGameManager extends GameManager {
     }
 
     public setup(): void {
-        this.physicsManager = new PhysicsManager()
         this.physicsManager.setAccelerationX(0)
         this.physicsManager.setAccelerationY(config.TREX_JUMPING_ACCESSLATION)
 
-        this.sceneManager = new SceneManager()
         let trexScene: Scene = new TRexScene(this.physicsManager)
         trexScene.setup()
         this.sceneManager.attachScene(trexScene)
 
-        this.inputHandler = new InputHandler(this.sceneManager)
+        this.inputHandler.register(this.sceneManager)
         this.inputHandler.addEventListener('keydown')
         this.inputHandler.addEventListener('keyup')
         this.inputHandler.addEventListener('mousedown')

@@ -1,17 +1,29 @@
 import Collider from '../components/Collider'
 import RigidBody from '../components/RigidBody'
+import InputHandler from '../controllers/InputHandler'
+import PhysicsManager from '../controllers/PhysicsManager'
+import SceneManager from '../controllers/SceneManager'
 import Drawer from '../utils/Drawer'
 import Vector2D from '../utils/Vector2D'
+import Scene from './Scene'
 
 abstract class GameObject {
     protected location: Vector2D
     protected colliderList: Collider[]
     protected rigidBody: RigidBody
 
+    protected inputHandler: InputHandler
+    protected sceneManager: SceneManager
+    protected physicsManager: PhysicsManager
+
     constructor(location: Vector2D) {
         this.location = location.copy()
         this.colliderList = []
         this.rigidBody = new RigidBody(0, 0, 0)
+
+        this.inputHandler = InputHandler.getInstance()
+        this.sceneManager = SceneManager.getInstance()
+        this.physicsManager = PhysicsManager.getInstance()
     }
 
     public getLocation(): Vector2D {

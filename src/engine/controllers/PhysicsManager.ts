@@ -1,12 +1,21 @@
-import RigidBody from "../components/RigidBody"
+import RigidBody from '../components/RigidBody'
 
 class PhysicsManager {
     private rigidBodyList: RigidBody[]
     private accelerationX: number
     private accelerationY: number
 
-    constructor() {
+    private static instance: PhysicsManager
+
+    private constructor() {
         this.rigidBodyList = []
+    }
+
+    public static getInstance(): PhysicsManager {
+        if (!this.instance) {
+            this.instance = new PhysicsManager()
+        }
+        return this.instance
     }
 
     public setAccelerationX(accelerationX: number): void {
@@ -17,7 +26,7 @@ class PhysicsManager {
         this.accelerationY = accelerationY
     }
 
-    public addRigidBodyList(rig: RigidBody): void {
+    public attachRigidBody(rig: RigidBody): void {
         this.rigidBodyList.push(rig)
     }
 
@@ -25,12 +34,15 @@ class PhysicsManager {
         let time = timeInterval / 1000
         this.rigidBodyList.forEach((rig) => {
             if (rig.getAccelerationEffect()) {
-                rig.setShiftX(Math.floor(0.5 * this.accelerationX * time * time + rig.getVelocityX() * time))
-                rig.setShiftY(Math.floor(0.5 * this.accelerationY * time * time + rig.getVelocityY() * time))
+                rig.setShiftX(
+                    Math.floor(0.5 * this.accelerationX * time * time + rig.getVelocityX() * time)
+                )
+                rig.setShiftY(
+                    Math.floor(0.5 * this.accelerationY * time * time + rig.getVelocityY() * time)
+                )
                 rig.setVelocityX(Math.floor(rig.getVelocityX() + this.accelerationX * time))
                 rig.setVelocityY(Math.floor(rig.getVelocityY() + this.accelerationY * time))
-            }
-            else {
+            } else {
                 rig.setShiftX(Math.floor(rig.getVelocityX() * time))
                 rig.setShiftY(Math.floor(rig.getVelocityY() * time))
             }

@@ -6,11 +6,8 @@ import Vector2D from '../../../engine/utils/Vector2D'
 import Scene from '../../../engine/base-classes/Scene'
 
 class Ground extends Image {
-    private scene: Scene
-
-    constructor(scene: Scene, location: Vector2D) {
+    constructor(location: Vector2D) {
         super(location, sprite.GROUND_SPRITE.clip)
-        this.scene = scene
     }
 
     public handleInput(e: Event): void {}
@@ -23,8 +20,8 @@ class Ground extends Image {
                 this.location.getX() + this.getWidth() * 3,
                 this.location.getY()
             )
-            this.scene.addObject(new Ground(this.scene, newLocation))
-            this.scene.removeObject(this)
+            this.sceneManager.addObjectToScene(new Ground(newLocation))
+            this.sceneManager.removeObjectFromScene(this)
         }
     }
 }

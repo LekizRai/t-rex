@@ -13,21 +13,17 @@ const trexRunningSpriteList = [sprite.TREX_SPRITES[0].clip, sprite.TREX_SPRITES[
 
 class TRex extends Animation {
     private state: GameObjectState
-    private physicsManager: PhysicsManager
 
-    constructor(physicsManager: PhysicsManager, location: Vector2D) {
+    constructor(location: Vector2D) {
         super(location, config.TREX_CHANGING_INTERVAL, trexRunningSpriteList)
 
-        this.physicsManager = physicsManager
+        this.state = new TRexState.TRexRunningState()
 
-        this.setColliderList(
-            [new Collider(new Vector2D(0, 0), this.getWidth(), this.getHeight())]
-        )
+        this.setColliderList([new Collider(new Vector2D(0, 0), this.getWidth(), this.getHeight())])
         this.setRigidBody(new RigidBody(config.TREX_VELOCITY_X, config.TREX_VELOCITY_Y, 0))
         this.rigidBody.setAccelerationEffect(false)
-        this.physicsManager.addRigidBodyList(this.rigidBody)
 
-        this.state = new TRexState.TRexRunningState()
+        this.physicsManager.attachRigidBody(this.rigidBody)
     }
 
     handleInput(e: Event): void {

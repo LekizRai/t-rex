@@ -4,8 +4,20 @@ import SceneManager from './SceneManager'
 class InputHandler {
     private scene: SceneManager
 
-    constructor(scene: SceneManager) {
+    private static instance: InputHandler
+
+    private constructor() {}
+
+    public register(scene: SceneManager): void {
         this.scene = scene
+
+    }
+
+    public static getInstance(): InputHandler {
+        if (!this.instance) {
+            this.instance = new InputHandler()
+        }
+        return this.instance
     }
 
     public addEventListener(name: string) {

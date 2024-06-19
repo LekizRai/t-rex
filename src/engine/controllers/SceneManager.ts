@@ -5,13 +5,12 @@ import Scene from '../base-classes/Scene'
 class SceneManager {
     private canvas: HTMLCanvasElement
     private drawer: Drawer
-
-    private scene: Scene
-
+    private currentScene: Scene
     private toAddObjectList: GameObject[]
     private toRemoveObjectList: GameObject[]
+    private static instance: SceneManager
 
-    constructor() {
+    private constructor() {
         this.canvas = <HTMLCanvasElement>document.createElement('canvas')
         this.canvas.width = window.innerWidth
         this.canvas.height = window.innerHeight
@@ -20,28 +19,35 @@ class SceneManager {
         this.toRemoveObjectList = []
     }
 
+    public static getInstance(): SceneManager {
+        if (!this.instance) {
+            this.instance = new SceneManager()
+        }
+        return this.instance
+    }
+
     public handleInput(e: Event): void {
-        this.scene.handleInput(e)
+        this.currentScene.handleInput(e)
     }
 
     public update(timeInterval: number): void {
-        this.scene.update(timeInterval)
+        this.currentScene.update(timeInterval)
         this.synchronize()
     }
 
     public render(): void {
-        this.scene.render(this.drawer)
+        this.currentScene.render(this.drawer)
         document.body.appendChild(this.canvas)
     }
 
     private synchronize(): void {
         this.toAddObjectList.forEach((obj) => {
-            this.scene.addObject(obj)
+            this.currentScene.addObject(obj)
         })
         this.toAddObjectList.length = 0
 
         this.toRemoveObjectList.forEach((obj) => {
-            this.scene.removeObject(obj)
+            this.currentScene.removeObject(obj)
         })
         this.toRemoveObjectList.length = 0
     }
@@ -55,10 +61,8 @@ class SceneManager {
     }
 
     public attachScene(scene: Scene): void {
-        this.scene = scene
+        this.currentScene = scene
     }
-
-    public setup(): void {}
 }
 
 export default SceneManager

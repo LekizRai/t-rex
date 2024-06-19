@@ -126,14 +126,14 @@ class TRexScene extends Scene {
         let location = config.GROUND_CANVAS_LOCATION.copy()
         let ground: Ground
         for (let i = 0; i < 3; i++) {
-            ground = new Ground(this, location)
+            ground = new Ground(location)
             this.addObject(ground)
             location = new Vector2D(location.getX() + ground.getWidth(), location.getY())
         }
 
         this.scoreBoard.reload()
         this.addObject(this.scoreBoard)
-        this.addObject(new TRex(this.physicsManager, config.TREX_CANVAS_LOCATION))
+        this.addObject(new TRex(config.TREX_CANVAS_LOCATION))
     }
 
     public setup(): void {
@@ -153,13 +153,13 @@ class TRexScene extends Scene {
         let location = config.GROUND_CANVAS_LOCATION
         let ground: Ground
         for (let i = 0; i < 3; i++) {
-            ground = new Ground(this, location)
+            ground = new Ground(location)
             this.addObject(ground)
             location = new Vector2D(location.getX() + ground.getWidth(), location.getY())
         }
 
         this.addObject(this.scoreBoard)
-        this.addObject(new TRex(this.physicsManager, config.TREX_CANVAS_LOCATION))
+        this.addObject(new TRex(config.TREX_CANVAS_LOCATION))
     }
 }
 
