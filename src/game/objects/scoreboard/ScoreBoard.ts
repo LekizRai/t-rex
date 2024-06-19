@@ -5,6 +5,7 @@ import HighScore from './HighScore'
 import HI from './HI'
 import GameObject from '../../../engine/base-classes/GameObject'
 import Vector2D from '../../../engine/utils/Vector2D'
+import Message from '../../../engine/controllers/Message'
 
 class ScoreBoard extends GameObject {
     private highPoint: HighScore
@@ -18,7 +19,7 @@ class ScoreBoard extends GameObject {
         this.HI = new HI()
     }
 
-    public handleInput(e: Event): void {}
+    public handleInput(message: Message): void {}
 
     public update(timeInterval: number): void {
         this.highPoint.update(timeInterval)
@@ -27,10 +28,10 @@ class ScoreBoard extends GameObject {
         this.updateHighScore()
     }
 
-    public render(drawer: Drawer): void {
-        this.highPoint.render(drawer)
-        this.currentPoint.render(drawer)
-        this.HI.render(drawer)
+    public render(): void {
+        this.highPoint.render()
+        this.currentPoint.render()
+        this.HI.render()
     }
 
     public reload(): void {

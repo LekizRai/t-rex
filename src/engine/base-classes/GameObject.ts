@@ -1,6 +1,7 @@
 import Collider from '../components/Collider'
 import RigidBody from '../components/RigidBody'
 import InputHandler from '../controllers/InputHandler'
+import Message from '../controllers/Message'
 import PhysicsManager from '../controllers/PhysicsManager'
 import SceneManager from '../controllers/SceneManager'
 import Drawer from '../utils/Drawer'
@@ -66,9 +67,9 @@ abstract class GameObject {
         return false
     }
 
-    public abstract handleInput(e: Event): void
+    public abstract handleInput(message: Message): void
     public abstract update(timeInterval: number): void
-    public abstract render(drawer: Drawer): void
+    public abstract render(): void
 }
 
 export default GameObject

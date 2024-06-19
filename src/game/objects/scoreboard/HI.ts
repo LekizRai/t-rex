@@ -1,4 +1,5 @@
 import Text from '../../../engine/base-classes/Text'
+import Message from '../../../engine/controllers/Message'
 import Vector2D from '../../../engine/utils/Vector2D'
 import config from '../../../engine/utils/configs'
 import sprite from '../../../engine/utils/sprites'
@@ -9,7 +10,7 @@ class HI extends Text {
         this.setContent('HI')
     }
 
-    public handleInput(e: Event): void {}
+    public handleInput(message: Message): void {}
 
     public update(timeInterval: number): void {}
 

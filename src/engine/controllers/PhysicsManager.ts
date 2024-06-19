@@ -26,7 +26,7 @@ class PhysicsManager {
         this.accelerationY = accelerationY
     }
 
-    public attachRigidBody(rig: RigidBody): void {
+    public attach(rig: RigidBody): void {
         this.rigidBodyList.push(rig)
     }
 

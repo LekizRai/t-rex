@@ -1,20 +1,23 @@
 import Drawer from '../utils/Drawer'
 import GameObject from '../base-classes/GameObject'
 import Scene from '../base-classes/Scene'
+import Message from './Message'
 
 class SceneManager {
     private canvas: HTMLCanvasElement
-    private drawer: Drawer
-    private currentScene: Scene
+
     private toAddObjectList: GameObject[]
     private toRemoveObjectList: GameObject[]
+    private currentScene: Scene
+
     private static instance: SceneManager
 
     private constructor() {
         this.canvas = <HTMLCanvasElement>document.createElement('canvas')
         this.canvas.width = window.innerWidth
         this.canvas.height = window.innerHeight
-        this.drawer = new Drawer(this.canvas)
+        Drawer.attachCanvas(this.canvas)
+
         this.toAddObjectList = []
         this.toRemoveObjectList = []
     }
@@ -26,8 +29,8 @@ class SceneManager {
         return this.instance
     }
 
-    public handleInput(e: Event): void {
-        this.currentScene.handleInput(e)
+    public handleInput(message: Message): void {
+        this.currentScene.handleInput(message)
     }
 
     public update(timeInterval: number): void {
@@ -36,7 +39,7 @@ class SceneManager {
     }
 
     public render(): void {
-        this.currentScene.render(this.drawer)
+        this.currentScene.render()
         document.body.appendChild(this.canvas)
     }
 

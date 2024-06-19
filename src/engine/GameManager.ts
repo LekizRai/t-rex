@@ -1,7 +1,6 @@
 import SceneManager from './controllers/SceneManager'
 import InputHandler from './controllers/InputHandler'
 import PhysicsManager from './controllers/PhysicsManager'
-import Scene from './base-classes/Scene'
 
 abstract class GameManager {
     protected inputHandler: InputHandler

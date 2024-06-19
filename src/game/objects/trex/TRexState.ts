@@ -5,6 +5,7 @@ import GameObject from '../../../engine/base-classes/GameObject'
 import GameObjectState from '../../../engine/base-classes/GameObjectState'
 import TRex from './TRex'
 import Vector2D from '../../../engine/utils/Vector2D'
+import Message from '../../../engine/controllers/Message'
 
 const trexRunningSpriteList = [sprite.TREX_SPRITES[0].clip, sprite.TREX_SPRITES[1].clip]
 const trexDuckingSpriteList = [sprite.TREX_SPRITES[2].clip, sprite.TREX_SPRITES[3].clip]
@@ -15,7 +16,9 @@ class TRexRunningState extends GameObjectState {
         super()
     }
 
-    public handleInput(obj: TRex, e: Event): void {
+    public handleInput(obj: TRex, message: Message): void {
+        const e = message.getEvent()
+        if (e instanceof Event)
         if (e instanceof KeyboardEvent && e.type == 'keydown') {
             if (e.keyCode == key.ARROW_DOWN) {
                 obj.setSpriteList(trexDuckingSpriteList)
@@ -43,7 +46,9 @@ class TRexDuckingState extends GameObjectState {
         super()
     }
 
-    public handleInput(obj: TRex, e: Event): void {
+    public handleInput(obj: TRex, message: Message): void {
+        const e = message.getEvent()
+        if (e instanceof Event)
         if (e instanceof KeyboardEvent) {
             if (e.keyCode == key.ARROW_DOWN) {
                 if (e.type == 'keyup') {
@@ -65,7 +70,7 @@ class TRexJumpingState extends GameObjectState {
     constructor() {
         super()
     }
-    public handleInput(obj: GameObject, e: Event): void {}
+    public handleInput(obj: GameObject, message: Message): void {}
 
     public update(obj: TRex, timeInterval: number): void {
         obj.animate(timeInterval)
@@ -92,7 +97,7 @@ class TRexGameOverState extends GameObjectState {
         super()
     }
 
-    public handleInput(obj: TRex, e: Event): void {}
+    public handleInput(obj: TRex, message: Message): void {}
 
     public update(obj: TRex, timeInterval: number): void {
         obj.animate(timeInterval)

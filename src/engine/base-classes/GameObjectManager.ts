@@ -3,10 +3,9 @@ import GameObject from './GameObject'
 import Scene from './Scene'
 
 abstract class GameObjectManager {
-    protected scene: Scene
-
-    constructor(scene: Scene) {
-        this.scene = scene
+    protected sceneManager: SceneManager
+    constructor() {
+        this.sceneManager = SceneManager.getInstance()
     }
 
     public abstract spawn(): void

@@ -12,7 +12,8 @@ abstract class Image extends GameObject {
         this.sprite = sprite
     }
 
-    public render(drawer: Drawer): void {
+    public render(): void {
+        const drawer: Drawer = Drawer.getInstance()
         if (!this.tex) {
             const tex = drawer.loadImageAndCreateTextureInfo('./assets/images/trex-sprites.png')
             if (tex) {

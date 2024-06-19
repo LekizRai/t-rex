@@ -15,7 +15,7 @@ class TRexGameManager extends GameManager {
         this.physicsManager.setAccelerationX(0)
         this.physicsManager.setAccelerationY(config.TREX_JUMPING_ACCESSLATION)
 
-        let trexScene: Scene = new TRexScene(this.physicsManager)
+        let trexScene: Scene = new TRexScene()
         trexScene.setup()
         this.sceneManager.attachScene(trexScene)
 

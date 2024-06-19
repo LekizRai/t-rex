@@ -8,6 +8,7 @@ import Collider from '../../../engine/components/Collider'
 import RigidBody from '../../../engine/components/RigidBody'
 import PhysicsManager from '../../../engine/controllers/PhysicsManager'
 import Vector2D from '../../../engine/utils/Vector2D'
+import Message from '../../../engine/controllers/Message'
 
 const trexRunningSpriteList = [sprite.TREX_SPRITES[0].clip, sprite.TREX_SPRITES[1].clip]
 
@@ -21,13 +22,10 @@ class TRex extends Animation {
 
         this.setColliderList([new Collider(new Vector2D(0, 0), this.getWidth(), this.getHeight())])
         this.setRigidBody(new RigidBody(config.TREX_VELOCITY_X, config.TREX_VELOCITY_Y, 0))
-        this.rigidBody.setAccelerationEffect(false)
-
-        this.physicsManager.attachRigidBody(this.rigidBody)
     }
 
-    handleInput(e: Event): void {
-        this.state.handleInput(this, e)
+    handleInput(message: Message): void {
+        this.state.handleInput(this, message)
     }
 
     update(timeInterval: number): void {

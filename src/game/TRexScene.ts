@@ -1,4 +1,5 @@
 import Scene from '../engine/base-classes/Scene'
+import Message from '../engine/controllers/Message'
 import PhysicsManager from '../engine/controllers/PhysicsManager'
 import SceneManager from '../engine/controllers/SceneManager'
 import Vector2D from '../engine/utils/Vector2D'
@@ -30,50 +31,51 @@ class TRexScene extends Scene {
 
     private sceneState: string
 
-    private physicsManager: PhysicsManager
+    private trex: TRex
     private gameOver: GameOver
     private replayButton: ReplayButton
     private scoreBoard: ScoreBoard
 
     private mouseStatus: string
 
-    constructor(physicsManager: PhysicsManager) {
+    constructor() {
         super()
-        this.physicsManager = physicsManager
         this.sceneState = state.PLAY
         this.mouseStatus = 'down'
     }
 
-    public handleInput(e: Event) {
+    public handleInput(message: Message) {
         if (this.sceneState == state.PLAY) {
-            this.objectList.forEach((obj) => {
-                obj.handleInput(e)
-            })
+            // this.objectList.forEach((obj) => {
+            //     obj.handleInput(message)
+            // })
         } else if (this.sceneState == state.GAMEOVER) {
-            if (e instanceof MouseEvent) {
-                let location: Vector2D = this.replayButton.getLocation()
-                if (e.x >= location.getX() && e.y >= location.getY()) {
-                    if (
-                        e.x <= location.getX() + this.replayButton.getWidth() &&
-                        e.y <= location.getY() + this.replayButton.getHeight()
-                    ) {
-                        if (e.type == 'mousedown') {
-                            if (this.mouseStatus == 'down') {
-                                this.mouseStatus = 'up'
-                            }
-                        } else if (e.type == 'mouseup') {
-                            if (this.mouseStatus == 'up') {
-                                this.sceneState = state.PLAY
-                                this.reload()
-                            }
-                        }
-                    } else {
-                        this.mouseStatus = 'down'
-                    }
-                } else {
-                    this.mouseStatus = 'down'
-                }
-            }
+            // const e = message.getEvent()
+            // if (e instanceof Event)
+            // if (e instanceof MouseEvent) {
+            //     let location: Vector2D = this.replayButton.getLocation()
+            //     if (e.x >= location.getX() && e.y >= location.getY()) {
+            //         if (
+            //             e.x <= location.getX() + this.replayButton.getWidth() &&
+            //             e.y <= location.getY() + this.replayButton.getHeight()
+            //         ) {
+            //             if (e.type == 'mousedown') {
+            //                 if (this.mouseStatus == 'down') {
+            //                     this.mouseStatus = 'up'
+            //                 }
+            //             } else if (e.type == 'mouseup') {
+            //                 if (this.mouseStatus == 'up') {
+            //                     this.sceneState = state.PLAY
+            //                     this.reload()
+            //                 }
+            //             }
+            //         } else {
+            //             this.mouseStatus = 'down'
+            //         }
+            //     } else {
+            //         this.mouseStatus = 'down'
+            //     }
+            // }
         }
     }
 
@@ -105,6 +107,7 @@ class TRexScene extends Scene {
                                 this.sceneState = state.GAMEOVER
                                 this.addObject(this.gameOver)
                                 this.addObject(this.replayButton)
+                                this.replayButton.setActive(true)
                                 break
                             }
                         }
@@ -120,8 +123,10 @@ class TRexScene extends Scene {
         this.cactusGeneratingInterval = config.CACTUS_GENERATING_INTERVAL
         this.cloudGeneratingInterval = config.CLOUD_GENERATING_INTERVAL
 
-        this.addObject(new Cactus(this, config.CACTUS_CANVAS_LOCATION))
-        this.addObject(new Cloud(this, config.CLOUD_CANVAS_LOCATION))
+        this.replayButton.setActive(false)
+
+        this.addObject(new Cactus(config.CACTUS_CANVAS_LOCATION))
+        this.addObject(new Cloud(config.CLOUD_CANVAS_LOCATION))
 
         let location = config.GROUND_CANVAS_LOCATION.copy()
         let ground: Ground
@@ -133,22 +138,28 @@ class TRexScene extends Scene {
 
         this.scoreBoard.reload()
         this.addObject(this.scoreBoard)
-        this.addObject(new TRex(config.TREX_CANVAS_LOCATION))
+        this.addObject(this.trex)
     }
 
     public setup(): void {
-        this.cactusManager = new CactusManager(this)
+        this.cactusManager = new CactusManager()
         this.cactusGeneratingInterval = config.CACTUS_GENERATING_INTERVAL
 
-        this.cloudManager = new CloudManager(this)
+        this.cloudManager = new CloudManager()
         this.cloudGeneratingInterval = config.CLOUD_GENERATING_INTERVAL
 
         this.gameOver = new GameOver()
         this.replayButton = new ReplayButton(new Vector2D(680, 300))
+        this.inputHandler.attachMouseEvent(this.replayButton)
+        this.replayButton.setActive(false)
+        this.replayButton.attach(() => {
+            this.sceneState = state.PLAY
+            this.reload()
+        })
         this.scoreBoard = new ScoreBoard(config.SCOREBOARD_CANVAS_LOCATION)
 
-        this.addObject(new Cactus(this, config.CACTUS_CANVAS_LOCATION))
-        this.addObject(new Cloud(this, config.CLOUD_CANVAS_LOCATION))
+        this.addObject(new Cactus(config.CACTUS_CANVAS_LOCATION))
+        this.addObject(new Cloud(config.CLOUD_CANVAS_LOCATION))
 
         let location = config.GROUND_CANVAS_LOCATION
         let ground: Ground
@@ -159,7 +170,9 @@ class TRexScene extends Scene {
         }
 
         this.addObject(this.scoreBoard)
-        this.addObject(new TRex(config.TREX_CANVAS_LOCATION))
+        this.trex = new TRex(config.TREX_CANVAS_LOCATION)
+        this.addObject(this.trex)
+        this.inputHandler.attachKeyboardEvent(this.trex)
     }
 }
 

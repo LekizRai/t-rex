@@ -16,7 +16,8 @@ abstract class Text extends GameObject {
         this.letterGap = 1
     }
 
-    public render(drawer: Drawer): void {
+    public render(): void {
+        const drawer: Drawer = Drawer.getInstance()
         if (!this.tex) {
             this.tex = drawer.loadImageAndCreateTextureInfo(
                 './assets/images/trex-sprites.png'

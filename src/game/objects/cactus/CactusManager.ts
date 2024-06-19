@@ -5,12 +5,12 @@ import config from '../../../engine/utils/configs'
 import Cactus from './Cactus'
 
 class CactusManager extends GameObjectManager {
-    constructor(scene: Scene) {
-        super(scene)
+    constructor() {
+        super()
     }
 
     public spawn(): void {
-        this.scene.addObject(new Cactus(this.scene, config.CACTUS_CANVAS_LOCATION))
+        this.sceneManager.addObjectToScene(new Cactus(config.CACTUS_CANVAS_LOCATION))
     }
 }
 

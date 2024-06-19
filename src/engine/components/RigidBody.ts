@@ -1,3 +1,5 @@
+import PhysicsManager from "../controllers/PhysicsManager"
+
 class RigidBody {
     private velocityX: number
     private velocityY: number
@@ -13,6 +15,9 @@ class RigidBody {
         this.shiftY = 0
         this.accelerationEffect = false
         this.mass = mass
+
+        const physicsManager = PhysicsManager.getInstance()
+        physicsManager.attach(this)
     }
 
     public getVelocityX(): number {

@@ -1,19 +1,22 @@
 import Drawer from '../utils/Drawer'
 import GameObject from '../base-classes/GameObject'
+import Message from '../controllers/Message'
+import InputHandler from '../controllers/InputHandler'
 
 abstract class Scene {
-    // private canvas: HTMLCanvasElement
-    // private drawer: Drawer
     protected objectList: GameObject[]
+    protected inputHandler: InputHandler
 
     constructor() {
         this.objectList = []
+        this.inputHandler = InputHandler.getInstance()
     }
 
-    public render(drawer: Drawer): void {
+    public render(): void {
+        const drawer: Drawer = Drawer.getInstance()
         drawer.clear()
         this.objectList.forEach((obj) => {
-            obj.render(drawer)
+            obj.render()
         })
     }
 
@@ -29,7 +32,7 @@ abstract class Scene {
     }
 
     public abstract setup(): void
-    public abstract handleInput(e: Event): void
+    public abstract handleInput(message: Message): void
     public abstract update(timeInterval: number): void
 }
 

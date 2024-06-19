@@ -4,13 +4,14 @@ import Image from '../../../engine/base-classes/Image'
 import SceneManager from '../../../engine/controllers/SceneManager'
 import Vector2D from '../../../engine/utils/Vector2D'
 import Scene from '../../../engine/base-classes/Scene'
+import Message from '../../../engine/controllers/Message'
 
 class Ground extends Image {
     constructor(location: Vector2D) {
         super(location, sprite.GROUND_SPRITE.clip)
     }
 
-    public handleInput(e: Event): void {}
+    public handleInput(message: Message): void {}
 
     public update(timeInterval: number): void {
         let shift = Math.floor((timeInterval / 1000) * config.GROUND_VELOCITY_X)
