@@ -9,7 +9,7 @@ abstract class GameObject {
     protected rigidBody: RigidBody
 
     constructor(location: Vector2D) {
-        this.location = location
+        this.location = location.copy()
         this.colliderList = []
         this.rigidBody = new RigidBody(0, 0, 0)
     }
@@ -56,7 +56,7 @@ abstract class GameObject {
 
     public abstract handleInput(e: Event): void
     public abstract update(timeInterval: number): void
-    public abstract draw(drawer: Drawer): void
+    public abstract render(drawer: Drawer): void
 }
 
 export default GameObject

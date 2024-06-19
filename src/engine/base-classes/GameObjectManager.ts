@@ -1,10 +1,11 @@
 import SceneManager from '../controllers/SceneManager'
 import GameObject from './GameObject'
+import Scene from './Scene'
 
 abstract class GameObjectManager {
-    protected scene: SceneManager
+    protected scene: Scene
 
-    constructor(scene: SceneManager) {
+    constructor(scene: Scene) {
         this.scene = scene
     }
 

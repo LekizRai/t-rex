@@ -20,17 +20,17 @@ class ScoreBoard extends GameObject {
 
     public handleInput(e: Event): void {}
 
-    update(timeInterval: number): void {
+    public update(timeInterval: number): void {
         this.highPoint.update(timeInterval)
         this.currentPoint.update(timeInterval)
         this.HI.update(timeInterval)
         this.updateHighScore()
     }
 
-    draw(drawer: Drawer): void {
-        this.highPoint.draw(drawer)
-        this.currentPoint.draw(drawer)
-        this.HI.draw(drawer)
+    public render(drawer: Drawer): void {
+        this.highPoint.render(drawer)
+        this.currentPoint.render(drawer)
+        this.HI.render(drawer)
     }
 
     public reload(): void {

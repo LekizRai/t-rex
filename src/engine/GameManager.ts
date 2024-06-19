@@ -3,8 +3,8 @@ import InputHandler from './controllers/InputHandler'
 import PhysicsManager from './controllers/PhysicsManager'
 
 abstract class GameManager {
-    protected scene: SceneManager
     protected inputHandler: InputHandler
+    protected sceneManager: SceneManager
     protected physicsManager: PhysicsManager
     private lastTime: number
 
@@ -15,13 +15,12 @@ abstract class GameManager {
     private update(): void {
         let currentTime: number = window.performance.now()
         this.physicsManager.update(currentTime - this.lastTime)
-        this.scene.update(currentTime - this.lastTime)
+        this.sceneManager.update(currentTime - this.lastTime)
         this.lastTime = currentTime
-        this.scene.synchronize()
     }
 
     private render(): void {
-        this.scene.render()
+        this.sceneManager.render()
     }
 
     public run(): void {

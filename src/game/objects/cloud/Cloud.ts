@@ -1,12 +1,14 @@
 import sprite from '../../../engine/utils/sprites'
 import config from '../../../engine/utils/configs'
-import Figure from '../../../engine/base-classes/Figure'
+import Image from '../../../engine/base-classes/Image'
 import SceneManager from '../../../engine/controllers/SceneManager'
 import Vector2D from '../../../engine/utils/Vector2D'
+import Scene from '../../../engine/base-classes/Scene'
 
-class Cloud extends Figure {
-    private scene: SceneManager
-    constructor(scene: SceneManager, location: Vector2D) {
+class Cloud extends Image {
+    private scene: Scene
+    
+    constructor(scene: Scene, location: Vector2D) {
         super(location, sprite.CLOUD_SPRITE.clip)
         this.scene = scene
     }

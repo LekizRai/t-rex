@@ -1,3 +1,4 @@
+import Scene from '../base-classes/Scene'
 import SceneManager from './SceneManager'
 
 class InputHandler {

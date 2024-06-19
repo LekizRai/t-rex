@@ -1,9 +1,8 @@
-import Figure from '../../../engine/base-classes/Figure'
+import Image from '../../../engine/base-classes/Image'
 import Vector2D from '../../../engine/utils/Vector2D'
-import config from '../../../engine/utils/configs'
 import sprite from '../../../engine/utils/sprites'
 
-class ReplayButton extends Figure {
+class ReplayButton extends Image {
     constructor(location: Vector2D) {
         super(location, sprite.PLAY_BUTTON_SPRITE.clip)
     }

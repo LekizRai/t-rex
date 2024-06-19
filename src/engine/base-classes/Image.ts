@@ -12,11 +12,9 @@ abstract class Image extends GameObject {
         this.sprite = sprite
     }
 
-    public draw(drawer: Drawer): void {
+    public render(drawer: Drawer): void {
         if (!this.tex) {
-            const tex = drawer.loadImageAndCreateTextureInfo(
-                './assets/images/trex-sprites.png'
-            )
+            const tex = drawer.loadImageAndCreateTextureInfo('./assets/images/trex-sprites.png')
             if (tex) {
                 this.tex = tex
             }

@@ -30,7 +30,7 @@ abstract class Animation extends GameObject {
         }
     }
 
-    public draw(drawer: Drawer): void {
+    public render(drawer: Drawer): void {
         if (!this.tex) {
             const tex = drawer.loadImageAndCreateTextureInfo(
                 './assets/images/trex-sprites.png'

@@ -1,3 +1,4 @@
+import Scene from '../engine/base-classes/Scene'
 import PhysicsManager from '../engine/controllers/PhysicsManager'
 import SceneManager from '../engine/controllers/SceneManager'
 import Vector2D from '../engine/utils/Vector2D'
@@ -20,7 +21,7 @@ const state = {
     PAUSED: 'paused',
 }
 
-class TRexSceneManager extends SceneManager {
+class TRexScene extends Scene {
     private cactusManager: CactusManager
     private cactusGeneratingInterval: number
 
@@ -162,4 +163,4 @@ class TRexSceneManager extends SceneManager {
     }
 }
 
-export default TRexSceneManager
+export default TRexScene
