@@ -11,6 +11,7 @@ class ReplayButton extends Image {
 
     constructor(location: Vector2D) {
         super(location, sprite.PLAY_BUTTON_SPRITE.clip)
+        this.tex = this.resourceManager.getTex(0)
         this.callbackList = []
         this.clicked = false
         this.isActive = false

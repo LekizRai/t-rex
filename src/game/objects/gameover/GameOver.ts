@@ -7,6 +7,7 @@ import sprite from '../../../engine/utils/sprites'
 class GameOver extends Text {
     constructor() {
         super(new Vector2D(550, 250))
+        this.tex = this.resourceManager.getTex(0)
         this.setContent('GAMEOVER')
     }
 

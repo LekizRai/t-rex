@@ -4,6 +4,7 @@ import PhysicsManager from '../engine/controllers/PhysicsManager'
 import SceneManager from '../engine/controllers/SceneManager'
 import Vector2D from '../engine/utils/Vector2D'
 import config from '../engine/utils/configs'
+import Bird from './objects/bird/Bird'
 import Cactus from './objects/cactus/Cactus'
 import CactusManager from './objects/cactus/CactusManager'
 import Cloud from './objects/cloud/Cloud'
@@ -32,6 +33,8 @@ class TRexScene extends Scene {
     private sceneState: string
 
     private trex: TRex
+    private cactusList: Cactus[]
+    // private birdList: Bird[]
     private gameOver: GameOver
     private replayButton: ReplayButton
     private scoreBoard: ScoreBoard
@@ -40,6 +43,7 @@ class TRexScene extends Scene {
 
     constructor() {
         super()
+        this.cactusList = []
         this.sceneState = state.PLAY
         this.mouseStatus = 'down'
     }
@@ -81,28 +85,13 @@ class TRexScene extends Scene {
 
     public update(timeInterval: number): void {
         if (this.sceneState == state.PLAY) {
-            this.objectList.forEach((obj) => {
-                obj.update(timeInterval)
-            })
-
-            if (this.cactusGeneratingInterval - timeInterval < 0) {
-                this.cactusGeneratingInterval = config.CACTUS_GENERATING_INTERVAL
-                this.cactusManager.spawn()
-            } else {
-                this.cactusGeneratingInterval -= timeInterval
-            }
-
-            if (this.cloudGeneratingInterval - timeInterval < 0) {
-                this.cloudGeneratingInterval = config.CLOUD_GENERATING_INTERVAL
-                this.cloudManager.spawn()
-            } else {
-                this.cloudGeneratingInterval -= timeInterval
-            }
-
             for (let i: number = 0; i < this.objectList.length; i++) {
                 if (this.objectList[i] instanceof TRex) {
                     for (let j: number = 0; j < this.objectList.length; j++) {
-                        if (this.objectList[j] instanceof Cactus) {
+                        if (
+                            this.objectList[j] instanceof Cactus ||
+                            this.objectList[j] instanceof Bird
+                        ) {
                             if (this.objectList[i].isCollied(this.objectList[j])) {
                                 this.sceneState = state.GAMEOVER
                                 this.addObject(this.gameOver)
@@ -113,6 +102,26 @@ class TRexScene extends Scene {
                         }
                     }
                     break
+                }
+            }
+
+            if (this.sceneState == state.PLAY) {
+                this.objectList.forEach((obj) => {
+                    obj.update(timeInterval)
+                })
+
+                if (this.cactusGeneratingInterval - timeInterval < 0) {
+                    this.cactusGeneratingInterval = config.CACTUS_GENERATING_INTERVAL
+                    this.cactusManager.spawn()
+                } else {
+                    this.cactusGeneratingInterval -= timeInterval
+                }
+
+                if (this.cloudGeneratingInterval - timeInterval < 0) {
+                    this.cloudGeneratingInterval = config.CLOUD_GENERATING_INTERVAL
+                    this.cloudManager.spawn()
+                } else {
+                    this.cloudGeneratingInterval -= timeInterval
                 }
             }
         }
@@ -158,7 +167,8 @@ class TRexScene extends Scene {
         })
         this.scoreBoard = new ScoreBoard(config.SCOREBOARD_CANVAS_LOCATION)
 
-        this.addObject(new Cactus(config.CACTUS_CANVAS_LOCATION))
+        // this.addObject(new Cactus(config.CACTUS_CANVAS_LOCATION))
+        this.addObject(new Bird(config.BIRD_CANVAS_LOCATION))
         this.addObject(new Cloud(config.CLOUD_CANVAS_LOCATION))
 
         let location = config.GROUND_CANVAS_LOCATION

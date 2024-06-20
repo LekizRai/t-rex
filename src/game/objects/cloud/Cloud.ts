@@ -8,6 +8,7 @@ import Message from '../../../engine/controllers/Message'
 class Cloud extends Image {
     constructor(location: Vector2D) {
         super(location, sprite.CLOUD_SPRITE.clip)
+        this.tex = this.resourceManager.getTex(0)
         this.setRigidBody(new RigidBody(config.CLOUD_VELOCITY_X, config.TREX_VELOCITY_Y, 0))
     }
 

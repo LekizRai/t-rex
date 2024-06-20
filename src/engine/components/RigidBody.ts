@@ -3,18 +3,22 @@ import PhysicsManager from "../controllers/PhysicsManager"
 class RigidBody {
     private velocityX: number
     private velocityY: number
+    private mass: number
+    private accelerationEffect: boolean
+    private physicsEffect: boolean
+
     private shiftX: number
     private shiftY: number
-    private accelerationEffect: boolean
-    private mass: number
 
     constructor(velocityX: number, velocityY: number, mass: number) {
         this.velocityX = velocityX
         this.velocityY = velocityY
+        this.mass = mass
+        this.accelerationEffect = false
+        this.physicsEffect = true
+
         this.shiftX = 0
         this.shiftY = 0
-        this.accelerationEffect = false
-        this.mass = mass
 
         const physicsManager = PhysicsManager.getInstance()
         physicsManager.attach(this)
@@ -50,6 +54,14 @@ class RigidBody {
 
     public setAccelerationEffect(status: boolean): void {
         this.accelerationEffect = status
+    }
+
+    public getPhysicsEffect(): boolean {
+        return this.physicsEffect
+    }
+
+    public setPhysicsEffect(status: boolean): void {
+        this.physicsEffect = status
     }
 
     public getShiftX(): number {

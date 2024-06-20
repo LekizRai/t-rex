@@ -6,10 +6,24 @@ import GameObjectState from '../../../engine/base-classes/GameObjectState'
 import TRex from './TRex'
 import Vector2D from '../../../engine/utils/Vector2D'
 import Message from '../../../engine/controllers/Message'
+import Collider from '../../../engine/components/Collider'
 
 const trexRunningSpriteList = [sprite.TREX_SPRITES[0].clip, sprite.TREX_SPRITES[1].clip]
 const trexDuckingSpriteList = [sprite.TREX_SPRITES[2].clip, sprite.TREX_SPRITES[3].clip]
 const trexJumpingSpriteList = [sprite.TREX_SPRITES[4].clip]
+
+const trexRunningJumpingColliderList = [
+    new Collider(new Vector2D(20, 0), 22, 12),
+    new Collider(new Vector2D(10, 11), 27, 21),
+    new Collider(new Vector2D(10, 32), 15, 12),
+    new Collider(new Vector2D(0, 15), 12, 10),
+    new Collider(new Vector2D(5, 25), 7, 10),
+]
+const trexDuckingColliderList = [
+    new Collider(new Vector2D(34, 2), 22, 16),
+    new Collider(new Vector2D(11, 2), 23, 26),
+    new Collider(new Vector2D(0, 0), 12, 16),
+]
 
 class TRexRunningState extends GameObjectState {
     constructor() {
@@ -19,21 +33,24 @@ class TRexRunningState extends GameObjectState {
     public handleInput(obj: TRex, message: Message): void {
         const e = message.getEvent()
         if (e instanceof Event)
-        if (e instanceof KeyboardEvent && e.type == 'keydown') {
-            if (e.keyCode == key.ARROW_DOWN) {
-                obj.setSpriteList(trexDuckingSpriteList)
-                let location: Vector2D = config.TREX_CANVAS_LOCATION.add(sprite.TREX_SPRITES[2].adjust)
-                obj.setDisplayLocation(location)
-                obj.setState(new TRexDuckingState())
-            } else if (e.keyCode == key.SPACE || e.keyCode == key.ARROW_UP) {
-                if (!e.repeat) {
-                    obj.setSpriteList(trexJumpingSpriteList)
-                    obj.setState(new TRexJumpingState())
-                    obj.setVelocityY(config.TREX_JUMPING_VELOCITY)
-                    obj.setAccelerationEffect(true)
+            if (e instanceof KeyboardEvent && e.type == 'keydown') {
+                if (e.keyCode == key.ARROW_DOWN) {
+                    obj.setSpriteList(trexDuckingSpriteList)
+                    let location: Vector2D = config.TREX_CANVAS_LOCATION.add(
+                        sprite.TREX_SPRITES[2].adjust
+                    )
+                    obj.setLocation(location)
+                    obj.setState(new TRexDuckingState())
+                    obj.setColliderList(trexDuckingColliderList)
+                } else if (e.keyCode == key.SPACE || e.keyCode == key.ARROW_UP) {
+                    if (!e.repeat) {
+                        obj.setSpriteList(trexJumpingSpriteList)
+                        obj.setState(new TRexJumpingState())
+                        obj.setVelocityY(config.TREX_JUMPING_VELOCITY)
+                        obj.setAccelerationEffect(true)
+                    }
                 }
             }
-        }
     }
 
     public update(obj: TRex, timeInterval: number): void {
@@ -49,16 +66,19 @@ class TRexDuckingState extends GameObjectState {
     public handleInput(obj: TRex, message: Message): void {
         const e = message.getEvent()
         if (e instanceof Event)
-        if (e instanceof KeyboardEvent) {
-            if (e.keyCode == key.ARROW_DOWN) {
-                if (e.type == 'keyup') {
-                    obj.setSpriteList(trexRunningSpriteList)
-                    let location: Vector2D = config.TREX_CANVAS_LOCATION.add(sprite.TREX_SPRITES[0].adjust)
-                    obj.setDisplayLocation(location)
-                    obj.setState(new TRexRunningState())
+            if (e instanceof KeyboardEvent) {
+                if (e.keyCode == key.ARROW_DOWN) {
+                    if (e.type == 'keyup') {
+                        obj.setSpriteList(trexRunningSpriteList)
+                        let location: Vector2D = config.TREX_CANVAS_LOCATION.add(
+                            sprite.TREX_SPRITES[0].adjust
+                        )
+                        obj.setLocation(location)
+                        obj.setState(new TRexRunningState())
+                        obj.setColliderList(trexRunningJumpingColliderList)
+                    }
                 }
             }
-        }
     }
 
     public update(obj: TRex, timeInterval: number): void {
@@ -81,13 +101,13 @@ class TRexJumpingState extends GameObjectState {
         if (location.getY() - shiftY > 370 || location.getY() < 0) {
             location.setY(370)
             obj.setSpriteList(trexRunningSpriteList)
-            obj.setDisplayLocation(location)
+            obj.setLocation(location)
             obj.setVelocityY(0)
             obj.setAccelerationEffect(false)
             obj.setState(new TRexRunningState())
         } else {
             location.setY(location.getY() - shiftY)
-            obj.setDisplayLocation(location)
+            obj.setLocation(location)
         }
     }
 }

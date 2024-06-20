@@ -104,7 +104,7 @@ void main() {
         }
     }
 
-    public static attachCanvas(canvas: HTMLCanvasElement): void {
+    public static init(canvas: HTMLCanvasElement): void {
         this.canvas = canvas
     }
 

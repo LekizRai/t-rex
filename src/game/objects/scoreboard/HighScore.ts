@@ -6,6 +6,7 @@ import sprite from '../../../engine/utils/sprites'
 class HighScore extends Text {
     constructor() {
         super(new Vector2D(985, 260))
+        this.tex = this.resourceManager.getTex(0)
         this.setContent('00000')
     }
 

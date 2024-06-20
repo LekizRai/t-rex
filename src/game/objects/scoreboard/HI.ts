@@ -7,6 +7,7 @@ import sprite from '../../../engine/utils/sprites'
 class HI extends Text {
     constructor() {
         super(new Vector2D(950, 260))
+        this.tex = this.resourceManager.getTex(0)
         this.setContent('HI')
     }
 

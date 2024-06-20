@@ -9,6 +9,7 @@ import Message from '../../../engine/controllers/Message'
 class Ground extends Image {
     constructor(location: Vector2D) {
         super(location, sprite.GROUND_SPRITE.clip)
+        this.tex = this.resourceManager.getTex(0)
     }
 
     public handleInput(message: Message): void {}

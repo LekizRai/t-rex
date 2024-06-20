@@ -16,10 +16,11 @@ class SceneManager {
         this.canvas = <HTMLCanvasElement>document.createElement('canvas')
         this.canvas.width = window.innerWidth
         this.canvas.height = window.innerHeight
-        Drawer.attachCanvas(this.canvas)
 
         this.toAddObjectList = []
         this.toRemoveObjectList = []
+
+        Drawer.init(this.canvas)
     }
 
     public static getInstance(): SceneManager {

@@ -1,26 +1,29 @@
-import { SpriteClip } from '../../../engine/types/general'
 import sprite from '../../../engine/utils/sprites'
 import config from '../../../engine/utils/configs'
-import GameObjectState from '../../../engine/base-classes/GameObjectState'
 import TRexState from './TRexState'
 import Animation from '../../../engine/base-classes/Animation'
 import Collider from '../../../engine/components/Collider'
 import RigidBody from '../../../engine/components/RigidBody'
-import PhysicsManager from '../../../engine/controllers/PhysicsManager'
 import Vector2D from '../../../engine/utils/Vector2D'
 import Message from '../../../engine/controllers/Message'
 
 const trexRunningSpriteList = [sprite.TREX_SPRITES[0].clip, sprite.TREX_SPRITES[1].clip]
+const trexRunningJumpingColliderList = [
+    new Collider(new Vector2D(20, 0), 22, 12),
+    new Collider(new Vector2D(10, 11), 27, 21),
+    new Collider(new Vector2D(10, 32), 15, 12),
+    new Collider(new Vector2D(0, 15), 12, 10),
+    new Collider(new Vector2D(5, 25), 7, 10),
+]
 
 class TRex extends Animation {
-    private state: GameObjectState
-
     constructor(location: Vector2D) {
         super(location, config.TREX_CHANGING_INTERVAL, trexRunningSpriteList)
+        this.tex = this.resourceManager.getTex(0)
 
         this.state = new TRexState.TRexRunningState()
 
-        this.setColliderList([new Collider(new Vector2D(0, 0), this.getWidth(), this.getHeight())])
+        this.setColliderList(trexRunningJumpingColliderList)
         this.setRigidBody(new RigidBody(config.TREX_VELOCITY_X, config.TREX_VELOCITY_Y, 0))
     }
 
@@ -30,46 +33,6 @@ class TRex extends Animation {
 
     update(timeInterval: number): void {
         this.state.update(this, timeInterval)
-    }
-
-    setDisplayLocation(location: Vector2D): void {
-        this.location = location
-    }
-
-    setState(state: GameObjectState): void {
-        this.state = state
-    }
-
-    getVelocityX(): number {
-        return this.rigidBody.getVelocityX()
-    }
-
-    setVelocityX(velocityX: number): void {
-        this.rigidBody.setVelocityX(velocityX)
-    }
-
-    getVelocityY(): number {
-        return this.rigidBody.getVelocityY()
-    }
-
-    setVelocityY(velocityY: number): void {
-        this.rigidBody.setVelocityY(velocityY)
-    }
-
-    getShiftX(): number {
-        return this.rigidBody.getShiftX()
-    }
-
-    getShiftY(): number {
-        return this.rigidBody.getShiftY()
-    }
-
-    getSprite(): SpriteClip {
-        return this.getCurrentSprite()
-    }
-
-    setAccelerationEffect(status: boolean): void {
-        this.rigidBody.setAccelerationEffect(status)
     }
 }
 

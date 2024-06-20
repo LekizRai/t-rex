@@ -14,7 +14,7 @@ const sprite = {
         },
         {
             clip: { coor: { x: 354, y: 4 }, width: 88, height: 56, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            adjust: new Vector2D(0, -4), // { x: 0, y: 0 } as Coor2D,
         },
     ],
 

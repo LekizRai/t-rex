@@ -14,12 +14,6 @@ abstract class Image extends GameObject {
 
     public render(): void {
         const drawer: Drawer = Drawer.getInstance()
-        if (!this.tex) {
-            const tex = drawer.loadImageAndCreateTextureInfo('./assets/images/trex-sprites.png')
-            if (tex) {
-                this.tex = tex
-            }
-        }
         drawer.draw(
             this.tex,
             this.sprite.coor.x,
@@ -31,6 +25,24 @@ abstract class Image extends GameObject {
             this.sprite.width * this.sprite.scale,
             this.sprite.height * this.sprite.scale
         )
+
+        // Refining only
+        let boxLocation: Vector2D
+        this.colliderList.forEach((col) => {
+            boxLocation = this.location.add(col.getOrigin())
+            drawer.draw(
+                this.box,
+                0,
+                0,
+                this.box.width,
+                this.box.height,
+                boxLocation.getX(),
+                boxLocation.getY(),
+                col.getWidth(),
+                col.getHeight()
+            )
+        })
+        //
     }
 
     public setSprite(sprite: SpriteClip): void {

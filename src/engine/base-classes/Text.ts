@@ -18,12 +18,6 @@ abstract class Text extends GameObject {
 
     public render(): void {
         const drawer: Drawer = Drawer.getInstance()
-        if (!this.tex) {
-            this.tex = drawer.loadImageAndCreateTextureInfo(
-                './assets/images/trex-sprites.png'
-            ) as TexInfo
-        }
-
         let shift = 0
         this.spriteList.forEach((spr) => {
             drawer.draw(

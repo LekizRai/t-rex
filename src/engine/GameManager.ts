@@ -1,18 +1,23 @@
 import SceneManager from './controllers/SceneManager'
 import InputHandler from './controllers/InputHandler'
 import PhysicsManager from './controllers/PhysicsManager'
+import ResourceManager from './controllers/ResourceManager'
 
 abstract class GameManager {
     protected inputHandler: InputHandler
     protected sceneManager: SceneManager
     protected physicsManager: PhysicsManager
+    protected resourceManager: ResourceManager
     private lastTime: number
 
     constructor() {
         this.inputHandler = InputHandler.getInstance()
         this.sceneManager = SceneManager.getInstance()
         this.physicsManager = PhysicsManager.getInstance()
+        this.resourceManager = ResourceManager.getInstance()
         this.lastTime = window.performance.now()
+
+        this.setup()
     }
 
     private update(): void {
@@ -29,10 +34,12 @@ abstract class GameManager {
     public run(): void {
         this.update()
         this.render()
-        requestAnimationFrame(() => this.run())
+        requestAnimationFrame(() => {
+            this.run()
+        })
     }
-       
-    public abstract setup(): void
+
+    protected abstract setup(): void
 }
 
 export default GameManager
