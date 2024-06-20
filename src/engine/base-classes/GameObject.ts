@@ -62,6 +62,10 @@ abstract class GameObject {
     }
 
     // About collidder list
+    public getColliderList(): Collider[] {
+        return this.colliderList
+    }
+    
     public setColliderList(colliderList: Collider[]): void {
         this.colliderList = colliderList
     }

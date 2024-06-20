@@ -9,9 +9,7 @@ import Message from '../../../engine/controllers/Message'
 import Collider from '../../../engine/components/Collider'
 
 const trexRunningSpriteList = [sprite.TREX_SPRITES[0].clip, sprite.TREX_SPRITES[1].clip]
-const trexDuckingSpriteList = [sprite.TREX_SPRITES[2].clip, sprite.TREX_SPRITES[3].clip]
-const trexJumpingSpriteList = [sprite.TREX_SPRITES[4].clip]
-
+const trexRunningAdjustList = [sprite.TREX_SPRITES[0].adjust, sprite.TREX_SPRITES[1].adjust]
 const trexRunningJumpingColliderList = [
     new Collider(new Vector2D(20, 0), 22, 12),
     new Collider(new Vector2D(10, 11), 27, 21),
@@ -19,11 +17,23 @@ const trexRunningJumpingColliderList = [
     new Collider(new Vector2D(0, 15), 12, 10),
     new Collider(new Vector2D(5, 25), 7, 10),
 ]
+const trexRunningJumpingCollidersList = [
+    trexRunningJumpingColliderList,
+    trexRunningJumpingColliderList,
+]
+
+const trexDuckingSpriteList = [sprite.TREX_SPRITES[2].clip, sprite.TREX_SPRITES[3].clip]
+const trexDuckingAdjustList = [sprite.TREX_SPRITES[2].adjust, sprite.TREX_SPRITES[3].adjust]
 const trexDuckingColliderList = [
     new Collider(new Vector2D(34, 2), 22, 16),
     new Collider(new Vector2D(11, 2), 23, 26),
     new Collider(new Vector2D(0, 0), 12, 16),
 ]
+const trexDuckingCollidersList = [trexDuckingColliderList, trexDuckingColliderList]
+
+const trexJumpingSpriteList = [sprite.TREX_SPRITES[4].clip]
+const trexJumpingAdjustList = [sprite.TREX_SPRITES[4].adjust]
+
 
 class TRexRunningState extends GameObjectState {
     constructor() {
@@ -41,12 +51,14 @@ class TRexRunningState extends GameObjectState {
                     )
                     obj.setLocation(location)
                     obj.setState(new TRexDuckingState())
-                    obj.setColliderList(trexDuckingColliderList)
+                    obj.setAdjustList(trexDuckingAdjustList)
+                    obj.setCollidersList(trexDuckingCollidersList)
                 } else if (e.keyCode == key.SPACE || e.keyCode == key.ARROW_UP) {
                     if (!e.repeat) {
                         obj.setSpriteList(trexJumpingSpriteList)
                         obj.setState(new TRexJumpingState())
                         obj.setVelocityY(config.TREX_JUMPING_VELOCITY)
+                        obj.setAdjustList(trexJumpingAdjustList)
                         obj.setAccelerationEffect(true)
                     }
                 }
@@ -75,7 +87,8 @@ class TRexDuckingState extends GameObjectState {
                         )
                         obj.setLocation(location)
                         obj.setState(new TRexRunningState())
-                        obj.setColliderList(trexRunningJumpingColliderList)
+                        obj.setAdjustList(trexRunningAdjustList)
+                        obj.setCollidersList(trexRunningJumpingCollidersList)
                     }
                 }
             }

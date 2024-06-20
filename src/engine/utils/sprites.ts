@@ -3,166 +3,166 @@ import Vector2D from './Vector2D'
 
 const sprite = {
     CLOUD_SPRITE: {
-        clip: { coor: { x: 164, y: 0 }, width: 96, height: 32, scale: 0.5 } as SpriteClip,
-        adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+        clip: { coor: new Vector2D(164, 0), width: 96, height: 32, scale: 0.5 } as SpriteClip,
+        adjust: new Vector2D(0, 0),
     },
 
     BIRD_SPRITE: [
         {
-            clip: { coor: { x: 262, y: 16 }, width: 88, height: 64, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(262, 16), width: 88, height: 64, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0),
         },
         {
-            clip: { coor: { x: 354, y: 4 }, width: 88, height: 56, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, -4), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(354, 4), width: 88, height: 56, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, -4),
         },
     ],
 
     CACTUS_SPRITES: [
         {
-            clip: { coor: { x: 446, y: 2 }, width: 34, height: 70, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 14), // { x: 0, y: 14 } as Coor2D,
+            clip: { coor: new Vector2D(446, 2), width: 34, height: 70, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 14),
         },
         {
-            clip: { coor: { x: 480, y: 2 }, width: 68, height: 70, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 14), // { x: 0, y: 14 } as Coor2D,
+            clip: { coor: new Vector2D(480, 2), width: 68, height: 70, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 14),
         },
         {
-            clip: { coor: { x: 548, y: 2 }, width: 102, height: 70, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 14), // { x: 0, y: 14 } as Coor2D,
+            clip: { coor: new Vector2D(548, 2), width: 102, height: 70, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 14),
         },
         {
-            clip: { coor: { x: 652, y: 2 }, width: 50, height: 100, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(652, 2), width: 50, height: 100, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0),
         },
         {
-            clip: { coor: { x: 702, y: 2 }, width: 48, height: 100, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(702, 2), width: 48, height: 100, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0), 
         },
         {
-            clip: { coor: { x: 752, y: 2 }, width: 98, height: 100, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(752, 2), width: 98, height: 100, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0), 
         },
         {
-            clip: { coor: { x: 850, y: 2 }, width: 102, height: 100, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(850, 2), width: 102, height: 100, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0), 
         },
     ],
 
     TREX_SPRITES: [
         {
             // Running first frame
-            clip: { coor: { x: 1516, y: 4 }, width: 84, height: 90, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(1516, 4), width: 84, height: 90, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0), 
         },
         {
             // Running second frame
-            clip: { coor: { x: 1604, y: 4 }, width: 84, height: 90, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(1604, 4), width: 84, height: 90, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0), 
         },
         {
             // Ducking first frame
-            clip: { coor: { x: 1868, y: 38 }, width: 114, height: 56, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 16), // { x: 0, y: 16 } as Coor2D,
+            clip: { coor: new Vector2D(1868, 38), width: 114, height: 56, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 16), 
         },
         {
             // Ducking second frame
-            clip: { coor: { x: 1986, y: 38 }, width: 114, height: 56, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 16), // { x: 0, y: 16 } as Coor2D,
+            clip: { coor: new Vector2D(1986, 38), width: 114, height: 56, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 16), 
         },
         {
             // Jumping frame
-            clip: { coor: { x: 1340, y: 4 }, width: 84, height: 90, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(1340, 4), width: 84, height: 90, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0), 
         },
         {
             // Blinking first frame
-            clip: { coor: { x: 1428, y: 4 }, width: 84, height: 90, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(1428, 4), width: 84, height: 90, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0), 
         },
         {
             // Blinking second frame
-            clip: { coor: { x: 1692, y: 4 }, width: 84, height: 90, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(1692, 4), width: 84, height: 90, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0),
         },
         {
             // start TRex
-            clip: { coor: { x: 78, y: 6 }, width: 88, height: 92, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(78, 6), width: 88, height: 92, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0),
         },
     ],
 
     GROUND_SPRITE: {
-        clip: { coor: { x: 0, y: 102 }, width: 2404, height: 28, scale: 0.5 } as SpriteClip,
-        adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+        clip: { coor: new Vector2D(0, 102), width: 2404, height: 28, scale: 0.5 } as SpriteClip,
+        adjust: new Vector2D(0, 0),
     },
 
     NUMBER_SPRITES: {
         '0': {
             // 0
-            clip: { coor: { x: 952, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(952, 0), width: 22, height: 26, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0),
         },
         '1': {
             // 1
-            clip: { coor: { x: 974, y: 0 }, width: 20, height: 26, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(974, 0), width: 20, height: 26, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0), 
         },
         '2': {
             // 2
-            clip: { coor: { x: 992, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(992, 0), width: 22, height: 26, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0), 
         },
         '3': {
             // 3
-            clip: { coor: { x: 1012, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(1012, 0), width: 22, height: 26, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0), 
         },
         '4': {
             // 4
-            clip: { coor: { x: 1032, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(1032, 0), width: 22, height: 26, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0), 
         },
         '5': {
             // 5
-            clip: { coor: { x: 1052, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(1052, 0), width: 22, height: 26, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0), 
         },
         '6': {
             // 6
-            clip: { coor: { x: 1072, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(1072, 0), width: 22, height: 26, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0), 
         },
         '7': {
             // 7
-            clip: { coor: { x: 1092, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(1092, 0), width: 22, height: 26, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0), 
         },
         '8': {
             // 8
-            clip: { coor: { x: 1112, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(1112, 0), width: 22, height: 26, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0), 
         },
         '9': {
             // 9
-            clip: { coor: { x: 1132, y: 0 }, width: 22, height: 26, scale: 0.5 } as SpriteClip,
-            adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+            clip: { coor: new Vector2D(1132, 0), width: 22, height: 26, scale: 0.5 } as SpriteClip,
+            adjust: new Vector2D(0, 0), 
         },
     },
 
     HI_SPRITE: {
-        clip: { coor: { x: 1152, y: 0 }, width: 42, height: 26, scale: 0.5 } as SpriteClip,
-        adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+        clip: { coor: new Vector2D(1152, 0), width: 42, height: 26, scale: 0.5 } as SpriteClip,
+        adjust: new Vector2D(0, 0), 
     },
 
     GAMEOVER_SPRITE: {
-        clip: { coor: { x: 952, y: 28 }, width: 384, height: 24, scale: 0.75 } as SpriteClip,
-        adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+        clip: { coor: new Vector2D(952, 28), width: 384, height: 24, scale: 0.75 } as SpriteClip,
+        adjust: new Vector2D(0, 0), 
     },
 
     PLAY_BUTTON_SPRITE: {
-        clip: { coor: { x: 2, y: 2 }, width: 72, height: 64, scale: 0.5 } as SpriteClip,
-        adjust: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+        clip: { coor: new Vector2D(2, 2), width: 72, height: 64, scale: 0.5 } as SpriteClip,
+        adjust: new Vector2D(0, 0), 
     },
 } as const
 

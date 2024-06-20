@@ -1,26 +1,28 @@
+import Collider from '../components/Collider'
 import { SpriteClip, TexInfo } from '../types/general'
 import Drawer from '../utils/Drawer'
 import Vector2D from '../utils/Vector2D'
-import config from '../utils/configs'
 import GameObject from './GameObject'
 
 abstract class Animation extends GameObject {
     private spriteList: SpriteClip[]
     private adjustList: Vector2D[]
+    private collidersList: Collider[][]
+
     private index: number
     private changingInterval: number
     private remainingInterval: number
     protected tex: TexInfo
 
-    constructor(location: Vector2D, changingInterval: number, spriteList: SpriteClip[], adjustList?: Vector2D[]) {
+    constructor(
+        location: Vector2D,
+        changingInterval: number,
+        spriteList: SpriteClip[],
+    ) {
         super(location)
         this.spriteList = spriteList
-        if (adjustList) {
-            this.adjustList = adjustList
-        }
-        else {
-            this.adjustList = []
-        }
+        this.adjustList = []
+        this.collidersList = []
         this.changingInterval = changingInterval
         this.remainingInterval = this.changingInterval
         this.index = 0
@@ -30,7 +32,16 @@ abstract class Animation extends GameObject {
         if (this.spriteList.length > 0) {
             if (this.remainingInterval < 0) {
                 this.remainingInterval = this.changingInterval
+                if (this.index >= 0 && this.index < this.adjustList.length) {
+                    this.location = this.location.sub(this.adjustList[this.index])
+                }
                 this.index = (this.index + 1) % this.spriteList.length
+                if (this.index >= 0 && this.index < this.adjustList.length) {
+                    this.location = this.location.add(this.adjustList[this.index])
+                }
+                if (this.index >= 0 && this.index < this.collidersList.length) {
+                    this.colliderList = this.collidersList[this.index]
+                }
             } else {
                 this.remainingInterval -= timeInterval
             }
@@ -40,18 +51,14 @@ abstract class Animation extends GameObject {
     public render(): void {
         const drawer: Drawer = Drawer.getInstance()
         if (this.spriteList.length > 0) {
-            let newLocation: Vector2D = this.location
-            if (this.index >= 0 && this.index < this.adjustList.length) {
-                newLocation = newLocation.add(this.adjustList[this.index])
-            }
             drawer.draw(
                 this.tex,
-                this.spriteList[this.index].coor.x,
-                this.spriteList[this.index].coor.y,
+                this.spriteList[this.index].coor.getX(),
+                this.spriteList[this.index].coor.getY(),
                 this.spriteList[this.index].width,
                 this.spriteList[this.index].height,
-                newLocation.getX(),
-                newLocation.getY(),
+                this.location.getX(),
+                this.location.getY(),
                 this.spriteList[this.index].width * this.spriteList[this.index].scale,
                 this.spriteList[this.index].height * this.spriteList[this.index].scale
             )
@@ -74,7 +81,11 @@ abstract class Animation extends GameObject {
             )
         })
         //
-        //
+    }
+
+    // About sprite
+    public getCurrentSprite(): SpriteClip {
+        return this.spriteList[this.index]
     }
 
     public setSpriteList(spriteList: SpriteClip[]): void {
@@ -86,16 +97,25 @@ abstract class Animation extends GameObject {
         this.adjustList = adjustList
     }
 
-    public getCurrentSprite(): SpriteClip {
-        return this.spriteList[this.index]
+    public setCollidersList(collidersList: Collider[][]): void {
+        if (collidersList.length > 0) {
+            this.colliderList = collidersList[0]
+        }
+        this.collidersList = collidersList
     }
 
     public getWidth(): number {
-        return this.spriteList[this.index].width * this.spriteList[this.index].scale
+        if (this.spriteList.length > 0) {
+            return this.spriteList[this.index].width * this.spriteList[this.index].scale
+        }
+        return 0
     }
 
     public getHeight(): number {
-        return this.spriteList[this.index].height * this.spriteList[this.index].scale
+        if (this.spriteList.length > 0) {
+            return this.spriteList[this.index].height * this.spriteList[this.index].scale
+        }
+        return 0
     }
 }
 

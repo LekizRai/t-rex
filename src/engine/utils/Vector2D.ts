@@ -30,6 +30,13 @@ class Vector2D {
         return returned_vec
     }
 
+    public sub(vec: Vector2D): Vector2D {
+        let returned_vec = new Vector2D(0, 0)
+        returned_vec.setX(this.x - vec.getX())
+        returned_vec.setY(this.y - vec.getY())
+        return returned_vec
+    }
+
     public copy(): Vector2D {
         return new Vector2D(this.x, this.y)
     }

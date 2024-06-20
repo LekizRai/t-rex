@@ -8,12 +8,24 @@ import Message from '../../../engine/controllers/Message'
 
 const birdSpriteList = [sprite.BIRD_SPRITE[0].clip, sprite.BIRD_SPRITE[1].clip]
 const birdAdjustList = [sprite.BIRD_SPRITE[0].adjust, sprite.BIRD_SPRITE[1].adjust]
+const birdCollidersList = [
+    [
+        new Collider(new Vector2D(0, 0), 18, 12),
+        new Collider(new Vector2D(16, 12), 26, 20)
+    ],
+    [
+        new Collider(new Vector2D(0, 6), 18, 12),
+        new Collider(new Vector2D(16, 0), 26, 20),
+        new Collider(new Vector2D(18, 20), 24, 8)
+    ]
+]
 
 class Bird extends Animation {
     constructor(location: Vector2D) {
-        super(location, config.BIRD_CHANGING_INTERVAL, birdSpriteList, birdAdjustList)
+        super(location, config.BIRD_CHANGING_INTERVAL, birdSpriteList)
         this.tex = this.resourceManager.getTex(0)
-        this.setColliderList([new Collider(new Vector2D(0, 0), this.getWidth(), this.getHeight())])
+        this.setAdjustList(birdAdjustList)
+        this.setCollidersList(birdCollidersList)
         this.setRigidBody(new RigidBody(config.BIRD_VELOCITY_X, config.BIRD_VELOCITY_Y, 0))
     }
 

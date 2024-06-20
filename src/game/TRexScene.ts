@@ -39,49 +39,13 @@ class TRexScene extends Scene {
     private replayButton: ReplayButton
     private scoreBoard: ScoreBoard
 
-    private mouseStatus: string
-
     constructor() {
         super()
         this.cactusList = []
         this.sceneState = state.PLAY
-        this.mouseStatus = 'down'
     }
 
-    public handleInput(message: Message) {
-        if (this.sceneState == state.PLAY) {
-            // this.objectList.forEach((obj) => {
-            //     obj.handleInput(message)
-            // })
-        } else if (this.sceneState == state.GAMEOVER) {
-            // const e = message.getEvent()
-            // if (e instanceof Event)
-            // if (e instanceof MouseEvent) {
-            //     let location: Vector2D = this.replayButton.getLocation()
-            //     if (e.x >= location.getX() && e.y >= location.getY()) {
-            //         if (
-            //             e.x <= location.getX() + this.replayButton.getWidth() &&
-            //             e.y <= location.getY() + this.replayButton.getHeight()
-            //         ) {
-            //             if (e.type == 'mousedown') {
-            //                 if (this.mouseStatus == 'down') {
-            //                     this.mouseStatus = 'up'
-            //                 }
-            //             } else if (e.type == 'mouseup') {
-            //                 if (this.mouseStatus == 'up') {
-            //                     this.sceneState = state.PLAY
-            //                     this.reload()
-            //                 }
-            //             }
-            //         } else {
-            //             this.mouseStatus = 'down'
-            //         }
-            //     } else {
-            //         this.mouseStatus = 'down'
-            //     }
-            // }
-        }
-    }
+    public handleInput(message: Message) {}
 
     public update(timeInterval: number): void {
         if (this.sceneState == state.PLAY) {

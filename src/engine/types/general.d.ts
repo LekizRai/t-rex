@@ -1,5 +1,8 @@
+import Collider from "../components/Collider"
+import Vector2D from "../utils/Vector2D"
+
 export type SpriteClip = {
-    coor: Coor2D
+    coor: Vector2D
     width: number
     height: number
     scale: number

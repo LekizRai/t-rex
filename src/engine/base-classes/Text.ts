@@ -22,8 +22,8 @@ abstract class Text extends GameObject {
         this.spriteList.forEach((spr) => {
             drawer.draw(
                 this.tex,
-                spr.coor.x,
-                spr.coor.y,
+                spr.coor.getX(),
+                spr.coor.getY(),
                 spr.width,
                 spr.height,
                 this.location.getX() + shift,

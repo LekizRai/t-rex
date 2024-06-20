@@ -16,8 +16,8 @@ abstract class Image extends GameObject {
         const drawer: Drawer = Drawer.getInstance()
         drawer.draw(
             this.tex,
-            this.sprite.coor.x,
-            this.sprite.coor.y,
+            this.sprite.coor.getX(),
+            this.sprite.coor.getY(),
             this.sprite.width,
             this.sprite.height,
             this.location.getX(),
