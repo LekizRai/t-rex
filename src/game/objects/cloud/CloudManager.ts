@@ -1,7 +1,8 @@
-import GameObjectManager from '../../../engine/base-classes/GameObjectManager'
-import Scene from '../../../engine/base-classes/Scene'
-import SceneManager from '../../../engine/controllers/SceneManager'
-import config from '../../../engine/utils/configs'
+import GameObjectManager from '../../../engine/objects/base-classes/GameObjectManager'
+import Scene from '../../../engine/scene/Scene'
+import Vector2D from '../../../engine/types/Vector2D'
+import config from '../../utils/configs'
+import utils from '../../../engine/utils/utils'
 import Cloud from './Cloud'
 
 class CloudManager extends GameObjectManager {
@@ -10,7 +11,10 @@ class CloudManager extends GameObjectManager {
     }
 
     public spawn(): void {
-        this.scene.addObject(new Cloud(config.CLOUD_CANVAS_LOCATION))
+        const newY: number = utils.randomInt(config.CLOUD_LOW_Y, config.CLOUD_HIGH_Y)
+        const newLocation: Vector2D = config.CLOUD_CANVAS_LOCATION.copy()
+        newLocation.setY(newY)
+        this.scene.addObject(new Cloud(newLocation))
     }
 }
 

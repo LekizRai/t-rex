@@ -1,4 +1,4 @@
-import Message from '../controllers/Message'
+import Message from '../../controllers/Message'
 import GameObject from './GameObject'
 
 abstract class GameObjectState {

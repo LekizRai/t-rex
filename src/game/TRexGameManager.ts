@@ -1,8 +1,8 @@
 import GameManager from '../engine/GameManager'
-import Scene from '../engine/base-classes/Scene'
-import config from '../engine/utils/configs'
+import Scene from '../engine/scene/Scene'
+import config from './utils/configs'
 import GameoverScene from './scenes/GameoverScene'
-import TRexScene from './scenes/TRexScene'
+import PlayScene from './scenes/PlayScene'
 
 class TRexGameManager extends GameManager {
     constructor() {
@@ -17,11 +17,10 @@ class TRexGameManager extends GameManager {
         this.physicsManager.setAccelerationX(0)
         this.physicsManager.setAccelerationY(config.TREX_JUMPING_ACCESSLATION)
 
-        let trexScene: Scene = new TRexScene()
+        let playScene: Scene = new PlayScene()
         let gameoverScene: Scene = new GameoverScene()
         gameoverScene.setActive(false)
-        // trexScene.setup()
-        this.sceneManager.addScene(trexScene)
+        this.sceneManager.addScene(playScene)
         this.sceneManager.addScene(gameoverScene)
 
         this.inputHandler.addEventListener('keydown')

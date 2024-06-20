@@ -1,18 +1,20 @@
-import Collider from '../components/Collider'
-import RigidBody from '../components/RigidBody'
-import InputHandler from '../controllers/InputHandler'
-import Message from '../controllers/Message'
-import PhysicsManager from '../controllers/PhysicsManager'
-import ResourceManger from '../controllers/ResourceManager'
-import SceneManager from '../controllers/SceneManager'
-import { TexInfo } from '../types/general'
-import Vector2D from '../utils/Vector2D'
+import Collider from '../../components/Collider'
+import RigidBody from '../../components/RigidBody'
+import InputHandler from '../../controllers/InputHandler'
+import Message from '../../controllers/Message'
+import PhysicsManager from '../../controllers/PhysicsManager'
+import ResourceManger from '../../controllers/ResourceManager'
+import SceneManager from '../../controllers/SceneManager'
+import { TexInfo } from '../../types/general'
+import Vector2D from '../../types/Vector2D'
 import GameObjectState from './GameObjectState'
-import Scene from './Scene'
+import Scene from '../../scene/Scene'
 
 abstract class GameObject {
+    private zIndex: number
+
     protected scene: Scene
-    
+
     protected location: Vector2D
     protected state: GameObjectState
     protected colliderList: Collider[]
@@ -30,7 +32,7 @@ abstract class GameObject {
     protected smallBox: TexInfo
     //
 
-    constructor(location: Vector2D) {
+    constructor(location: Vector2D, zIndex?: number) {
         this.location = location.copy()
         this.colliderList = []
         this.rigidBody = new RigidBody(0, 0, 0)
@@ -39,6 +41,12 @@ abstract class GameObject {
         this.sceneManager = SceneManager.getInstance()
         this.physicsManager = PhysicsManager.getInstance()
         this.resourceManager = ResourceManger.getInstance()
+
+        if (zIndex) {
+            this.zIndex = zIndex
+        } else {
+            this.zIndex = 0
+        }
 
         // Refining only
         this.box = this.resourceManager.getTex(1)
@@ -55,6 +63,15 @@ abstract class GameObject {
         this.location = location.copy()
     }
 
+    // About Z index
+    public getZIndex(): number {
+        return this.zIndex
+    }
+
+    public setZIndex(zIndex: number): void {
+        this.zIndex = zIndex
+    }
+
     // About state
     public getState(): GameObjectState {
         return this.state
@@ -68,7 +85,7 @@ abstract class GameObject {
     public getColliderList(): Collider[] {
         return this.colliderList
     }
-    
+
     public setColliderList(colliderList: Collider[]): void {
         this.colliderList = colliderList
     }
@@ -110,6 +127,14 @@ abstract class GameObject {
         return this.rigidBody.getShiftY()
     }
 
+    public getMass(): number {
+        return this.rigidBody.getMass()
+    }
+
+    public setMass(mass: number): void {
+        this.rigidBody.setMass(mass)
+    }
+
     public setAccelerationEffect(status: boolean): void {
         this.rigidBody.setAccelerationEffect(status)
     }
@@ -141,14 +166,6 @@ abstract class GameObject {
                     l2.getX() + obj.colliderList[j].getWidth(),
                     l2.getY() + obj.colliderList[j].getHeight()
                 )
-                // if (
-                //     l1.getX() === r1.getX() ||
-                //     l1.getY() === r1.getY() ||
-                //     l2.getX() === r2.getX() ||
-                //     l2.getY() === r2.getY()
-                // ) {
-                //     continue
-                // }
                 if (r1.getX() - l2.getX() <= -2 || r2.getX() - l1.getX() <= -2) {
                     continue
                 }

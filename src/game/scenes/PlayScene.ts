@@ -1,32 +1,25 @@
-import Scene from '../../engine/base-classes/Scene'
+import Scene from '../../engine/scene/Scene'
 import Message from '../../engine/controllers/Message'
-import PhysicsManager from '../../engine/controllers/PhysicsManager'
 import SceneManager from '../../engine/controllers/SceneManager'
-import Vector2D from '../../engine/utils/Vector2D'
-import config from '../../engine/utils/configs'
-import GameoverScene from './GameoverScene'
-import Bird from '../objects/bird/Bird'
-import Cactus from '../objects/cactus/Cactus'
-import CactusManager from '../objects/cactus/CactusManager'
+import Vector2D from '../../engine/types/Vector2D'
+import config from '../utils/configs'
+import Bird from '../objects/obstacles/bird/Bird'
+import Cactus from '../objects/obstacles/cactus/Cactus'
 import Cloud from '../objects/cloud/Cloud'
 import CloudManager from '../objects/cloud/CloudManager'
-import GameOver from '../objects/gameover/GameOver'
-import ReplayButton from '../objects/gameover/ReplayButton'
 import Ground from '../objects/ground/Ground'
 import ScoreBoard from '../objects/scoreboard/ScoreBoard'
 import TRex from '../objects/trex/TRex'
-import GameObject from '../../engine/base-classes/GameObject'
-
-// => clear full => resize canvas => viewport
+import GameObject from '../../engine/objects/base-classes/GameObject'
+import ObstacleManager from '../objects/obstacles/ObstacleManager'
 
 const state = {
     PLAY: 'play',
     GAMEOVER: 'gameover',
-    PAUSED: 'paused',
 }
 
-class TRexScene extends Scene {
-    private obstacleManager: CactusManager
+class PlayScene extends Scene {
+    private obstacleManager: ObstacleManager
     private obstacleGeneratingInterval: number
 
     private cloudManager: CloudManager
@@ -35,13 +28,13 @@ class TRexScene extends Scene {
     private sceneState: string
 
     private trex: TRex
-    private obstacleList: GameObject
+    private obstacleList: GameObject[]
 
     private scoreBoard: ScoreBoard
 
     constructor() {
         super()
-        // this.cactusList = []
+        this.obstacleList = []
         this.sceneState = state.PLAY
     }
 
@@ -60,7 +53,6 @@ class TRexScene extends Scene {
                                 this.sceneState = state.GAMEOVER
                                 SceneManager.getInstance().setSceneStatus(1, true)
                                 SceneManager.getInstance().reloadScene(1)
-                                // this.isActive = false
                                 break
                             }
                         }
@@ -75,7 +67,7 @@ class TRexScene extends Scene {
                 })
 
                 if (this.obstacleGeneratingInterval - timeInterval < 0) {
-                    this.obstacleGeneratingInterval = config.CACTUS_GENERATING_INTERVAL
+                    this.obstacleGeneratingInterval = config.OBSTACLE_GENERATING_INTERVAL
                     this.obstacleManager.spawn()
                 } else {
                     this.obstacleGeneratingInterval -= timeInterval
@@ -96,7 +88,7 @@ class TRexScene extends Scene {
 
         this.objectList.length = 0
 
-        this.obstacleGeneratingInterval = config.CACTUS_GENERATING_INTERVAL
+        this.obstacleGeneratingInterval = config.OBSTACLE_GENERATING_INTERVAL
         this.cloudGeneratingInterval = config.CLOUD_GENERATING_INTERVAL
 
         this.addObject(new Cactus(config.CACTUS_CANVAS_LOCATION))
@@ -117,13 +109,12 @@ class TRexScene extends Scene {
     }
 
     public setup(): void {
-        this.obstacleManager = new CactusManager(this)
-        this.obstacleGeneratingInterval = config.CACTUS_GENERATING_INTERVAL
+        this.obstacleManager = new ObstacleManager(this)
+        this.obstacleGeneratingInterval = config.OBSTACLE_GENERATING_INTERVAL
 
         this.cloudManager = new CloudManager(this)
         this.cloudGeneratingInterval = config.CLOUD_GENERATING_INTERVAL
 
-        this.addObject(new Bird(config.BIRD_HIGH_CANVAS_LOCATION))
         this.addObject(new Cloud(config.CLOUD_CANVAS_LOCATION))
 
         let location = config.GROUND_CANVAS_LOCATION
@@ -137,10 +128,10 @@ class TRexScene extends Scene {
         this.scoreBoard = new ScoreBoard(config.SCOREBOARD_CANVAS_LOCATION)
         this.addObject(this.scoreBoard)
 
-        this.trex = new TRex(config.TREX_CANVAS_LOCATION)
+        this.trex = new TRex(config.TREX_CANVAS_LOCATION, 1)
         this.addObject(this.trex)
         this.inputHandler.attachKeyboardEvent(this.trex)
     }
 }
 
-export default TRexScene
+export default PlayScene

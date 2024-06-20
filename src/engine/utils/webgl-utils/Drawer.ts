@@ -1,5 +1,5 @@
-import { TexInfo } from '../types/general'
-import utils from './utils'
+import { TexInfo } from '../../types/general'
+import utils from './webGLUtils'
 
 class Drawer {
     private gl: WebGLRenderingContext

@@ -1,18 +1,18 @@
-import Drawer from '../utils/Drawer'
-import GameObject from '../base-classes/GameObject'
+import GameObject from '../objects/base-classes/GameObject'
 import Message from '../controllers/Message'
 import InputHandler from '../controllers/InputHandler'
 
 abstract class Scene {
+    private isActive: boolean
+
     protected objectList: GameObject[]
     protected inputHandler: InputHandler
-    protected isActive: boolean
 
     constructor() {
         this.objectList = []
         this.inputHandler = InputHandler.getInstance()
         this.isActive = true
-        
+
         this.setup()
     }
 
@@ -24,6 +24,14 @@ abstract class Scene {
 
     public addObject(obj: GameObject): void {
         this.objectList.push(obj)
+        this.objectList.sort((x, y) => {
+            if (x.getZIndex() > y.getZIndex()) {
+                return 1
+            } else if (x.getZIndex() < y.getZIndex()) {
+                return -1
+            }
+            return 0
+        })
         obj.attachScene(this)
     }
 
@@ -39,21 +47,8 @@ abstract class Scene {
     }
 
     public setActive(status: boolean): void {
-        if (!this.isActive) {
-            if (status) {
-                this.doTurnedOn()
-            }
-        }
-        else {
-            if (!status) {
-                this.doTurnedOff()
-            }
-        }
         this.isActive = status
     }
-
-    public doTurnedOn(): void {}
-    public doTurnedOff(): void {}
 
     public abstract reload(): void
     public abstract setup(): void

@@ -1,4 +1,4 @@
-import Vector2D from '../utils/Vector2D'
+import Vector2D from '../types/Vector2D'
 
 class Collider {
     private origin: Vector2D

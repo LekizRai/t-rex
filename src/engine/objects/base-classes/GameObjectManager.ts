@@ -1,6 +1,5 @@
-import SceneManager from '../controllers/SceneManager'
-import GameObject from './GameObject'
-import Scene from './Scene'
+import SceneManager from '../../controllers/SceneManager'
+import Scene from '../../scene/Scene'
 
 abstract class GameObjectManager {
     protected sceneManager: SceneManager

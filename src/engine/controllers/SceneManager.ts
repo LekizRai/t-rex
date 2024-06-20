@@ -1,6 +1,6 @@
-import Drawer from '../utils/Drawer'
-import GameObject from '../base-classes/GameObject'
-import Scene from '../base-classes/Scene'
+import Drawer from '../utils/webgl-utils/Drawer'
+import GameObject from '../objects/base-classes/GameObject'
+import Scene from '../scene/Scene'
 import Message from './Message'
 
 class SceneManager {

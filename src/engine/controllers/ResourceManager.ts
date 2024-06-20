@@ -1,5 +1,5 @@
 import { TexInfo } from '../types/general'
-import Drawer from '../utils/Drawer'
+import Drawer from '../utils/webgl-utils/Drawer'
 
 class ResourceManger {
     private texList: TexInfo[]

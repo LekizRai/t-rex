@@ -1,5 +1,5 @@
-import { SpriteClip } from '../types/general'
-import Vector2D from './Vector2D'
+import { SpriteClip } from '../../engine/types/general'
+import Vector2D from '../../engine/types/Vector2D'
 
 const sprite = {
     CLOUD_SPRITE: {

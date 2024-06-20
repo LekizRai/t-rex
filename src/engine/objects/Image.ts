@@ -1,14 +1,19 @@
 import { SpriteClip, TexInfo } from '../types/general'
-import Drawer from '../utils/Drawer'
-import Vector2D from '../utils/Vector2D'
-import GameObject from './GameObject'
+import Drawer from '../utils/webgl-utils/Drawer'
+import Vector2D from '../types/Vector2D'
+import GameObject from './base-classes/GameObject'
 
 abstract class Image extends GameObject {
     protected sprite: SpriteClip
     protected tex: TexInfo
 
-    constructor(location: Vector2D, sprite: SpriteClip) {
-        super(location)
+    constructor(location: Vector2D, sprite: SpriteClip, zIndex?: number) {
+        if (zIndex) {
+            super(location, zIndex)
+        }
+        else {
+            super(location)
+        }
         this.sprite = sprite
     }
 

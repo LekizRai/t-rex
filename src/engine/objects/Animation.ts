@@ -1,8 +1,8 @@
 import Collider from '../components/Collider'
 import { SpriteClip, TexInfo } from '../types/general'
-import Drawer from '../utils/Drawer'
-import Vector2D from '../utils/Vector2D'
-import GameObject from './GameObject'
+import Drawer from '../utils/webgl-utils/Drawer'
+import Vector2D from '../types/Vector2D'
+import GameObject from './base-classes/GameObject'
 
 abstract class Animation extends GameObject {
     private spriteList: SpriteClip[]
@@ -18,8 +18,13 @@ abstract class Animation extends GameObject {
         location: Vector2D,
         changingInterval: number,
         spriteList: SpriteClip[],
+        zIndex?: number
     ) {
-        super(location)
+        if (zIndex) {
+            super(location, zIndex)
+        } else {
+            super(location)
+        }
         this.spriteList = spriteList
         this.adjustList = []
         this.collidersList = []

@@ -1,7 +1,7 @@
 import { SpriteClip, TexInfo } from '../types/general'
-import Drawer from '../utils/Drawer'
-import Vector2D from '../utils/Vector2D'
-import GameObject from './GameObject'
+import Drawer from '../utils/webgl-utils/Drawer'
+import Vector2D from '../types/Vector2D'
+import GameObject from './base-classes/GameObject'
 
 abstract class Text extends GameObject {
     protected spriteList: SpriteClip[]
@@ -9,8 +9,13 @@ abstract class Text extends GameObject {
     protected letterGap: number
     protected tex: TexInfo
 
-    constructor(location: Vector2D) {
-        super(location)
+    constructor(location: Vector2D, zIndex?: number) {
+        if (zIndex) {
+            super(location, zIndex)
+        }
+        else {
+            super(location)
+        }
         this.spriteList = []
         this.content = ''
         this.letterGap = 1

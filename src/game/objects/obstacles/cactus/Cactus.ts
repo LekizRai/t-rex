@@ -1,11 +1,11 @@
-import utils from '../../../engine/utils/utils'
-import sprite from '../../../engine/utils/sprites'
-import config from '../../../engine/utils/configs'
-import Image from '../../../engine/base-classes/Image'
-import Collider from '../../../engine/components/Collider'
-import RigidBody from '../../../engine/components/RigidBody'
-import Vector2D from '../../../engine/utils/Vector2D'
-import Message from '../../../engine/controllers/Message'
+import utils from '../../../../engine/utils/utils'
+import sprite from '../../../utils/sprites'
+import config from '../../../utils/configs'
+import Image from '../../../../engine/objects/Image'
+import Collider from '../../../../engine/components/Collider'
+import RigidBody from '../../../../engine/components/RigidBody'
+import Vector2D from '../../../../engine/types/Vector2D'
+import Message from '../../../../engine/controllers/Message'
 
 class Cactus extends Image {
     constructor(location: Vector2D) {

@@ -1,5 +1,5 @@
-import GameObject from '../base-classes/GameObject'
-import Scene from '../base-classes/Scene'
+import GameObject from '../objects/base-classes/GameObject'
+import Scene from '../scene/Scene'
 import Message from './Message'
 import SceneManager from './SceneManager'
 

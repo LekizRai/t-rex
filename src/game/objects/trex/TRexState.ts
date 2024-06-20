@@ -1,10 +1,10 @@
-import config from '../../../engine/utils/configs'
-import key from '../../../engine/utils/keys'
-import sprite from '../../../engine/utils/sprites'
-import GameObject from '../../../engine/base-classes/GameObject'
-import GameObjectState from '../../../engine/base-classes/GameObjectState'
+import config from '../../utils/configs'
+import key from '../../utils/keys'
+import sprite from '../../utils/sprites'
+import GameObject from '../../../engine/objects/base-classes/GameObject'
+import GameObjectState from '../../../engine/objects/base-classes/GameObjectState'
 import TRex from './TRex'
-import Vector2D from '../../../engine/utils/Vector2D'
+import Vector2D from '../../../engine/types/Vector2D'
 import Message from '../../../engine/controllers/Message'
 import Collider from '../../../engine/components/Collider'
 
@@ -33,7 +33,6 @@ const trexDuckingCollidersList = [trexDuckingColliderList, trexDuckingColliderLi
 
 const trexJumpingSpriteList = [sprite.TREX_SPRITES[4].clip]
 const trexJumpingAdjustList = [sprite.TREX_SPRITES[4].adjust]
-
 
 class TRexRunningState extends GameObjectState {
     constructor() {

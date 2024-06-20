@@ -1,7 +1,7 @@
-import sprite from '../../../engine/utils/sprites'
-import config from '../../../engine/utils/configs'
-import Image from '../../../engine/base-classes/Image'
-import Vector2D from '../../../engine/utils/Vector2D'
+import sprite from '../../utils/sprites'
+import config from '../../utils/configs'
+import Image from '../../../engine/objects/Image'
+import Vector2D from '../../../engine/types/Vector2D'
 import RigidBody from '../../../engine/components/RigidBody'
 import Message from '../../../engine/controllers/Message'
 

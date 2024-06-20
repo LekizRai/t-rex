@@ -1,23 +1,20 @@
-import sprite from '../../../engine/utils/sprites'
-import config from '../../../engine/utils/configs'
-import Animation from '../../../engine/base-classes/Animation'
-import Collider from '../../../engine/components/Collider'
-import RigidBody from '../../../engine/components/RigidBody'
-import Vector2D from '../../../engine/utils/Vector2D'
-import Message from '../../../engine/controllers/Message'
+import sprite from '../../../utils/sprites'
+import config from '../../../utils/configs'
+import Animation from '../../../../engine/objects/Animation'
+import Collider from '../../../../engine/components/Collider'
+import RigidBody from '../../../../engine/components/RigidBody'
+import Vector2D from '../../../../engine/types/Vector2D'
+import Message from '../../../../engine/controllers/Message'
 
 const birdSpriteList = [sprite.BIRD_SPRITE[0].clip, sprite.BIRD_SPRITE[1].clip]
 const birdAdjustList = [sprite.BIRD_SPRITE[0].adjust, sprite.BIRD_SPRITE[1].adjust]
 const birdCollidersList = [
-    [
-        new Collider(new Vector2D(0, 0), 18, 12),
-        new Collider(new Vector2D(16, 12), 26, 20)
-    ],
+    [new Collider(new Vector2D(0, 0), 18, 12), new Collider(new Vector2D(16, 12), 26, 20)],
     [
         new Collider(new Vector2D(0, 6), 18, 12),
         new Collider(new Vector2D(16, 0), 26, 20),
-        new Collider(new Vector2D(18, 20), 24, 8)
-    ]
+        new Collider(new Vector2D(18, 20), 24, 8),
+    ],
 ]
 
 class Bird extends Animation {

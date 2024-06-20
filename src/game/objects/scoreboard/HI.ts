@@ -1,8 +1,7 @@
-import Text from '../../../engine/base-classes/Text'
+import Text from '../../../engine/objects/Text'
 import Message from '../../../engine/controllers/Message'
-import Vector2D from '../../../engine/utils/Vector2D'
-import config from '../../../engine/utils/configs'
-import sprite from '../../../engine/utils/sprites'
+import Vector2D from '../../../engine/types/Vector2D'
+import sprite from '../../utils/sprites'
 
 class HI extends Text {
     constructor() {

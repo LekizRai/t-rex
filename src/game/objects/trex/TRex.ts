@@ -1,10 +1,10 @@
-import sprite from '../../../engine/utils/sprites'
-import config from '../../../engine/utils/configs'
+import sprite from '../../utils/sprites'
+import config from '../../utils/configs'
 import TRexState from './TRexState'
-import Animation from '../../../engine/base-classes/Animation'
+import Animation from '../../../engine/objects/Animation'
 import Collider from '../../../engine/components/Collider'
 import RigidBody from '../../../engine/components/RigidBody'
-import Vector2D from '../../../engine/utils/Vector2D'
+import Vector2D from '../../../engine/types/Vector2D'
 import Message from '../../../engine/controllers/Message'
 
 const trexRunningSpriteList = [sprite.TREX_SPRITES[0].clip, sprite.TREX_SPRITES[1].clip]
@@ -21,8 +21,8 @@ const trexRunningJumpingCollidersList = [
 ]
 
 class TRex extends Animation {
-    constructor(location: Vector2D) {
-        super(location, config.TREX_CHANGING_INTERVAL, trexRunningSpriteList)
+    constructor(location: Vector2D, zIndex: number) {
+        super(location, config.TREX_CHANGING_INTERVAL, trexRunningSpriteList, zIndex)
         this.tex = this.resourceManager.getTex(0)
 
         this.state = new TRexState.TRexRunningState()

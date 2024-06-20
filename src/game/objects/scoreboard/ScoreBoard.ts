@@ -1,10 +1,9 @@
-import Drawer from '../../../engine/utils/Drawer'
-import config from '../../../engine/utils/configs'
+import config from '../../utils/configs'
 import CurrentScore from './CurrentScore'
 import HighScore from './HighScore'
 import HI from './HI'
-import GameObject from '../../../engine/base-classes/GameObject'
-import Vector2D from '../../../engine/utils/Vector2D'
+import GameObject from '../../../engine/objects/base-classes/GameObject'
+import Vector2D from '../../../engine/types/Vector2D'
 import Message from '../../../engine/controllers/Message'
 
 class ScoreBoard extends GameObject {
