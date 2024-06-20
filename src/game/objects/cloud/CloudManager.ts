@@ -5,12 +5,12 @@ import config from '../../../engine/utils/configs'
 import Cloud from './Cloud'
 
 class CloudManager extends GameObjectManager {
-    constructor() {
-        super()
+    constructor(scene: Scene) {
+        super(scene)
     }
 
     public spawn(): void {
-        this.sceneManager.addObjectToScene(new Cloud(config.CLOUD_CANVAS_LOCATION))
+        this.scene.addObject(new Cloud(config.CLOUD_CANVAS_LOCATION))
     }
 }
 

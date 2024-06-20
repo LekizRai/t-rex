@@ -23,7 +23,7 @@ class Cactus extends Image {
         let shiftX = this.rigidBody.getShiftX()
         this.location.setX(this.location.getX() - shiftX)
         if (this.location.getX() + this.getWidth() < 0) {
-            this.sceneManager.removeObjectFromScene(this)
+            this.scene.removeObject(this)
         }
     }
 }

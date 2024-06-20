@@ -28,9 +28,10 @@ const config = {
     CLOUD_LOW_Y: 270,
     CLOUD_HIGH_Y: 340,
 
-    BIRD_VELOCITY_X: 0,
+    BIRD_VELOCITY_X: 450,
     BIRD_VELOCITY_Y: 0,
-    BIRD_CANVAS_LOCATION: new Vector2D(0, 0), // { x: 0, y: 0 } as Coor2D,
+    BIRD_HIGH_CANVAS_LOCATION: new Vector2D(1500, 350),
+    BIRD_LOW_CANVAS_LOCATION: new Vector2D(1500, 100),
     BIRD_CHANGING_INTERVAL: 300,
 
     SCOREBOARD_CANVAS_LOCATION: new Vector2D(1000, 250), // { x: 1000, y: 250 } as Coor2D,

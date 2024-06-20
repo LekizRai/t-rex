@@ -1,19 +1,21 @@
-import Scene from '../engine/base-classes/Scene'
-import Message from '../engine/controllers/Message'
-import PhysicsManager from '../engine/controllers/PhysicsManager'
-import SceneManager from '../engine/controllers/SceneManager'
-import Vector2D from '../engine/utils/Vector2D'
-import config from '../engine/utils/configs'
-import Bird from './objects/bird/Bird'
-import Cactus from './objects/cactus/Cactus'
-import CactusManager from './objects/cactus/CactusManager'
-import Cloud from './objects/cloud/Cloud'
-import CloudManager from './objects/cloud/CloudManager'
-import GameOver from './objects/gameover/GameOver'
-import ReplayButton from './objects/gameover/ReplayButton'
-import Ground from './objects/ground/Ground'
-import ScoreBoard from './objects/scoreboard/ScoreBoard'
-import TRex from './objects/trex/TRex'
+import Scene from '../../engine/base-classes/Scene'
+import Message from '../../engine/controllers/Message'
+import PhysicsManager from '../../engine/controllers/PhysicsManager'
+import SceneManager from '../../engine/controllers/SceneManager'
+import Vector2D from '../../engine/utils/Vector2D'
+import config from '../../engine/utils/configs'
+import GameoverScene from './GameoverScene'
+import Bird from '../objects/bird/Bird'
+import Cactus from '../objects/cactus/Cactus'
+import CactusManager from '../objects/cactus/CactusManager'
+import Cloud from '../objects/cloud/Cloud'
+import CloudManager from '../objects/cloud/CloudManager'
+import GameOver from '../objects/gameover/GameOver'
+import ReplayButton from '../objects/gameover/ReplayButton'
+import Ground from '../objects/ground/Ground'
+import ScoreBoard from '../objects/scoreboard/ScoreBoard'
+import TRex from '../objects/trex/TRex'
+import GameObject from '../../engine/base-classes/GameObject'
 
 // => clear full => resize canvas => viewport
 
@@ -24,8 +26,8 @@ const state = {
 }
 
 class TRexScene extends Scene {
-    private cactusManager: CactusManager
-    private cactusGeneratingInterval: number
+    private obstacleManager: CactusManager
+    private obstacleGeneratingInterval: number
 
     private cloudManager: CloudManager
     private cloudGeneratingInterval: number
@@ -33,15 +35,13 @@ class TRexScene extends Scene {
     private sceneState: string
 
     private trex: TRex
-    private cactusList: Cactus[]
-    // private birdList: Bird[]
-    private gameOver: GameOver
-    private replayButton: ReplayButton
+    private obstacleList: GameObject
+
     private scoreBoard: ScoreBoard
 
     constructor() {
         super()
-        this.cactusList = []
+        // this.cactusList = []
         this.sceneState = state.PLAY
     }
 
@@ -58,9 +58,9 @@ class TRexScene extends Scene {
                         ) {
                             if (this.objectList[i].isCollied(this.objectList[j])) {
                                 this.sceneState = state.GAMEOVER
-                                this.addObject(this.gameOver)
-                                this.addObject(this.replayButton)
-                                this.replayButton.setActive(true)
+                                SceneManager.getInstance().setSceneStatus(1, true)
+                                SceneManager.getInstance().reloadScene(1)
+                                // this.isActive = false
                                 break
                             }
                         }
@@ -74,11 +74,11 @@ class TRexScene extends Scene {
                     obj.update(timeInterval)
                 })
 
-                if (this.cactusGeneratingInterval - timeInterval < 0) {
-                    this.cactusGeneratingInterval = config.CACTUS_GENERATING_INTERVAL
-                    this.cactusManager.spawn()
+                if (this.obstacleGeneratingInterval - timeInterval < 0) {
+                    this.obstacleGeneratingInterval = config.CACTUS_GENERATING_INTERVAL
+                    this.obstacleManager.spawn()
                 } else {
-                    this.cactusGeneratingInterval -= timeInterval
+                    this.obstacleGeneratingInterval -= timeInterval
                 }
 
                 if (this.cloudGeneratingInterval - timeInterval < 0) {
@@ -92,11 +92,12 @@ class TRexScene extends Scene {
     }
 
     public reload(): void {
-        this.objectList.length = 0
-        this.cactusGeneratingInterval = config.CACTUS_GENERATING_INTERVAL
-        this.cloudGeneratingInterval = config.CLOUD_GENERATING_INTERVAL
+        this.sceneState = state.PLAY
 
-        this.replayButton.setActive(false)
+        this.objectList.length = 0
+
+        this.obstacleGeneratingInterval = config.CACTUS_GENERATING_INTERVAL
+        this.cloudGeneratingInterval = config.CLOUD_GENERATING_INTERVAL
 
         this.addObject(new Cactus(config.CACTUS_CANVAS_LOCATION))
         this.addObject(new Cloud(config.CLOUD_CANVAS_LOCATION))
@@ -111,28 +112,18 @@ class TRexScene extends Scene {
 
         this.scoreBoard.reload()
         this.addObject(this.scoreBoard)
+
         this.addObject(this.trex)
     }
 
     public setup(): void {
-        this.cactusManager = new CactusManager()
-        this.cactusGeneratingInterval = config.CACTUS_GENERATING_INTERVAL
+        this.obstacleManager = new CactusManager(this)
+        this.obstacleGeneratingInterval = config.CACTUS_GENERATING_INTERVAL
 
-        this.cloudManager = new CloudManager()
+        this.cloudManager = new CloudManager(this)
         this.cloudGeneratingInterval = config.CLOUD_GENERATING_INTERVAL
 
-        this.gameOver = new GameOver()
-        this.replayButton = new ReplayButton(new Vector2D(680, 300))
-        this.inputHandler.attachMouseEvent(this.replayButton)
-        this.replayButton.setActive(false)
-        this.replayButton.attach(() => {
-            this.sceneState = state.PLAY
-            this.reload()
-        })
-        this.scoreBoard = new ScoreBoard(config.SCOREBOARD_CANVAS_LOCATION)
-
-        // this.addObject(new Cactus(config.CACTUS_CANVAS_LOCATION))
-        this.addObject(new Bird(config.BIRD_CANVAS_LOCATION))
+        this.addObject(new Bird(config.BIRD_HIGH_CANVAS_LOCATION))
         this.addObject(new Cloud(config.CLOUD_CANVAS_LOCATION))
 
         let location = config.GROUND_CANVAS_LOCATION
@@ -143,7 +134,9 @@ class TRexScene extends Scene {
             location = new Vector2D(location.getX() + ground.getWidth(), location.getY())
         }
 
+        this.scoreBoard = new ScoreBoard(config.SCOREBOARD_CANVAS_LOCATION)
         this.addObject(this.scoreBoard)
+
         this.trex = new TRex(config.TREX_CANVAS_LOCATION)
         this.addObject(this.trex)
         this.inputHandler.attachKeyboardEvent(this.trex)

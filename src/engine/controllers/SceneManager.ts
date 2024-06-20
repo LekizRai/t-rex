@@ -5,21 +5,14 @@ import Message from './Message'
 
 class SceneManager {
     private canvas: HTMLCanvasElement
-
-    private toAddObjectList: GameObject[]
-    private toRemoveObjectList: GameObject[]
-    private currentScene: Scene
-
+    private sceneList: Scene[]
     private static instance: SceneManager
 
     private constructor() {
         this.canvas = <HTMLCanvasElement>document.createElement('canvas')
         this.canvas.width = window.innerWidth
         this.canvas.height = window.innerHeight
-
-        this.toAddObjectList = []
-        this.toRemoveObjectList = []
-
+        this.sceneList = []
         Drawer.init(this.canvas)
     }
 
@@ -31,41 +24,42 @@ class SceneManager {
     }
 
     public handleInput(message: Message): void {
-        this.currentScene.handleInput(message)
+        this.sceneList.forEach((scene) => {
+            scene.handleInput(message)
+        })
     }
 
     public update(timeInterval: number): void {
-        this.currentScene.update(timeInterval)
-        this.synchronize()
+        this.sceneList.forEach((scene) => {
+            scene.update(timeInterval)
+        })
     }
 
     public render(): void {
-        this.currentScene.render()
+        const drawer: Drawer = Drawer.getInstance()
+        drawer.clear()
+        this.sceneList.forEach((scene) => {
+            if (scene.getActive()) {
+                scene.render()
+            }
+        })
         document.body.appendChild(this.canvas)
     }
 
-    private synchronize(): void {
-        this.toAddObjectList.forEach((obj) => {
-            this.currentScene.addObject(obj)
-        })
-        this.toAddObjectList.length = 0
-
-        this.toRemoveObjectList.forEach((obj) => {
-            this.currentScene.removeObject(obj)
-        })
-        this.toRemoveObjectList.length = 0
+    public addScene(scene: Scene): void {
+        this.sceneList.push(scene)
     }
 
-    public addObjectToScene(obj: GameObject): void {
-        this.toAddObjectList.push(obj)
+    public setSceneStatus(index: number, status: boolean): void {
+        if (index >= 0 && index < this.sceneList.length) {
+            this.sceneList[index].setActive(status)
+        }
     }
 
-    public removeObjectFromScene(obj: GameObject): void {
-        this.toRemoveObjectList.push(obj)
-    }
-
-    public attachScene(scene: Scene): void {
-        this.currentScene = scene
+    public reloadScene(index: number): void {
+        if (index >= 0 && index < this.sceneList.length) {
+            this.sceneList[index].reload()
+        }
     }
 }
 

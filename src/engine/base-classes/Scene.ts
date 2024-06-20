@@ -6,15 +6,17 @@ import InputHandler from '../controllers/InputHandler'
 abstract class Scene {
     protected objectList: GameObject[]
     protected inputHandler: InputHandler
+    protected isActive: boolean
 
     constructor() {
         this.objectList = []
         this.inputHandler = InputHandler.getInstance()
+        this.isActive = true
+        
+        this.setup()
     }
 
     public render(): void {
-        const drawer: Drawer = Drawer.getInstance()
-        drawer.clear()
         this.objectList.forEach((obj) => {
             obj.render()
         })
@@ -22,6 +24,7 @@ abstract class Scene {
 
     public addObject(obj: GameObject): void {
         this.objectList.push(obj)
+        obj.attachScene(this)
     }
 
     public removeObject(obj: GameObject): void {
@@ -31,6 +34,28 @@ abstract class Scene {
         }
     }
 
+    public getActive(): boolean {
+        return this.isActive
+    }
+
+    public setActive(status: boolean): void {
+        if (!this.isActive) {
+            if (status) {
+                this.doTurnedOn()
+            }
+        }
+        else {
+            if (!status) {
+                this.doTurnedOff()
+            }
+        }
+        this.isActive = status
+    }
+
+    public doTurnedOn(): void {}
+    public doTurnedOff(): void {}
+
+    public abstract reload(): void
     public abstract setup(): void
     public abstract handleInput(message: Message): void
     public abstract update(timeInterval: number): void

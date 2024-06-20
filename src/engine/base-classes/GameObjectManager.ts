@@ -4,8 +4,10 @@ import Scene from './Scene'
 
 abstract class GameObjectManager {
     protected sceneManager: SceneManager
-    constructor() {
+    protected scene: Scene
+    constructor(scene: Scene) {
         this.sceneManager = SceneManager.getInstance()
+        this.scene = scene
     }
 
     public abstract spawn(): void

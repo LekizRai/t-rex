@@ -8,8 +8,11 @@ import SceneManager from '../controllers/SceneManager'
 import { TexInfo } from '../types/general'
 import Vector2D from '../utils/Vector2D'
 import GameObjectState from './GameObjectState'
+import Scene from './Scene'
 
 abstract class GameObject {
+    protected scene: Scene
+    
     protected location: Vector2D
     protected state: GameObjectState
     protected colliderList: Collider[]
@@ -113,6 +116,10 @@ abstract class GameObject {
 
     public setPhysicsEffect(status: boolean): void {
         this.rigidBody.setPhysicsEffect(status)
+    }
+
+    public attachScene(scene: Scene): void {
+        this.scene = scene
     }
 
     public isCollied(obj: GameObject): boolean {

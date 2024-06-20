@@ -22,8 +22,8 @@ class Ground extends Image {
                 this.location.getX() + this.getWidth() * 3,
                 this.location.getY()
             )
-            this.sceneManager.addObjectToScene(new Ground(newLocation))
-            this.sceneManager.removeObjectFromScene(this)
+            this.scene.addObject(new Ground(newLocation))
+            this.scene.removeObject(this)
         }
     }
 }
