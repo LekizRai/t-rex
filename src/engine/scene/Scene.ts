@@ -6,10 +6,16 @@ abstract class Scene {
     private isActive: boolean
 
     protected objectList: GameObject[]
+
+    private toAddObjectList: GameObject[]
+    private toRemoveObjectList: GameObject[]
+
     protected inputHandler: InputHandler
 
     constructor() {
         this.objectList = []
+        this.toAddObjectList = []
+        this.toRemoveObjectList = []
         this.inputHandler = InputHandler.getInstance()
         this.isActive = true
 
@@ -17,13 +23,16 @@ abstract class Scene {
     }
 
     public render(): void {
+        this.synchronize()
         this.objectList.forEach((obj) => {
             obj.render()
         })
     }
 
-    public addObject(obj: GameObject): void {
-        this.objectList.push(obj)
+    public synchronize(): void {
+        this.toAddObjectList.forEach((obj) => {
+            this.objectList.push(obj)
+        })
         this.objectList.sort((x, y) => {
             if (x.getZIndex() > y.getZIndex()) {
                 return 1
@@ -32,14 +41,25 @@ abstract class Scene {
             }
             return 0
         })
+        this.toAddObjectList.length = 0
+
+        let index: number
+        this.toRemoveObjectList.forEach((obj) => {
+            index = this.objectList.indexOf(obj)
+            if (index > -1) {
+                this.objectList.splice(index, 1)
+            }
+        })
+        this.toRemoveObjectList.length = 0
+    }
+
+    public addObject(obj: GameObject): void {
+        this.toAddObjectList.push(obj)
         obj.attachScene(this)
     }
 
     public removeObject(obj: GameObject): void {
-        let index: number = this.objectList.indexOf(obj)
-        if (index > -1) {
-            this.objectList.splice(index, 1)
-        }
+        this.toRemoveObjectList.push(obj)
     }
 
     public getActive(): boolean {

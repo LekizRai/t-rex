@@ -68,24 +68,6 @@ abstract class Animation extends GameObject {
                 this.spriteList[this.index].height * this.spriteList[this.index].scale
             )
         }
-
-        // Refining only
-        let boxLocation: Vector2D
-        this.colliderList.forEach((col) => {
-            boxLocation = this.location.add(col.getOrigin())
-            drawer.draw(
-                this.smallBox,
-                0,
-                0,
-                this.smallBox.width,
-                this.smallBox.height,
-                boxLocation.getX(),
-                boxLocation.getY(),
-                col.getWidth(),
-                col.getHeight()
-            )
-        })
-        //
     }
 
     // About sprite

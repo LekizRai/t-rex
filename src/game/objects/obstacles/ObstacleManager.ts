@@ -14,7 +14,7 @@ class ObstacleManager extends GameObjectManager {
         let index: number = utils.randomInt(0, 9)
         if (index >= 8) {
             let status: number = utils.randomInt(0, 9)
-            if (status <= -1) {
+            if (status <= 7) {
                 this.scene.addObject(new Bird(config.BIRD_HIGH_CANVAS_LOCATION))
             } else {
                 this.scene.addObject(new Bird(config.BIRD_LOW_CANVAS_LOCATION))

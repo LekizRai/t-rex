@@ -6,13 +6,14 @@ import RigidBody from '../../../../engine/components/RigidBody'
 import Vector2D from '../../../../engine/types/Vector2D'
 import Message from '../../../../engine/controllers/Message'
 
-const birdSpriteList = [sprite.BIRD_SPRITE[0].clip, sprite.BIRD_SPRITE[1].clip]
-const birdAdjustList = [sprite.BIRD_SPRITE[0].adjust, sprite.BIRD_SPRITE[1].adjust]
+const birdSpriteList = [sprite.BIRD_SPRITE[0].clip,sprite.BIRD_SPRITE[1].clip]
+const birdAdjustList = [sprite.BIRD_SPRITE[0].adjust,sprite.BIRD_SPRITE[1].adjust]
 const birdCollidersList = [
     [new Collider(new Vector2D(0, 0), 18, 12), new Collider(new Vector2D(16, 12), 26, 20)],
     [
         new Collider(new Vector2D(0, 6), 18, 12),
-        new Collider(new Vector2D(16, 0), 26, 20),
+        new Collider(new Vector2D(16, 0), 8, 20),
+        new Collider(new Vector2D(24, 10), 8, 10),
         new Collider(new Vector2D(18, 20), 24, 8),
     ],
 ]

@@ -62,6 +62,7 @@ class PlayScene extends Scene {
             }
 
             if (this.sceneState == state.PLAY) {
+                console.log(window.performance.now())
                 this.objectList.forEach((obj) => {
                     obj.update(timeInterval)
                 })

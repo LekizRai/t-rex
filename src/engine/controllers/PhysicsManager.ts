@@ -28,6 +28,7 @@ class PhysicsManager {
 
     public attach(rig: RigidBody): void {
         this.rigidBodyList.push(rig)
+        // console.log(this.rigidBodyList.length)
     }
 
     public update(timeInterval: number): void {

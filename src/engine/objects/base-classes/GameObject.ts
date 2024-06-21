@@ -27,11 +27,6 @@ abstract class GameObject {
 
     protected tex: TexInfo
 
-    // Refining only
-    protected box: TexInfo
-    protected smallBox: TexInfo
-    //
-
     constructor(location: Vector2D, zIndex?: number) {
         this.location = location.copy()
         this.colliderList = []
@@ -47,11 +42,6 @@ abstract class GameObject {
         } else {
             this.zIndex = 0
         }
-
-        // Refining only
-        this.box = this.resourceManager.getTex(1)
-        this.smallBox = this.resourceManager.getTex(2)
-        //
     }
 
     // About location
