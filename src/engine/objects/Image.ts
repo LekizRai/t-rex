@@ -10,8 +10,7 @@ abstract class Image extends GameObject {
     constructor(location: Vector2D, sprite: SpriteClip, zIndex?: number) {
         if (zIndex) {
             super(location, zIndex)
-        }
-        else {
+        } else {
             super(location)
         }
         this.sprite = sprite
@@ -25,11 +24,26 @@ abstract class Image extends GameObject {
             this.sprite.coor.getY(),
             this.sprite.width,
             this.sprite.height,
-            this.location.getX(),
-            this.location.getY(),
+            this.getX(),
+            this.getY(),
             this.sprite.width * this.sprite.scale,
             this.sprite.height * this.sprite.scale
         )
+
+        // this.getColliderList().forEach((col) => {
+        //     let location = this.getLocation().add(col.getOrigin())
+        //     drawer.draw(
+        //         this.box,
+        //         0,
+        //         0,
+        //         this.box.width,
+        //         this.box.height,
+        //         location.getX(),
+        //         location.getY(),
+        //         col.getWidth(),
+        //         col.getHeight()
+        //     )
+        // })
     }
 
     public setSprite(sprite: SpriteClip): void {

@@ -37,6 +37,11 @@ class Vector2D {
         return returned_vec
     }
 
+    public assign(vec: Vector2D) {
+        this.x = vec.getX()
+        this.y = vec.getY()
+    }
+
     public copy(): Vector2D {
         return new Vector2D(this.x, this.y)
     }

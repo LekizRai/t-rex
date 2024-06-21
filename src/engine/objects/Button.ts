@@ -26,10 +26,10 @@ abstract class Button extends Image {
             const e = message.getEvent()
             if (e instanceof Event) {
                 if (e instanceof MouseEvent) {
-                    if (e.x >= this.location.getX() && e.y >= this.location.getY()) {
+                    if (e.x >= this.getLocation().getX() && e.y >= this.getLocation().getY()) {
                         if (
-                            e.x <= this.location.getX() + this.getWidth() &&
-                            e.y <= this.location.getY() + this.getHeight()
+                            e.x <= this.getLocation().getX() + this.getWidth() &&
+                            e.y <= this.getLocation().getY() + this.getHeight()
                         ) {
                             if (!this.clicked) {
                                 this.callbackList.forEach((callback) => {

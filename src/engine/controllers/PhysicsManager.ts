@@ -28,7 +28,13 @@ class PhysicsManager {
 
     public attach(rig: RigidBody): void {
         this.rigidBodyList.push(rig)
-        // console.log(this.rigidBodyList.length)
+    }
+
+    public detach(rig: RigidBody): void {
+        const index: number = this.rigidBodyList.indexOf(rig)
+        if (index > -1) {
+            this.rigidBodyList.splice(index, 1)
+        }
     }
 
     public update(timeInterval: number): void {

@@ -41,14 +41,10 @@ class TRexRunningState extends GameObjectState {
 
     public handleInput(obj: TRex, message: Message): void {
         const e = message.getEvent()
-        if (e instanceof Event)
+        if (e instanceof Event) {
             if (e instanceof KeyboardEvent && e.type == 'keydown') {
                 if (e.keyCode == key.ARROW_DOWN) {
                     obj.setSpriteList(trexDuckingSpriteList)
-                    let location: Vector2D = config.TREX_CANVAS_LOCATION.add(
-                        sprite.TREX_SPRITES[2].adjust
-                    )
-                    obj.setLocation(location)
                     obj.setState(new TRexDuckingState())
                     obj.setAdjustList(trexDuckingAdjustList)
                     obj.setCollidersList(trexDuckingCollidersList)
@@ -62,6 +58,15 @@ class TRexRunningState extends GameObjectState {
                     }
                 }
             }
+        } else if (e == 'gameover') {
+            const location: Vector2D = config.TREX_CANVAS_LOCATION.add(
+                sprite.TREX_SPRITES[5].adjust
+            )
+            obj.setLocation(location)
+            obj.setState(new TRexDuckingState())
+            obj.setAdjustList(trexDuckingAdjustList)
+            obj.setCollidersList(trexDuckingCollidersList)
+        }
     }
 
     public update(obj: TRex, timeInterval: number): void {
@@ -81,10 +86,6 @@ class TRexDuckingState extends GameObjectState {
                 if (e.keyCode == key.ARROW_DOWN) {
                     if (e.type == 'keyup') {
                         obj.setSpriteList(trexRunningSpriteList)
-                        let location: Vector2D = config.TREX_CANVAS_LOCATION.add(
-                            sprite.TREX_SPRITES[0].adjust
-                        )
-                        obj.setLocation(location)
                         obj.setState(new TRexRunningState())
                         obj.setAdjustList(trexRunningAdjustList)
                         obj.setCollidersList(trexRunningJumpingCollidersList)

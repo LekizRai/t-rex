@@ -11,14 +11,13 @@ import GameObjectState from './GameObjectState'
 import Scene from '../../scene/Scene'
 
 abstract class GameObject {
+    private location: Vector2D
+    private colliderList: Collider[]
+    private rigidBody: RigidBody
     private zIndex: number
+    private state: GameObjectState
 
     protected scene: Scene
-
-    protected location: Vector2D
-    protected state: GameObjectState
-    protected colliderList: Collider[]
-    protected rigidBody: RigidBody
 
     protected inputHandler: InputHandler
     protected sceneManager: SceneManager
@@ -27,6 +26,9 @@ abstract class GameObject {
 
     protected tex: TexInfo
 
+    // For colliders refining
+    protected box: TexInfo
+    
     constructor(location: Vector2D, zIndex?: number) {
         this.location = location.copy()
         this.colliderList = []
@@ -42,6 +44,8 @@ abstract class GameObject {
         } else {
             this.zIndex = 0
         }
+
+        this.box = this.resourceManager.getTex(1)
     }
 
     // About location
@@ -51,6 +55,22 @@ abstract class GameObject {
 
     public setLocation(location: Vector2D): void {
         this.location = location.copy()
+    }
+
+    public getX(): number {
+        return this.location.getX()
+    }
+
+    public setX(x: number): void {
+        this.location.setX(x)
+    }
+
+    public getY(): number {
+        return this.location.getY()
+    }
+
+    public setY(y: number): void {
+        this.location.setY(y)
     }
 
     // About Z index
@@ -71,6 +91,14 @@ abstract class GameObject {
         this.state = state
     }
 
+    public handleInputState(message: Message): void {
+        this.state.handleInput(this, message)
+    }
+
+    public updateState(timeInterval: number): void {
+        this.state.update(this, timeInterval)
+    }
+
     // About collidder list
     public getColliderList(): Collider[] {
         return this.colliderList
@@ -89,10 +117,6 @@ abstract class GameObject {
     }
 
     // About rigid body
-    public setRigidBody(rig: RigidBody): void {
-        this.rigidBody = rig
-    }
-
     public getVelocityX(): number {
         return this.rigidBody.getVelocityX()
     }
@@ -137,7 +161,7 @@ abstract class GameObject {
         this.scene = scene
     }
 
-    public isCollied(obj: GameObject): boolean {
+    public isColliedWith(obj: GameObject): boolean {
         for (let i: number = 0; i < this.colliderList.length; i++) {
             for (let j: number = 0; j < obj.colliderList.length; j++) {
                 let l1: Vector2D
@@ -166,6 +190,11 @@ abstract class GameObject {
             }
         }
         return false
+    }
+
+    public destroy(): void {
+        this.inputHandler.detach(this)
+        this.physicsManager.detach(this.rigidBody)
     }
 
     public abstract handleInput(message: Message): void

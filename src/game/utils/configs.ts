@@ -5,6 +5,8 @@ import Vector2D from '../../engine/types/Vector2D'
 // Accesslation unit is pixels per second squared
 
 const config = {
+    VELOCITY_CHANGING_INTERVAL: 100,
+
     TREX_VELOCITY_X: 0,
     TREX_VELOCITY_Y: 0,
     TREX_JUMPING_VELOCITY: 600,

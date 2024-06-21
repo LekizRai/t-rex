@@ -25,19 +25,18 @@ class TRex extends Animation {
         super(location, config.TREX_CHANGING_INTERVAL, trexRunningSpriteList, zIndex)
         this.tex = this.resourceManager.getTex(0)
 
-        this.state = new TRexState.TRexRunningState()
+        this.setState(new TRexState.TRexRunningState())
 
         this.setAdjustList(trexRunningAdjustList)
         this.setCollidersList(trexRunningJumpingCollidersList)
-        this.setRigidBody(new RigidBody(config.TREX_VELOCITY_X, config.TREX_VELOCITY_Y, 0))
     }
 
     handleInput(message: Message): void {
-        this.state.handleInput(this, message)
+        this.handleInputState(message)
     }
 
     update(timeInterval: number): void {
-        this.state.update(this, timeInterval)
+        this.updateState(timeInterval)
     }
 }
 

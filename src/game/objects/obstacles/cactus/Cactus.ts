@@ -52,16 +52,17 @@ class Cactus extends Image {
         super(newLocation, sprite.CACTUS_SPRITES[index].clip)
         this.tex = this.resourceManager.getTex(0)
         this.setColliderList(cactusCollidersList[index])
-        this.setRigidBody(new RigidBody(config.CACTUS_VELOCITY_X, config.CACTUS_VELOCITY_Y, 0))
+        this.setVelocityX(config.CACTUS_VELOCITY_X)
     }
 
     public handleInput(message: Message): void {}
 
     public update(timeInterval: number): void {
-        let shiftX = this.rigidBody.getShiftX()
-        this.location.setX(this.location.getX() - shiftX)
-        if (this.location.getX() + this.getWidth() < 0) {
+        let shiftX = this.getShiftX()
+        this.setX(this.getX() - shiftX)
+        if (this.getX() + this.getWidth() < 0) {
             this.scene.removeObject(this)
+            this.destroy()
         }
     }
 }

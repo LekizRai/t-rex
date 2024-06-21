@@ -1,15 +1,9 @@
-import SceneManager from '../../controllers/SceneManager'
-import Scene from '../../scene/Scene'
+import GameObject from './GameObject'
 
 abstract class GameObjectManager {
-    protected sceneManager: SceneManager
-    protected scene: Scene
-    constructor(scene: Scene) {
-        this.sceneManager = SceneManager.getInstance()
-        this.scene = scene
-    }
+    constructor() {}
 
-    public abstract spawn(): void
+    public abstract spawn(): GameObject
 }
 
 export default GameObjectManager

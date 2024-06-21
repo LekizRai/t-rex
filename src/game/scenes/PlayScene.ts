@@ -12,6 +12,7 @@ import ScoreBoard from '../objects/scoreboard/ScoreBoard'
 import TRex from '../objects/trex/TRex'
 import GameObject from '../../engine/objects/base-classes/GameObject'
 import ObstacleManager from '../objects/obstacles/ObstacleManager'
+import utils from '../../engine/utils/utils'
 
 const state = {
     PLAY: 'play',
@@ -19,6 +20,8 @@ const state = {
 }
 
 class PlayScene extends Scene {
+    private gameVelocityX: number
+private velocityChangingInterval: number
     private obstacleManager: ObstacleManager
     private obstacleGeneratingInterval: number
 
@@ -35,51 +38,59 @@ class PlayScene extends Scene {
     constructor() {
         super()
         this.obstacleList = []
+        this.velocityChangingInterval = config.VELOCITY_CHANGING_INTERVAL
         this.sceneState = state.PLAY
+        this.gameVelocityX = config.GROUND_VELOCITY_X
     }
 
     public handleInput(message: Message) {}
 
     public update(timeInterval: number): void {
         if (this.sceneState == state.PLAY) {
-            for (let i: number = 0; i < this.objectList.length; i++) {
-                if (this.objectList[i] instanceof TRex) {
-                    for (let j: number = 0; j < this.objectList.length; j++) {
-                        if (
-                            this.objectList[j] instanceof Cactus ||
-                            this.objectList[j] instanceof Bird
-                        ) {
-                            if (this.objectList[i].isCollied(this.objectList[j])) {
-                                this.sceneState = state.GAMEOVER
-                                SceneManager.getInstance().setSceneStatus(1, true)
-                                SceneManager.getInstance().reloadScene(1)
-                                break
-                            }
-                        }
-                    }
+            for (let i: number = 0; i < this.obstacleList.length; i++) {
+                if (this.trex.isColliedWith(this.obstacleList[i])) {
+                    this.sceneState = state.GAMEOVER
+                    SceneManager.getInstance().setSceneStatus(1, true)
+                    SceneManager.getInstance().reloadScene(1)
                     break
                 }
             }
+        }
 
-            if (this.sceneState == state.PLAY) {
-                console.log(window.performance.now())
-                this.objectList.forEach((obj) => {
-                    obj.update(timeInterval)
+        if (this.sceneState == state.PLAY) {
+            this.objectList.forEach((obj) => {
+                obj.update(timeInterval)
+            })
+
+            if (this.velocityChangingInterval - timeInterval < 0) {
+                this.velocityChangingInterval = config.VELOCITY_CHANGING_INTERVAL
+                // this.gameVelocityX += 1
+                this.getObjectList().forEach((obj) => {
+                    if (obj instanceof Cactus || obj instanceof Bird || obj instanceof Ground) {
+                        obj.setVelocityX(this.gameVelocityX)
+                    }
                 })
+            }
+            else {
+                this.velocityChangingInterval -= timeInterval
+            }
 
-                if (this.obstacleGeneratingInterval - timeInterval < 0) {
-                    this.obstacleGeneratingInterval = config.OBSTACLE_GENERATING_INTERVAL
-                    this.obstacleManager.spawn()
-                } else {
-                    this.obstacleGeneratingInterval -= timeInterval
-                }
+            if (this.obstacleGeneratingInterval - timeInterval < 0) {
+                let timeShift: number = utils.randomInt(-500, 500)
+                this.obstacleGeneratingInterval = config.OBSTACLE_GENERATING_INTERVAL + timeShift
+                const newObstacle: GameObject = this.obstacleManager.spawn()
+                this.addObject(newObstacle)
+                this.obstacleList.push(newObstacle)
+            } else {
+                this.obstacleGeneratingInterval -= timeInterval
+            }
 
-                if (this.cloudGeneratingInterval - timeInterval < 0) {
-                    this.cloudGeneratingInterval = config.CLOUD_GENERATING_INTERVAL
-                    this.cloudManager.spawn()
-                } else {
-                    this.cloudGeneratingInterval -= timeInterval
-                }
+            if (this.cloudGeneratingInterval - timeInterval < 0) {
+                this.cloudGeneratingInterval = config.CLOUD_GENERATING_INTERVAL
+                const newCloud: GameObject = this.cloudManager.spawn()
+                this.addObject(newCloud)
+            } else {
+                this.cloudGeneratingInterval -= timeInterval
             }
         }
     }
@@ -87,13 +98,17 @@ class PlayScene extends Scene {
     public reload(): void {
         this.sceneState = state.PLAY
 
+        this.objectList.forEach((obj) => {
+            if (!(obj instanceof TRex) && !(obj instanceof ScoreBoard)) {
+                obj.destroy()
+            }
+        })
         this.objectList.length = 0
+
+        this.obstacleList.length = 0
 
         this.obstacleGeneratingInterval = config.OBSTACLE_GENERATING_INTERVAL
         this.cloudGeneratingInterval = config.CLOUD_GENERATING_INTERVAL
-
-        this.addObject(new Cactus(config.CACTUS_CANVAS_LOCATION))
-        this.addObject(new Cloud(config.CLOUD_CANVAS_LOCATION))
 
         let location = config.GROUND_CANVAS_LOCATION.copy()
         let ground: Ground
@@ -110,13 +125,11 @@ class PlayScene extends Scene {
     }
 
     public setup(): void {
-        this.obstacleManager = new ObstacleManager(this)
+        this.obstacleManager = new ObstacleManager()
         this.obstacleGeneratingInterval = config.OBSTACLE_GENERATING_INTERVAL
 
-        this.cloudManager = new CloudManager(this)
+        this.cloudManager = new CloudManager()
         this.cloudGeneratingInterval = config.CLOUD_GENERATING_INTERVAL
-
-        this.addObject(new Cloud(config.CLOUD_CANVAS_LOCATION))
 
         let location = config.GROUND_CANVAS_LOCATION
         let ground: Ground

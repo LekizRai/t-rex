@@ -11,6 +11,7 @@ class TRexGameManager extends GameManager {
 
     protected setup(): void {
         this.resourceManager.loadImage('trex-sprites.png')
+        this.resourceManager.loadImage('small-red-square.png')
 
         this.physicsManager.setAccelerationX(0)
         this.physicsManager.setAccelerationY(config.TREX_JUMPING_ACCESSLATION)

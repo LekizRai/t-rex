@@ -9,6 +9,7 @@ abstract class Animation extends GameObject {
     private adjustList: Vector2D[]
     private collidersList: Collider[][]
 
+    private previousShift: Vector2D
     private index: number
     private changingInterval: number
     private remainingInterval: number
@@ -25,6 +26,7 @@ abstract class Animation extends GameObject {
         } else {
             super(location)
         }
+        this.previousShift = new Vector2D(0, 0)
         this.spriteList = spriteList
         this.adjustList = []
         this.collidersList = []
@@ -37,15 +39,16 @@ abstract class Animation extends GameObject {
         if (this.spriteList.length > 0) {
             if (this.remainingInterval < 0) {
                 this.remainingInterval = this.changingInterval
-                if (this.index >= 0 && this.index < this.adjustList.length) {
-                    this.location = this.location.sub(this.adjustList[this.index])
-                }
+
+                this.setLocation(this.getLocation().sub(this.previousShift))
                 this.index = (this.index + 1) % this.spriteList.length
                 if (this.index >= 0 && this.index < this.adjustList.length) {
-                    this.location = this.location.add(this.adjustList[this.index])
+                    this.setLocation(this.getLocation().add(this.adjustList[this.index]))
+                    this.previousShift = this.adjustList[this.index]
                 }
+
                 if (this.index >= 0 && this.index < this.collidersList.length) {
-                    this.colliderList = this.collidersList[this.index]
+                    this.setColliderList(this.collidersList[this.index])
                 }
             } else {
                 this.remainingInterval -= timeInterval
@@ -56,17 +59,36 @@ abstract class Animation extends GameObject {
     public render(): void {
         const drawer: Drawer = Drawer.getInstance()
         if (this.spriteList.length > 0) {
+            let newLocation: Vector2D = this.getLocation()
+            if (this.index >= 0 && this.index < this.adjustList.length) {
+                newLocation = newLocation.add(this.adjustList[this.index])
+            }
             drawer.draw(
                 this.tex,
                 this.spriteList[this.index].coor.getX(),
                 this.spriteList[this.index].coor.getY(),
                 this.spriteList[this.index].width,
                 this.spriteList[this.index].height,
-                this.location.getX(),
-                this.location.getY(),
+                this.getX(),
+                this.getY(),
                 this.spriteList[this.index].width * this.spriteList[this.index].scale,
                 this.spriteList[this.index].height * this.spriteList[this.index].scale
             )
+
+            // this.getColliderList().forEach((col) => {
+            //     let location = this.getLocation().add(col.getOrigin())
+            //     drawer.draw(
+            //         this.box,
+            //         0,
+            //         0,
+            //         this.box.width,
+            //         this.box.height,
+            //         location.getX(),
+            //         location.getY(),
+            //         col.getWidth(),
+            //         col.getHeight()
+            //     )
+            // })
         }
     }
 
@@ -77,16 +99,26 @@ abstract class Animation extends GameObject {
 
     public setSpriteList(spriteList: SpriteClip[]): void {
         this.index = 0
+        this.setLocation(this.getLocation().sub(this.previousShift))
+        if (this.index >= 0 && this.index < this.adjustList.length) {
+            this.setLocation(this.getLocation().add(this.adjustList[this.index]))
+            this.previousShift = this.adjustList[this.index]
+        }
         this.spriteList = spriteList
     }
 
     public setAdjustList(adjustList: Vector2D[]): void {
         this.adjustList = adjustList
+        this.setLocation(this.getLocation().sub(this.previousShift))
+        if (this.index >= 0 && this.index < this.adjustList.length) {
+            this.setLocation(this.getLocation().add(this.adjustList[this.index]))
+            this.previousShift = this.adjustList[this.index]
+        }
     }
 
     public setCollidersList(collidersList: Collider[][]): void {
         if (collidersList.length > 0) {
-            this.colliderList = collidersList[0]
+            this.setColliderList(collidersList[0])
         }
         this.collidersList = collidersList
     }

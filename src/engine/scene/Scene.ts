@@ -70,6 +70,18 @@ abstract class Scene {
         this.isActive = status
     }
 
+    public getObjectList(): GameObject[] {
+        return this.objectList
+    }
+
+    public setObjectList(objectList: GameObject[]): void {
+        this.objectList = objectList
+    }
+
+    public clearObjectList(): void {
+        this.objectList.length = 0
+    }
+
     public abstract reload(): void
     public abstract setup(): void
     public abstract handleInput(message: Message): void

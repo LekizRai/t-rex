@@ -31,8 +31,8 @@ abstract class Text extends GameObject {
                 spr.coor.getY(),
                 spr.width,
                 spr.height,
-                this.location.getX() + shift,
-                this.location.getY(),
+                this.getX() + shift,
+                this.getY(),
                 spr.width * spr.scale,
                 spr.height * spr.scale
             )
