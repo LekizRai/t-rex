@@ -1,5 +1,4 @@
 import GameObjectManager from '../../../engine/objects/base-classes/GameObjectManager'
-import Scene from '../../../engine/scene/Scene'
 import config from '../../utils/configs'
 import Cactus from './cactus/Cactus'
 import Bird from './bird/Bird'

@@ -199,7 +199,7 @@ abstract class GameObject {
 
     public abstract handleInput(message: Message): void
     public abstract update(timeInterval: number): void
-    public abstract render(): void
+    public render(): void {}
 }
 
 export default GameObject

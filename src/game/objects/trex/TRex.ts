@@ -3,7 +3,6 @@ import config from '../../utils/configs'
 import TRexState from './TRexState'
 import Animation from '../../../engine/objects/Animation'
 import Collider from '../../../engine/components/Collider'
-import RigidBody from '../../../engine/components/RigidBody'
 import Vector2D from '../../../engine/types/Vector2D'
 import Message from '../../../engine/controllers/Message'
 

@@ -6,14 +6,6 @@ import GameOver from '../objects/gameover/GameOver'
 import ReplayButton from '../objects/gameover/ReplayButton'
 import sprite from '../utils/sprites'
 
-// => clear full => resize canvas => viewport
-
-const state = {
-    PLAY: 'play',
-    GAMEOVER: 'gameover',
-    PAUSED: 'paused',
-}
-
 class GameoverScene extends Scene {
     private gameOver: GameOver
     private replayButton: ReplayButton

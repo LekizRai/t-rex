@@ -34,6 +34,9 @@ const trexDuckingCollidersList = [trexDuckingColliderList, trexDuckingColliderLi
 const trexJumpingSpriteList = [sprite.TREX_SPRITES[4].clip]
 const trexJumpingAdjustList = [sprite.TREX_SPRITES[4].adjust]
 
+const trexBlinkingSpriteList = [sprite.TREX_SPRITES[6].clip, sprite.TREX_SPRITES[7].clip]
+const trexBlinkingAdjustList = [sprite.TREX_SPRITES[6].adjust, sprite.TREX_SPRITES[7].adjust]
+
 class TRexRunningState extends GameObjectState {
     constructor() {
         super()
@@ -44,28 +47,24 @@ class TRexRunningState extends GameObjectState {
         if (e instanceof Event) {
             if (e instanceof KeyboardEvent && e.type == 'keydown') {
                 if (e.keyCode == key.ARROW_DOWN) {
-                    obj.setSpriteList(trexDuckingSpriteList)
                     obj.setState(new TRexDuckingState())
+                    obj.setSpriteList(trexDuckingSpriteList)
                     obj.setAdjustList(trexDuckingAdjustList)
                     obj.setCollidersList(trexDuckingCollidersList)
                 } else if (e.keyCode == key.SPACE || e.keyCode == key.ARROW_UP) {
                     if (!e.repeat) {
-                        obj.setSpriteList(trexJumpingSpriteList)
                         obj.setState(new TRexJumpingState())
-                        obj.setVelocityY(config.TREX_JUMPING_VELOCITY)
+                        obj.setSpriteList(trexJumpingSpriteList)
                         obj.setAdjustList(trexJumpingAdjustList)
+                        obj.setVelocityY(config.TREX_JUMPING_VELOCITY)
                         obj.setAccelerationEffect(true)
                     }
                 }
             }
         } else if (e == 'gameover') {
-            const location: Vector2D = config.TREX_CANVAS_LOCATION.add(
-                sprite.TREX_SPRITES[5].adjust
-            )
-            obj.setLocation(location)
-            obj.setState(new TRexDuckingState())
-            obj.setAdjustList(trexDuckingAdjustList)
-            obj.setCollidersList(trexDuckingCollidersList)
+            obj.setState(new TRexGameOverState())
+            obj.setSpriteList(trexBlinkingSpriteList)
+            obj.setAdjustList(trexBlinkingAdjustList)
         }
     }
 
@@ -81,17 +80,22 @@ class TRexDuckingState extends GameObjectState {
 
     public handleInput(obj: TRex, message: Message): void {
         const e = message.getEvent()
-        if (e instanceof Event)
+        if (e instanceof Event) {
             if (e instanceof KeyboardEvent) {
                 if (e.keyCode == key.ARROW_DOWN) {
                     if (e.type == 'keyup') {
-                        obj.setSpriteList(trexRunningSpriteList)
                         obj.setState(new TRexRunningState())
+                        obj.setSpriteList(trexRunningSpriteList)
                         obj.setAdjustList(trexRunningAdjustList)
                         obj.setCollidersList(trexRunningJumpingCollidersList)
                     }
                 }
             }
+        } else if (e == 'gameover') {
+            obj.setState(new TRexGameOverState())
+            obj.setSpriteList(trexBlinkingSpriteList)
+            obj.setAdjustList(trexBlinkingAdjustList)
+        }
     }
 
     public update(obj: TRex, timeInterval: number): void {
@@ -103,7 +107,15 @@ class TRexJumpingState extends GameObjectState {
     constructor() {
         super()
     }
-    public handleInput(obj: GameObject, message: Message): void {}
+
+    public handleInput(obj: TRex, message: Message): void {
+        const e = message.getEvent()
+        if (e == 'gameover') {
+            obj.setState(new TRexGameOverState())
+            obj.setSpriteList(trexBlinkingSpriteList)
+            obj.setAdjustList(trexBlinkingAdjustList)
+        }
+    }
 
     public update(obj: TRex, timeInterval: number): void {
         obj.animate(timeInterval)
@@ -130,7 +142,16 @@ class TRexGameOverState extends GameObjectState {
         super()
     }
 
-    public handleInput(obj: TRex, message: Message): void {}
+    public handleInput(obj: TRex, message: Message): void {
+        const e = message.getEvent()
+        if (e == 'replay') {
+            obj.setY(370)
+            obj.setState(new TRexRunningState())
+            obj.setSpriteList(trexRunningSpriteList)
+            obj.setAdjustList(trexRunningAdjustList)
+            obj.setCollidersList(trexRunningJumpingCollidersList)
+        }
+    }
 
     public update(obj: TRex, timeInterval: number): void {
         obj.animate(timeInterval)
