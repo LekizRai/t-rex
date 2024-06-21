@@ -144,12 +144,31 @@ class TRexGameOverState extends GameObjectState {
 
     public handleInput(obj: TRex, message: Message): void {
         const e = message.getEvent()
-        if (e == 'replay') {
+        if (e == 'play') {
             obj.setY(370)
             obj.setState(new TRexRunningState())
             obj.setSpriteList(trexRunningSpriteList)
             obj.setAdjustList(trexRunningAdjustList)
             obj.setCollidersList(trexRunningJumpingCollidersList)
+        }
+    }
+
+    public update(obj: TRex, timeInterval: number): void {
+        obj.animate(timeInterval)
+    }
+}
+
+class TRexStartState extends GameObjectState {
+    constructor() {
+        super()
+    }
+
+    public handleInput(obj: TRex, message: Message): void {
+        const e = message.getEvent()
+        if (e instanceof Event) {
+            if (e instanceof MouseEvent) {
+
+            }
         }
     }
 

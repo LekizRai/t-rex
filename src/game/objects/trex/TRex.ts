@@ -20,8 +20,12 @@ const trexRunningJumpingCollidersList = [
 ]
 
 class TRex extends Animation {
-    constructor(location: Vector2D, zIndex: number) {
-        super(location, config.TREX_CHANGING_INTERVAL, trexRunningSpriteList, zIndex)
+    constructor(location: Vector2D, zIndex?: number) {
+        if (zIndex) {
+            super(location, config.TREX_CHANGING_INTERVAL, trexRunningSpriteList, zIndex)
+        } else {
+            super(location, config.TREX_CHANGING_INTERVAL, trexRunningSpriteList)
+        }
         this.tex = this.resourceManager.getTex(0)
 
         this.setState(new TRexState.TRexRunningState())

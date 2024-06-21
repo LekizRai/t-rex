@@ -1,5 +1,7 @@
 import Message from '../../engine/controllers/Message'
 import Scene from '../../engine/scene/Scene'
+import TRex from '../objects/trex/TRex'
+import config from '../utils/configs'
 
 class StartScene extends Scene {
     public handleInput(message: Message): void {}
