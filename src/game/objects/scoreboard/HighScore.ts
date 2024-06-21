@@ -5,7 +5,7 @@ import sprite from '../../utils/sprites'
 
 class HighScore extends Text {
     constructor() {
-        super(new Vector2D(985, 260))
+        super(new Vector2D(785, 182))
         this.tex = this.resourceManager.getTex(0)
         this.setContent('00000')
     }

@@ -21,7 +21,9 @@ class Ground extends Image {
                 this.getX() + this.getWidth() * 3,
                 this.getY()
             )
-            this.scene.addObject(new Ground(newLocation))
+            const newGround: Ground = new Ground(newLocation)
+            newGround.setVelocityX(this.getVelocityX())
+            this.scene.addObject(newGround)
             this.scene.removeObject(this)
             this.destroy()
         }

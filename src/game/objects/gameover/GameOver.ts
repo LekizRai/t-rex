@@ -5,7 +5,7 @@ import sprite from '../../utils/sprites'
 
 class GameOver extends Text {
     constructor() {
-        super(new Vector2D(550, 250))
+        super(new Vector2D(350, 182))
         this.tex = this.resourceManager.getTex(0)
         this.setContent('GAMEOVER')
     }

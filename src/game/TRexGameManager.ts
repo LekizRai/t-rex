@@ -21,6 +21,8 @@ class TRexGameManager extends GameManager {
         gameoverScene.setActive(false)
         this.sceneManager.addScene(playScene)
         this.sceneManager.addScene(gameoverScene)
+        this.sceneManager.setSceneWidth(1000)
+        this.sceneManager.setSceneHeight(500)
 
         this.inputHandler.addEventListener('keydown')
         this.inputHandler.addEventListener('keyup')

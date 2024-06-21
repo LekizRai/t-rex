@@ -123,8 +123,8 @@ class TRexJumpingState extends GameObjectState {
         let shiftY = obj.getShiftY()
 
         let location = obj.getLocation().copy()
-        if (location.getY() - shiftY > 370 || location.getY() < 0) {
-            location.setY(370)
+        if (location.getY() - shiftY > config.TREX_CANVAS_LOCATION.getY() || location.getY() < 0) {
+            location.setY(config.TREX_CANVAS_LOCATION.getY())
             obj.setSpriteList(trexRunningSpriteList)
             obj.setLocation(location)
             obj.setVelocityY(0)
@@ -145,7 +145,7 @@ class TRexGameOverState extends GameObjectState {
     public handleInput(obj: TRex, message: Message): void {
         const e = message.getEvent()
         if (e == 'play') {
-            obj.setY(370)
+            obj.setY(config.TREX_CANVAS_LOCATION.getY())
             obj.setState(new TRexRunningState())
             obj.setSpriteList(trexRunningSpriteList)
             obj.setAdjustList(trexRunningAdjustList)

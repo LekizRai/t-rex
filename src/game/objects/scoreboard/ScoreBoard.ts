@@ -11,8 +11,12 @@ class ScoreBoard extends GameObject {
     private currentPoint: CurrentScore
     private HI: HI
 
-    constructor(location: Vector2D) {
-        super(location)
+    constructor(location: Vector2D, zIndex?: number) {
+        if (zIndex) {
+            super(location, zIndex)
+        } else {
+            super(location)
+        }
         this.highPoint = new HighScore()
         this.currentPoint = new CurrentScore(config.SCOREBOARD_SCORE_CHANGING_INTERVAL)
         this.HI = new HI()

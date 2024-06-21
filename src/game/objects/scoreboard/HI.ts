@@ -5,7 +5,7 @@ import sprite from '../../utils/sprites'
 
 class HI extends Text {
     constructor() {
-        super(new Vector2D(950, 260))
+        super(new Vector2D(750, 182))
         this.tex = this.resourceManager.getTex(0)
         this.setContent('HI')
     }

@@ -50,6 +50,14 @@ class SceneManager {
         this.sceneList.push(scene)
     }
 
+    public setSceneWidth(width: number): void {
+        this.canvas.width = width
+    }
+
+    public setSceneHeight(height: number): void {
+        this.canvas.height = height
+    }
+
     public setSceneStatus(index: number, status: boolean): void {
         if (index >= 0 && index < this.sceneList.length) {
             this.sceneList[index].setActive(status)

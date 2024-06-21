@@ -10,6 +10,8 @@ import TRex from '../objects/trex/TRex'
 import GameObject from '../../engine/objects/base-classes/GameObject'
 import ObstacleManager from '../objects/obstacles/ObstacleManager'
 import utils from '../../engine/utils/utils'
+import Bird from '../objects/obstacles/bird/Bird'
+import Cactus from '../objects/obstacles/cactus/Cactus'
 
 const state = {
     PLAY: 'play',
@@ -17,8 +19,8 @@ const state = {
 }
 
 class PlayScene extends Scene {
-    // private gameVelocityX: number
-    // private velocityChangingInterval: number
+    private gameVelocityX: number
+    private velocityChangingInterval: number
     private obstacleManager: ObstacleManager
     private obstacleGeneratingInterval: number
 
@@ -36,8 +38,8 @@ class PlayScene extends Scene {
         super()
         this.obstacleList = []
         this.sceneState = state.PLAY
-        // this.gameVelocityX = config.GROUND_VELOCITY_X
-        // this.velocityChangingInterval = config.VELOCITY_CHANGING_INTERVAL
+        this.gameVelocityX = config.GROUND_VELOCITY_X
+        this.velocityChangingInterval = config.VELOCITY_CHANGING_INTERVAL
     }
 
     public handleInput(message: Message) {}
@@ -60,23 +62,25 @@ class PlayScene extends Scene {
                 obj.update(timeInterval)
             })
 
-            // if (this.velocityChangingInterval - timeInterval < 0) {
-            //     this.velocityChangingInterval = config.VELOCITY_CHANGING_INTERVAL
-            //     // this.gameVelocityX += 1
-            //     this.getObjectList().forEach((obj) => {
-            //         if (obj instanceof Cactus || obj instanceof Bird || obj instanceof Ground) {
-            //             obj.setVelocityX(this.gameVelocityX)
-            //         }
-            //     })
-            // }
-            // else {
-            //     this.velocityChangingInterval -= timeInterval
-            // }
+            if (this.velocityChangingInterval - timeInterval < 0) {
+                this.velocityChangingInterval = config.VELOCITY_CHANGING_INTERVAL
+                this.gameVelocityX += 1
+                this.getObjectList().forEach((obj) => {
+                    if (obj instanceof Cactus || obj instanceof Bird || obj instanceof Ground) {
+                        obj.setVelocityX(this.gameVelocityX)
+                    }
+                })
+            }
+            else {
+                this.velocityChangingInterval -= timeInterval
+            }
 
             if (this.obstacleGeneratingInterval - timeInterval < 0) {
                 let timeShift: number = utils.randomInt(-500, 500)
                 this.obstacleGeneratingInterval = config.OBSTACLE_GENERATING_INTERVAL + timeShift
+                this.obstacleGeneratingInterval = Math.floor(this.obstacleGeneratingInterval * 450 / this.gameVelocityX)
                 const newObstacle: GameObject = this.obstacleManager.spawn()
+                newObstacle.setZIndex(1)
                 this.addObject(newObstacle)
                 this.obstacleList.push(newObstacle)
             } else {
@@ -95,6 +99,7 @@ class PlayScene extends Scene {
 
     public reload(): void {
         this.sceneState = state.PLAY
+        this.gameVelocityX = config.GROUND_VELOCITY_X
 
         this.objectList.forEach((obj) => {
             if (!(obj instanceof TRex) && !(obj instanceof ScoreBoard)) {
@@ -138,10 +143,10 @@ class PlayScene extends Scene {
             location = new Vector2D(location.getX() + ground.getWidth(), location.getY())
         }
 
-        this.scoreBoard = new ScoreBoard(config.SCOREBOARD_CANVAS_LOCATION)
+        this.scoreBoard = new ScoreBoard(config.SCOREBOARD_CANVAS_LOCATION, 1)
         this.addObject(this.scoreBoard)
 
-        this.trex = new TRex(config.TREX_CANVAS_LOCATION, 1)
+        this.trex = new TRex(config.TREX_CANVAS_LOCATION, 2)
         this.addObject(this.trex)
         this.inputHandler.attachKeyboardEvent(this.trex)
     }

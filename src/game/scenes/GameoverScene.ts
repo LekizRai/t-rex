@@ -24,7 +24,7 @@ class GameoverScene extends Scene {
 
     public setup(): void {
         this.gameOver = new GameOver()
-        this.replayButton = new ReplayButton(new Vector2D(680, 300), sprite.PLAY_BUTTON_SPRITE.clip, 2)
+        this.replayButton = new ReplayButton(new Vector2D(480, 230), sprite.PLAY_BUTTON_SPRITE.clip, 2)
         this.inputHandler.attachMouseEvent(this.replayButton)
         this.replayButton.setActive(true)
         this.replayButton.attach(() => {
