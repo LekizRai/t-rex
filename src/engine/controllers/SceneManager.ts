@@ -39,9 +39,7 @@ class SceneManager {
         const drawer: Drawer = Drawer.getInstance()
         drawer.clear()
         this.sceneList.forEach((scene) => {
-            if (scene.getActive()) {
-                scene.render()
-            }
+            scene.render()
         })
         document.body.appendChild(this.canvas)
     }
@@ -58,15 +56,44 @@ class SceneManager {
         this.canvas.height = height
     }
 
-    public setSceneStatus(index: number, status: boolean): void {
-        if (index >= 0 && index < this.sceneList.length) {
-            this.sceneList[index].setActive(status)
-        }
-    }
+    // public setSceneStatus(index: number, status: boolean): void {
+    //     if (index >= 0 && index < this.sceneList.length) {
+    //         this.sceneList[index].setActive(status)
+    //     }
+    // }
 
     public reloadScene(index: number): void {
         if (index >= 0 && index < this.sceneList.length) {
+            this.sceneList[index].setIsRendered(true)
+            this.sceneList[index].setIsUpdated(true)
             this.sceneList[index].reload()
+        }
+    }
+
+    public startScene(index: number): void {
+        if (index >= 0 && index < this.sceneList.length) {
+            this.sceneList[index].setIsRendered(true)
+            this.sceneList[index].setIsUpdated(true)
+            this.sceneList[index].reload()
+        }
+    }
+
+    public stopScene(index: number): void {
+        if (index >= 0 && index < this.sceneList.length) {
+            this.sceneList[index].setIsRendered(false)
+            this.sceneList[index].setIsUpdated(false)
+        }
+    }
+
+    public pauseScene(index: number): void {
+        if (index >= 0 && index < this.sceneList.length) {
+            this.sceneList[index].setIsUpdated(false)
+        }
+    }
+
+    public resumeScene(index: number): void {
+        if (index >= 0 && index < this.sceneList.length) {
+            this.sceneList[index].setIsUpdated(true)
         }
     }
 }

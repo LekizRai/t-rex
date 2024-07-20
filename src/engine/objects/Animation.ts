@@ -13,7 +13,6 @@ abstract class Animation extends GameObject {
     private index: number
     private changingInterval: number
     private remainingInterval: number
-    protected tex: TexInfo
 
     constructor(
         location: Vector2D,
@@ -57,38 +56,25 @@ abstract class Animation extends GameObject {
     }
 
     public render(): void {
-        const drawer: Drawer = Drawer.getInstance()
-        if (this.spriteList.length > 0) {
-            let newLocation: Vector2D = this.getLocation()
-            if (this.index >= 0 && this.index < this.adjustList.length) {
-                newLocation = newLocation.add(this.adjustList[this.index])
+        if (this.getIsRendered()) {
+            const drawer: Drawer = Drawer.getInstance()
+            if (this.spriteList.length > 0) {
+                let newLocation: Vector2D = this.getLocation()
+                if (this.index >= 0 && this.index < this.adjustList.length) {
+                    newLocation = newLocation.add(this.adjustList[this.index])
+                }
+                drawer.draw(
+                    this.getTex(),
+                    this.spriteList[this.index].coor.getX(),
+                    this.spriteList[this.index].coor.getY(),
+                    this.spriteList[this.index].width,
+                    this.spriteList[this.index].height,
+                    this.getX(),
+                    this.getY(),
+                    this.spriteList[this.index].width * this.spriteList[this.index].scale,
+                    this.spriteList[this.index].height * this.spriteList[this.index].scale
+                )
             }
-            drawer.draw(
-                this.tex,
-                this.spriteList[this.index].coor.getX(),
-                this.spriteList[this.index].coor.getY(),
-                this.spriteList[this.index].width,
-                this.spriteList[this.index].height,
-                this.getX(),
-                this.getY(),
-                this.spriteList[this.index].width * this.spriteList[this.index].scale,
-                this.spriteList[this.index].height * this.spriteList[this.index].scale
-            )
-
-            // this.getColliderList().forEach((col) => {
-            //     let location = this.getLocation().add(col.getOrigin())
-            //     drawer.draw(
-            //         this.box,
-            //         0,
-            //         0,
-            //         this.box.width,
-            //         this.box.height,
-            //         location.getX(),
-            //         location.getY(),
-            //         col.getWidth(),
-            //         col.getHeight()
-            //     )
-            // })
         }
     }
 

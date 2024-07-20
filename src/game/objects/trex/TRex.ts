@@ -2,44 +2,55 @@ import sprite from '../../utils/sprites'
 import config from '../../utils/configs'
 import TRexState from './TRexState'
 import Animation from '../../../engine/objects/Animation'
-import Collider from '../../../engine/components/Collider'
 import Vector2D from '../../../engine/types/Vector2D'
 import Message from '../../../engine/controllers/Message'
+import GameObject from '../../../engine/objects/base-classes/GameObject'
 
-const trexRunningSpriteList = [sprite.TREX_SPRITES[0].clip, sprite.TREX_SPRITES[1].clip]
-const trexRunningAdjustList = [sprite.TREX_SPRITES[0].adjust, sprite.TREX_SPRITES[1].adjust]
-const trexRunningJumpingColliderList = [
-    new Collider(new Vector2D(20, 0), 22, 12),
-    new Collider(new Vector2D(0, 11), 39, 13),
-    new Collider(new Vector2D(4, 24), 27, 10),
-    new Collider(new Vector2D(10, 34), 15, 10),
-]
-const trexRunningJumpingCollidersList = [
-    trexRunningJumpingColliderList,
-    trexRunningJumpingColliderList,
-]
+const trexStartSpriteList = [sprite.TREX_SPRITES[7].clip]
+const trexStartAdjustList = [sprite.TREX_SPRITES[7].adjust]
 
 class TRex extends Animation {
+    private onCollideWithDictionary: {[obj: string]: (() => void)[]}
+    private onCollideWithList: GameObject[]
+
     constructor(location: Vector2D, zIndex?: number) {
         if (zIndex) {
-            super(location, config.TREX_CHANGING_INTERVAL, trexRunningSpriteList, zIndex)
+            super(location, config.TREX_CHANGING_INTERVAL, trexStartSpriteList, zIndex)
         } else {
-            super(location, config.TREX_CHANGING_INTERVAL, trexRunningSpriteList)
+            super(location, config.TREX_CHANGING_INTERVAL, trexStartSpriteList)
         }
-        this.tex = this.resourceManager.getTex(0)
+        this.setTex(this.resourceManager.getTex(0))
 
-        this.setState(new TRexState.TRexRunningState())
+        this.setState(new TRexState.TRexStartState())
+        this.setAdjustList(trexStartAdjustList)
 
-        this.setAdjustList(trexRunningAdjustList)
-        this.setCollidersList(trexRunningJumpingCollidersList)
+        this.onCollideWithDictionary = {}
+        this.onCollideWithList = []
     }
 
-    handleInput(message: Message): void {
+    public handleInput(message: Message): void {
         this.handleInputState(message)
     }
 
-    update(timeInterval: number): void {
+    public update(timeInterval: number): void {
         this.updateState(timeInterval)
+        this.onCollideWithList.forEach((obj: GameObject) => {
+            if (this.isColliedWith(obj)) {
+                this.onCollideWithDictionary[JSON.stringify(obj)].forEach((callback: () => void) => {
+                    callback()
+                })
+            }
+        })
+    }
+
+    public onCollideWith(obj: GameObject, callback: () => void): void {
+        if (!this.onCollideWithDictionary[JSON.stringify(obj)]) {
+            this.onCollideWithDictionary[JSON.stringify(obj)] = []
+        }
+        this.onCollideWithDictionary[JSON.stringify(obj)].push(callback)
+        if (this.onCollideWithList.indexOf(obj) < 0) {
+            this.onCollideWithList.push(obj)
+        }
     }
 }
 

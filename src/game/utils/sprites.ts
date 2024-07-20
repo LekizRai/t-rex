@@ -86,7 +86,7 @@ const sprite = {
             adjust: new Vector2D(0, 0),
         },
         {
-            // start TRex
+            // Start TRex
             clip: { coor: new Vector2D(78, 6), width: 88, height: 92, scale: 0.5 } as SpriteClip,
             adjust: new Vector2D(0, 0),
         },

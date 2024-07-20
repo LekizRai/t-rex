@@ -13,7 +13,7 @@ class ReplayButton extends Button {
         else {
             super(location, sprite)
         }
-        this.tex = this.resourceManager.getTex(0)
+        this.setTex(this.resourceManager.getTex(0))
     }
 
     public update(timeInterval: number): void {}

@@ -7,7 +7,7 @@ import Message from '../../../engine/controllers/Message'
 class Ground extends Image {
     constructor(location: Vector2D) {
         super(location, sprite.GROUND_SPRITE.clip)
-        this.tex = this.resourceManager.getTex(0)
+        this.setTex(this.resourceManager.getTex(0))
         this.setVelocityX(config.GROUND_VELOCITY_X)
     }
 
@@ -16,17 +16,6 @@ class Ground extends Image {
     public update(timeInterval: number): void {
         let shiftX: number = this.getShiftX()
         this.setX(this.getX() - shiftX)
-        if (this.getX() + this.getWidth() < 0) {
-            let newLocation = new Vector2D(
-                this.getX() + this.getWidth() * 3,
-                this.getY()
-            )
-            const newGround: Ground = new Ground(newLocation)
-            newGround.setVelocityX(this.getVelocityX())
-            this.scene.addObject(newGround)
-            this.scene.removeObject(this)
-            this.destroy()
-        }
     }
 }
 

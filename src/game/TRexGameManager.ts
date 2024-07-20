@@ -18,7 +18,7 @@ class TRexGameManager extends GameManager {
 
         let playScene: Scene = new PlayScene()
         let gameoverScene: Scene = new GameoverScene()
-        gameoverScene.setActive(false)
+        gameoverScene.stop()
         this.sceneManager.addScene(playScene)
         this.sceneManager.addScene(gameoverScene)
         this.sceneManager.setSceneWidth(1000)

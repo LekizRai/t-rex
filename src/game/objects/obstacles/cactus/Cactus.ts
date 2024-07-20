@@ -50,7 +50,7 @@ class Cactus extends Image {
         let index: number = utils.randomInt(0, 6)
         let newLocation = location.add(sprite.CACTUS_SPRITES[index].adjust)
         super(newLocation, sprite.CACTUS_SPRITES[index].clip)
-        this.tex = this.resourceManager.getTex(0)
+        this.setTex(this.resourceManager.getTex(0))
         this.setColliderList(cactusCollidersList[index])
         this.setVelocityX(config.CACTUS_VELOCITY_X)
     }
@@ -60,10 +60,6 @@ class Cactus extends Image {
     public update(timeInterval: number): void {
         let shiftX = this.getShiftX()
         this.setX(this.getX() - shiftX)
-        if (this.getX() + this.getWidth() < 0) {
-            this.scene.removeObject(this)
-            this.destroy()
-        }
     }
 }
 

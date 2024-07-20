@@ -7,13 +7,11 @@ abstract class Text extends GameObject {
     protected spriteList: SpriteClip[]
     protected content: string
     protected letterGap: number
-    protected tex: TexInfo
 
     constructor(location: Vector2D, zIndex?: number) {
         if (zIndex) {
             super(location, zIndex)
-        }
-        else {
+        } else {
             super(location)
         }
         this.spriteList = []
@@ -22,22 +20,24 @@ abstract class Text extends GameObject {
     }
 
     public render(): void {
-        const drawer: Drawer = Drawer.getInstance()
-        let shift = 0
-        this.spriteList.forEach((spr) => {
-            drawer.draw(
-                this.tex,
-                spr.coor.getX(),
-                spr.coor.getY(),
-                spr.width,
-                spr.height,
-                this.getX() + shift,
-                this.getY(),
-                spr.width * spr.scale,
-                spr.height * spr.scale
-            )
-            shift += spr.width * spr.scale + this.letterGap
-        })
+        if (this.getIsRendered()) {
+            const drawer: Drawer = Drawer.getInstance()
+            let shift = 0
+            this.spriteList.forEach((spr) => {
+                drawer.draw(
+                    this.getTex(),
+                    spr.coor.getX(),
+                    spr.coor.getY(),
+                    spr.width,
+                    spr.height,
+                    this.getX() + shift,
+                    this.getY(),
+                    spr.width * spr.scale,
+                    spr.height * spr.scale
+                )
+                shift += spr.width * spr.scale + this.letterGap
+            })
+        }
     }
 
     public getContent(): string {

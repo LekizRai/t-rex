@@ -7,7 +7,7 @@ import Message from '../../../engine/controllers/Message'
 class Cloud extends Image {
     constructor(location: Vector2D) {
         super(location, sprite.CLOUD_SPRITE.clip)
-        this.tex = this.resourceManager.getTex(0)
+        this.setTex(this.resourceManager.getTex(0))
         this.setVelocityX(config.CLOUD_VELOCITY_X)
     }
 
@@ -16,10 +16,6 @@ class Cloud extends Image {
     public update(timeInterval: number): void {
         let shiftX = this.getShiftX()
         this.setX(this.getX() - shiftX)
-        if (this.getX() + this.getWidth() < 0) {
-            this.scene.removeObject(this)
-            this.destroy()
-        }
     }
 }
 

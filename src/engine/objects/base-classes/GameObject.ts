@@ -11,24 +11,23 @@ import GameObjectState from './GameObjectState'
 import Scene from '../../scene/Scene'
 
 abstract class GameObject {
+    private scene: Scene
     private location: Vector2D
     private colliderList: Collider[]
     private rigidBody: RigidBody
     private zIndex: number
+    private isRendered: boolean
     private state: GameObjectState
-
-    protected scene: Scene
 
     protected inputHandler: InputHandler
     protected sceneManager: SceneManager
     protected physicsManager: PhysicsManager
     protected resourceManager: ResourceManger
 
-    protected tex: TexInfo
+    private tex: TexInfo
 
-    // For colliders refining
-    protected box: TexInfo
-    
+    private isDestroyed: boolean
+
     constructor(location: Vector2D, zIndex?: number) {
         this.location = location.copy()
         this.colliderList = []
@@ -45,7 +44,9 @@ abstract class GameObject {
             this.zIndex = 0
         }
 
-        this.box = this.resourceManager.getTex(1)
+        this.isRendered = true
+
+        this.isDestroyed = false
     }
 
     // About location
@@ -80,6 +81,15 @@ abstract class GameObject {
 
     public setZIndex(zIndex: number): void {
         this.zIndex = zIndex
+    }
+
+    // About rendered
+    public getIsRendered(): boolean {
+        return this.isRendered
+    }
+
+    public setIsRendered(status: boolean): void {
+        this.isRendered = status
     }
 
     // About state
@@ -157,8 +167,22 @@ abstract class GameObject {
         this.rigidBody.setPhysicsEffect(status)
     }
 
+    // About scene
     public attachScene(scene: Scene): void {
         this.scene = scene
+    }
+
+    public getScene(): Scene {
+        return this.scene
+    }
+
+    // About texture info
+    public getTex(): TexInfo {
+        return this.tex
+    }
+
+    public setTex(tex: TexInfo): void {
+        this.tex = tex
     }
 
     public isColliedWith(obj: GameObject): boolean {
@@ -195,10 +219,15 @@ abstract class GameObject {
     public destroy(): void {
         this.inputHandler.detach(this)
         this.physicsManager.detach(this.rigidBody)
+        this.isDestroyed = true
     }
 
-    public abstract handleInput(message: Message): void
-    public abstract update(timeInterval: number): void
+    public getIsDestroyed(): boolean {
+        return this.isDestroyed
+    }
+
+    public handleInput(message: Message): void {}
+    public update(timeInterval: number): void {}
     public render(): void {}
 }
 

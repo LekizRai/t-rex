@@ -10,6 +10,7 @@ class ScoreBoard extends GameObject {
     private highPoint: HighScore
     private currentPoint: CurrentScore
     private HI: HI
+    private isUpdated: boolean
 
     constructor(location: Vector2D, zIndex?: number) {
         if (zIndex) {
@@ -20,26 +21,35 @@ class ScoreBoard extends GameObject {
         this.highPoint = new HighScore()
         this.currentPoint = new CurrentScore(config.SCOREBOARD_SCORE_CHANGING_INTERVAL)
         this.HI = new HI()
+        this.isUpdated = true
     }
 
     public handleInput(message: Message): void {}
 
     public update(timeInterval: number): void {
-        this.highPoint.update(timeInterval)
-        this.currentPoint.update(timeInterval)
-        this.HI.update(timeInterval)
-        this.updateHighScore()
+        if (this.isUpdated) {
+            this.highPoint.update(timeInterval)
+            this.currentPoint.update(timeInterval)
+            this.HI.update(timeInterval)
+            this.updateHighScore()
+        }
     }
 
     public render(): void {
-        this.highPoint.render()
-        this.currentPoint.render()
-        this.HI.render()
+        if (this.getIsRendered()) {
+            this.highPoint.render()
+            this.currentPoint.render()
+            this.HI.render()
+        }
     }
 
     public reload(): void {
         this.highPoint.reload()
         this.currentPoint.reload()
+    }
+
+    public setIsUpdated(status: boolean) {
+        this.isUpdated = status
     }
 
     public updateHighScore(): void {

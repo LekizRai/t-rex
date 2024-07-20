@@ -68,7 +68,7 @@ abstract class Button extends Image {
     }
 
     public attach(callback: Function): void {
-        this.callbackList.push(callback)
+        this.callbackList.push(callback) 
     }
 }
 

@@ -16,22 +16,23 @@ class GameoverScene extends Scene {
 
     public handleInput(message: Message) {}
 
-    public update(timeInterval: number): void {}
-
     public reload(): void {
         this.replayButton.setActive(true)
     }
 
     public setup(): void {
         this.gameOver = new GameOver()
-        this.replayButton = new ReplayButton(new Vector2D(480, 230), sprite.PLAY_BUTTON_SPRITE.clip, 2)
+        this.replayButton = new ReplayButton(
+            new Vector2D(480, 230),
+            sprite.PLAY_BUTTON_SPRITE.clip,
+            2
+        )
         this.inputHandler.attachMouseEvent(this.replayButton)
         this.replayButton.setActive(true)
         this.replayButton.attach(() => {
             this.replayButton.setActive(false)
-            this.setActive(false)
-            SceneManager.getInstance().setSceneStatus(0, true)
-            SceneManager.getInstance().reloadScene(0)
+            this.stop()
+            SceneManager.getInstance().startScene(0)
         })
         this.addObject(this.gameOver)
         this.addObject(this.replayButton)

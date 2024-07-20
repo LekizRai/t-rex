@@ -27,7 +27,7 @@ class Bird extends Animation {
         this.setAdjustList(birdAdjustList)
         this.setCollidersList(birdCollidersList)
         this.setVelocityX(config.BIRD_VELOCITY_X)
-        this.tex = this.resourceManager.getTex(0)
+        this.setTex(this.resourceManager.getTex(0))
     }
 
     public handleInput(message: Message): void {}
@@ -37,10 +37,6 @@ class Bird extends Animation {
 
         let shiftX = this.getShiftX()
         this.setX(this.getX() - shiftX)
-        if (this.getX() + this.getWidth() < 0) {
-            this.scene.removeObject(this)
-            this.destroy()
-        }
     }
 }
 

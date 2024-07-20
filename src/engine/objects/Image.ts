@@ -5,7 +5,6 @@ import GameObject from './base-classes/GameObject'
 
 abstract class Image extends GameObject {
     protected sprite: SpriteClip
-    protected tex: TexInfo
 
     constructor(location: Vector2D, sprite: SpriteClip, zIndex?: number) {
         if (zIndex) {
@@ -17,33 +16,20 @@ abstract class Image extends GameObject {
     }
 
     public render(): void {
-        const drawer: Drawer = Drawer.getInstance()
-        drawer.draw(
-            this.tex,
-            this.sprite.coor.getX(),
-            this.sprite.coor.getY(),
-            this.sprite.width,
-            this.sprite.height,
-            this.getX(),
-            this.getY(),
-            this.sprite.width * this.sprite.scale,
-            this.sprite.height * this.sprite.scale
-        )
-
-        // this.getColliderList().forEach((col) => {
-        //     let location = this.getLocation().add(col.getOrigin())
-        //     drawer.draw(
-        //         this.box,
-        //         0,
-        //         0,
-        //         this.box.width,
-        //         this.box.height,
-        //         location.getX(),
-        //         location.getY(),
-        //         col.getWidth(),
-        //         col.getHeight()
-        //     )
-        // })
+        if (this.getIsRendered()) {
+            const drawer: Drawer = Drawer.getInstance()
+            drawer.draw(
+                this.getTex(),
+                this.sprite.coor.getX(),
+                this.sprite.coor.getY(),
+                this.sprite.width,
+                this.sprite.height,
+                this.getX(),
+                this.getY(),
+                this.sprite.width * this.sprite.scale,
+                this.sprite.height * this.sprite.scale
+            )
+        }
     }
 
     public setSprite(sprite: SpriteClip): void {

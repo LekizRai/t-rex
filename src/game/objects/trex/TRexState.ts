@@ -166,8 +166,18 @@ class TRexStartState extends GameObjectState {
     public handleInput(obj: TRex, message: Message): void {
         const e = message.getEvent()
         if (e instanceof Event) {
-            if (e instanceof MouseEvent) {
-
+            if (e instanceof KeyboardEvent) {
+                if (e.keyCode == key.SPACE || e.keyCode == key.ARROW_UP) {
+                    if (!e.repeat) {
+                        obj.setState(new TRexJumpingState())
+                        obj.setSpriteList(trexJumpingSpriteList)
+                        obj.setAdjustList(trexJumpingAdjustList)
+                        obj.setCollidersList(trexRunningJumpingCollidersList)
+                        obj.setVelocityY(config.TREX_JUMPING_VELOCITY)
+                        obj.setAccelerationEffect(true)
+                        obj.getScene().handleInput(new Message("play"))
+                    }
+                }
             }
         }
     }
@@ -177,4 +187,10 @@ class TRexStartState extends GameObjectState {
     }
 }
 
-export default { TRexDuckingState, TRexGameOverState, TRexJumpingState, TRexRunningState }
+export default {
+    TRexDuckingState,
+    TRexGameOverState,
+    TRexJumpingState,
+    TRexRunningState,
+    TRexStartState,
+}

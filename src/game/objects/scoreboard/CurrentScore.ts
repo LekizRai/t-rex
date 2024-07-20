@@ -9,7 +9,7 @@ class CurrentScore extends Text {
 
     constructor(changingInterval: number) {
         super(new Vector2D(880, 182))
-        this.tex = this.resourceManager.getTex(0)
+        this.setTex(this.resourceManager.getTex(0))
         this.setContent('00000')
         this.changingInterval = changingInterval
     }
