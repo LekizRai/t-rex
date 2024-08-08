@@ -40,6 +40,7 @@ class PlayScene extends Scene {
     public reload(): void {
         this.setState(state.PLAY)
         this.obstacleGroup.setVelocityX(config.GROUND_VELOCITY_X)
+        this.groundGroup.setVelocityX(config.GROUND_VELOCITY_X)
 
         this.getObjectList().forEach((obj) => {
             if (!(obj instanceof TRex) && !(obj instanceof ScoreBoard)) {

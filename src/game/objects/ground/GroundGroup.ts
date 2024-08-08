@@ -40,7 +40,10 @@ class GroundGroup extends GameObject {
 
         for (let i = 0; i < this.objectList.length; i++) {
             if (this.objectList[i].getX() + this.objectList[i].getWidth() < 0) {
-                let newLocation = new Vector2D(this.objectList[i].getX() + this.objectList[i].getWidth() * 3, this.objectList[i].getY())
+                let newLocation = new Vector2D(
+                    this.objectList[i].getX() + this.objectList[i].getWidth() * 3,
+                    this.objectList[i].getY()
+                )
                 const newGround: Ground = new Ground(newLocation)
                 newGround.setVelocityX(this.getVelocityX())
                 this.addObject(newGround)
